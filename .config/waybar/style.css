@@ -1,0 +1,116 @@
+/*
+ * __        __          _                  ____  _         _       
+ * \ \      / /_ _ _   _| |__   __ _ _ __  / ___|| |_ _   _| | ___  
+ *  \ \ /\ / / _` | | | | '_ \ / _` | '__| \___ \| __| | | | |/ _ \ 
+ *   \ V  V / (_| | |_| | |_) | (_| | |     ___) | |_| |_| | |  __/ 
+ *    \_/\_/ \__,_|\__, |_.__/ \__,_|_|    |____/ \__|\__, |_|\___| 
+ *                 |___/                              |___/         
+ *
+ * ----------------------------------------------------- 
+*/
+
+
+@import "../hypr/assets/colors.css";
+
+
+* {
+    font-family: "Fira Sans Semibold", "Font Awesome 7 Free", "Font Awesome 7 Brands", "Font Awesome 6 Free", "Font Awesome 6 Brands", FontAwesome, Roboto, Helvetica, Arial, sans-serif;
+    border: none;
+    border-radius: 0px;
+}
+
+window#waybar {
+    background-color: rgba(0,0,0,0.8);
+    background: transparent;
+    /* Margin unten auf 0, um am Fenster anzudocken */
+    margin-bottom: 0px; 
+}
+
+/* --- Workspaces --- */
+#workspaces {
+    background: @workspacesbackground1;
+    margin: 5px 18px 0px 0px;
+    padding: 0px 2px;
+    border-radius: 30px;
+    font-weight: bold;
+    color: @textcolor2;
+}
+
+#workspaces button {
+    padding: 0px 6px;
+    margin: 3px 2px 3px 2px; 
+    border-radius: 20px;
+}
+
+#workspaces button.active {
+    color: @textcolor2;
+    background: @workspacesbackground3;
+    border-radius: 20px;
+    min-width: 30px;
+    transition: all 0.1s linear;
+    opacity:1.0;
+}
+
+#workspaces button:hover {
+    color: @textcolor2;
+    background: @workspacesbackground3;
+    border-radius: 20px;
+}
+
+.modules-left > widget:first-child > #workspaces {
+    margin-left: 5;
+}
+
+/* --- Window (Center) --- */
+#window {
+    margin: 5px 5px 0px 5px;
+    padding: 0px 10px 0px 10px;
+    border-radius: 30px;
+    background-color: @background;
+
+}
+
+/* --- Hardware Gruppe (CPU, Memory, etc.) --- */
+#keyboard-state, #clock, #pulseaudio, #network, #battery, #custom-power, #backlight, #idle_inhibitor {
+    margin: 5px 5px 0px 5px;
+    padding: 0px 10px;
+    border-radius: 30px;
+    background-color: @background;
+}
+
+#keyboard-state label {
+    padding: 0 5px;
+}
+
+#cpu {
+    margin: 5px 0px 0px 0px;
+    padding: 0px 5px 0px 10px;
+    color:lightblue;
+    background: @background;
+    border-radius: 30px 0px 0px 30px;
+}
+
+#disk,#memory,#language {
+    margin: 5px 0px 0px 0px;
+    padding: 0px 5px;
+    color:yellow;
+    background: @background;
+    border-radius: 0px;
+}
+
+#temperature {
+    margin: 5px 0px 0px 0px;
+    padding: 0px 10px 0px 5px;
+    color:orange;
+    background: @background;
+    border-radius: 0px 30px 30px 0px;
+}
+
+/* --- Tray --- */
+#tray {
+    /* Tray ebenfalls nach unten rücken */
+    background: @background;
+    border-radius: 30px;
+    margin-top: 5px;
+    padding: 0px 10px;
+}

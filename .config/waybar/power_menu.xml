@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <object class="GtkMenu" id="menu">
+
+  <property name="opacity">0.85</property>
+
+    <child>
+      <object class="GtkMenuItem" id="shutdown">
+        <property name="visible">True</property>
+        <property name="label">Ausschalten</property>
+      </object>
+    </child>
+    
+    <child>
+      <object class="GtkMenuItem" id="reboot">
+        <property name="visible">True</property>
+        <property name="label">Neustart</property>
+      </object>
+    </child>
+    
+    <child>
+      <object class="GtkMenuItem" id="logout">
+        <property name="visible">True</property>
+        <property name="label">Abmelden</property>
+      </object>
+    </child>
+
+  </object>
+</interface>

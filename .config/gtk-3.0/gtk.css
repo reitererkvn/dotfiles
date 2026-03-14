@@ -1,0 +1,6 @@
+@import 'colors.css';
+@import '../.config/hypr/assets/colors.css';
+window, .background {
+    background-color: @background !important;
+    color: @textcolor1 !important;
+}

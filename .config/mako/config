@@ -1,0 +1,15 @@
+#!/bin/bash
+
+include=~/.config/hypr/assets/mako-colors
+
+# Abgerundete Ecken (Radius in Pixeln)
+border-radius=10
+border-size=2
+
+# Zeit in Millisekunden (5s = 5000ms)
+default-timeout=5000
+
+# Schriftart ist wichtig für die Text-Breite im RAM
+font=sans-serif 10
+
+
