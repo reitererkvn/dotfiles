@@ -33,5 +33,6 @@ alias snapnow='sudo snapper -c root create --description "manuell erstellt" && s
 alias n8nup='docker start c00b75e9f2b0'
 alias n8ndn='docker stop c00b75e9f2b0'
 alias sysupdate='/usr/local/bin/system-update.sh'
-alias note='~/.local/bin/note'
+alias note='~/=.local/bin/note'
+alias gitsync='/home/kevin/.dotfiles/.local/bin/git-push.sh'
 
