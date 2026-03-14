@@ -28,4 +28,4 @@ bindkey  "^[[1;5C" forward-word           # Strg + Pfeil Rechts
 bindkey  "^[[1;5D" backward-word          # Strg + Pfeil Links
 #
 # alias
-source "$HOME/.alias"
+[[ -f "$HOME/.alias" ]] && source "$HOME/.alias"
