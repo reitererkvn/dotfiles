@@ -3,7 +3,25 @@
 ### ENVIRONMENT VARIABLES ###
 #############################
 
-# See https://wiki.hypr.land/Configuring/Environment-variables/
+# Global Session Environments
+# ---------------------------
+# Set variables here to be exported BEFORE the Wayland session starts.
+# This ensures a consistent environment for both Shell and D-Bus/GUI apps.
+#
+# Note: $USER is typically pre-set by 'greetd'. If redefined here, 
+# ensure it matches the system UID to prevent authentication mismatches.
+#
+#For Hyprland specific values see https://wiki.hypr.land/Configuring/Environment-variables/
+
+######
+# User
+######
+export USER="kevin"
+export MAIL="reitererkvn@gmail.com"
+export GIT_AUTHOR_NAME="Kevin"
+export GIT_AUTHOR_EMAIL="reitererkvn@gmail.com"
+export GIT_COMMITTER_NAME="Kevin"
+export GIT_COMMITTER_EMAIL="reitererkvn@gmail.com"
 
 #################
 # Grafik-Backends
