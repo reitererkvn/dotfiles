@@ -24,8 +24,15 @@ bindkey  "^[[F"   end-of-line             # Ende
 bindkey  "^[[3~"  delete-char             # Entf
 bindkey  "^[[1;5C" forward-word           # Strg + Pfeil Rechts
 bindkey  "^[[1;5D" backward-word          # Strg + Pfeil Links
+# #####
 # alias
+# #####
+#
 alias sudo='sudo -E' # root verwendet envs von user
+# synlinks dotfiles to their directories, dotsync for .dotfiles and sudodotsync for system-dotfiles
+alias dotsync='/home/kevin/.dotfiles/.local/bin/dotfiles-sync.sh'
+alias sudodotsync='sudo /opt/system-dotfiles/usr/local/bin/dotfiles-sync.sh'
+#
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 alias vim='nvim'
