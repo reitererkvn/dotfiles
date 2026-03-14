@@ -32,18 +32,18 @@ find "$SRC" -mindepth 1 -name ".git" -prune -o -type d -printf '%P\n' |  while r
 done
 
 # ==========================================
-# PHASE 2: I/O-Mapping (Daten-Verlinkung, Ignoriert .git)
+# PHASE 2: I/O-Mapping (Daten-Verlinkung, Ignoriert .git, README.md, LIECENSE)
 # ==========================================
-find "$SRC" -mindepth 1 -name ".git" -prune -o -type f -printf '%P\n' | while read -r relative_file; do
+find "$SRC" -mindepth 1 \( -name ".git" -o -name "REAME.md" -o -name "LICENSE" \) -prune -o -type f -printf '%P\n' | while read -r relative_file; do
     source_file="$SRC/$relative_file"
     target_link="$DEST/$relative_file"
-    
+
     # Blockade-Prüfung gegen reelle Daten
     if [ -e "$target_link" ] && [ ! -L "$target_link" ]; then
         echo "Warning: target $target_link is not a symlink, skipping ..."
         continue
 	    fi
-	    
+
 	    # Erzeuge/Überschreibe den Symlink
     ln -sfn "$source_file" "$target_link"
     echo "linked $source_file:$target_link"
