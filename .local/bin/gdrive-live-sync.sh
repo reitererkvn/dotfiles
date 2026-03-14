@@ -1,7 +1,7 @@
 #!/bin/bash
 WATCH_LIST="$HOME/.config/rclone/inotify-watch.txt"
 CLOUD_ROOT="gdrive:backups/live"
-
+    :q
 
 # --- NEU: PFADE EINLESEN ---
 # Ohne diesen Block bleibt VALID_PATHS leer und das Skript bricht ab.

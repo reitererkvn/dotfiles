@@ -1,0 +1,47 @@
+# #####
+# alias
+# #####
+#
+# set if you want root to use your envs
+alias sudo='sudo -E'
+#
+# sync dotfiles to git
+alias gitsync='/home/kevin/.dotfiles/.local/bin/git-push.sh' # -u only user, -s only system
+#
+# system update (rank mirrors + pacman -Syyu + yay -Syyu + dependancy cleanup)
+alias sysupdate='/usr/local/bin/system-update.sh'
+#
+# btrfs snapshot for @ and @/home
+alias snapnow='sudo snapper -c root create --description "manuell erstellt" && sudo snapper -c home create --description "manuell erstellt" && echo -e "📸 \n\e[1;32mSnapshots erstellt am $(date +%H:%M:%S):\e[0m\n\e[1;34m@(root):\e[0m $(sudo snapper list | tail -n 1)\n\e[1;34m@home:\e[0m   $(sudo snapper -c home list | tail -n 1)"'
+#
+# #############################################
+# symlinks/copies dotfiles to their directories
+# #############################################
+#
+# use dotsync for .dotfiles and sudodotsync for system-dotfiles
+# !!! sudodotsync overwrites the files in /root/ which are similar in name to those in /opt/system-dotfiles/ !!!
+#
+alias dotsync='/home/kevin/.dotfiles/.local/bin/dotfiles-sync.sh'
+alias sudodotsync='sudo /opt/system-dotfiles/usr/local/bin/dotfiles-sync.sh'
+#
+# sync dotfiles & autocommit to git
+alias fullsync='dotsync && sudodotsync && gitsync' # home & user
+alias fullsyncu='dotsync && gitsync -u' # user only
+alias fullsyncs='sudodotsync && gitsync -s' # system (root) only
+#
+# ################################################################
+# ################################################################
+#
+# hightlighting for search queries
+alias ls='ls --color=auto'
+alias grep='grep --color=auto'
+#
+# nvim
+alias vim='nvim'
+#
+# notes (opens daily note in ~/Dokumente/notes/ )
+# use -l to list notes, -ly to open in filemanager
+alias note='~/=.local/bin/note'
+#
+# for first start of teamviewer if to dont want to autoboot with teamvieverd
+alias teamviewerd="sudo start teamvieverd && teamviewer"

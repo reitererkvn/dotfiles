@@ -7,7 +7,7 @@ setopt INC_APPEND_HISTORY
 setopt HIST_IGNORE_DUPS
 setopt HIST_IGNORE_SPACE
 setopt correct
-
+#
 # plugins
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 	ZSH_AUTOSUGGEST_STRATEGY=(history completion)
@@ -16,34 +16,16 @@ source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zs
 source /usr/share/fzf/key-bindings.zsh
 source /usr/share/fzf/completion.zsh
 eval "$(zoxide init zsh)"
+#
 # customization
 PROMPT='%F{blue}%n%f%F{green}@%f%F{blue}%m%f %F{green}%~%f %# '
+#
 # Zsh Tastatur-Fix
 bindkey  "^[[H"   beginning-of-line       # Pos1
 bindkey  "^[[F"   end-of-line             # Ende
 bindkey  "^[[3~"  delete-char             # Entf
 bindkey  "^[[1;5C" forward-word           # Strg + Pfeil Rechts
 bindkey  "^[[1;5D" backward-word          # Strg + Pfeil Links
-# #####
-# alias
-# #####
 #
-alias sudo='sudo -E' # root verwendet envs von user
-# synlinks dotfiles to their directories, dotsync for .dotfiles and sudodotsync for system-dotfiles
-# !!! system-dotfiles overwrites the files in /root/ which are similar in name to those in /opt/system-dotfiles/ !!!
-alias dotsync='/home/kevin/.dotfiles/.local/bin/dotfiles-sync.sh'
-alias sudodotsync='sudo /opt/system-dotfiles/usr/local/bin/dotfiles-sync.sh'
-# sync dotfiles to git
-alias gitsync='/home/kevin/.dotfiles/.local/bin/git-push.sh' # -u only user, -s only system
-# sync dotfiles & autocommit to git
-alias fullsync='dotsync && sudodotsync && gitsync' # home & user
-alias fullsyncu='dotsync && gitsync -u' # user only
-alias fullsyncs='sudodotsync && gitsync -s' # system (root) only
-
-alias ls='ls --color=auto'
-alias grep='grep --color=auto'
-alias vim='nvim'
-alias snapnow='sudo snapper -c root create --description "manuell erstellt" && sudo snapper -c home create --description "manuell erstellt" && echo -e "📸 \n\e[1;32mSnapshots erstellt am $(date +%H:%M:%S):\e[0m\n\e[1;34m@(root):\e[0m $(sudo snapper list | tail -n 1)\n\e[1;34m@home:\e[0m   $(sudo snapper -c home list | tail -n 1)"'
-alias sysupdate='/usr/local/bin/system-update.sh'
-alias note='~/=.local/bin/note'
-alias teamviewerd="sudo start teamvieverd && teamviewer"
+# alias
+source '$HOME\.alias'
