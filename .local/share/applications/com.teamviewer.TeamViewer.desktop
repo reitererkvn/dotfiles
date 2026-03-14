@@ -1,0 +1,13 @@
+[Desktop Entry]
+Version=1.0
+Encoding=UTF-8
+Type=Application
+Categories=Network;
+
+Name=TeamViewer
+Comment=Remote control solution.
+Exec=sh -c "sudo systemctl start teamviewerd && teamviewer"
+StartupWMClass=TeamViewer
+
+
+Icon=TeamViewer

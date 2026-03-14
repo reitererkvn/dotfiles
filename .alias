@@ -44,4 +44,4 @@ alias vim='nvim'
 alias note='~/.local/bin/note'
 #
 # for first start of teamviewer if to dont want to autoboot with teamvieverd
-alias teamviewerd="sudo start teamvieverd && teamviewer"
+alias teamviewerd="sudo systemctl start teamviewerd && teamviewer"
