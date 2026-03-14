@@ -41,7 +41,7 @@ alias vim='nvim'
 #
 # notes (opens daily note in ~/Dokumente/notes/ )
 # use -l to list notes, -ly to open in filemanager
-alias note='~/=.local/bin/note'
+alias note='~/.local/bin/note'
 #
 # for first start of teamviewer if to dont want to autoboot with teamvieverd
 alias teamviewerd="sudo start teamvieverd && teamviewer"
