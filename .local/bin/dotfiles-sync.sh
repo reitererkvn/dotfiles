@@ -25,7 +25,7 @@ echo "Done removing, resuming..."
 # PHASE 1: Topologische Replikation (Ignoriert .git)
 # -name ".git" -prune blockiert das Betreten des Versionskontroll-Graphen
 # ==========================================
-find "$SRC" -mindepth 1 -name ".git" -prune -o -type d | while read -r relative_dir; do
+find "$SRC" -mindepth 1 -name ".git" -prune -o -type d -printf '%P\n' |  while read -r relative_dir; do
     echo "Destined dir $DEST not found, creating $DEST/$relative_dir..."
     mkdir -p "$DEST/$relative_dir"
     echo "$DEST/$relative_dir created..."
