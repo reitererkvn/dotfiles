@@ -30,16 +30,20 @@ bindkey  "^[[1;5D" backward-word          # Strg + Pfeil Links
 #
 alias sudo='sudo -E' # root verwendet envs von user
 # synlinks dotfiles to their directories, dotsync for .dotfiles and sudodotsync for system-dotfiles
+# !!! system-dotfiles overwrites the files in /root/ which are similar in name to those in /opt/system-dotfiles/ !!!
 alias dotsync='/home/kevin/.dotfiles/.local/bin/dotfiles-sync.sh'
 alias sudodotsync='sudo /opt/system-dotfiles/usr/local/bin/dotfiles-sync.sh'
-#
+# sync dotfiles to git
+alias gitsync='/home/kevin/.dotfiles/.local/bin/git-push.sh' # -u only user, -s only system
+# sync dotfiles & autocommit to git
+alias fullsync='dotsync && sudodotsync && gitsync' # home & user
+alias fullsyncu='dotsync && gitsync -u' # user only
+alias fullsyncs='sudodotsync && gitsync -s' # system (root) only
+
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 alias vim='nvim'
 alias snapnow='sudo snapper -c root create --description "manuell erstellt" && sudo snapper -c home create --description "manuell erstellt" && echo -e "📸 \n\e[1;32mSnapshots erstellt am $(date +%H:%M:%S):\e[0m\n\e[1;34m@(root):\e[0m $(sudo snapper list | tail -n 1)\n\e[1;34m@home:\e[0m   $(sudo snapper -c home list | tail -n 1)"'
-alias n8nup='docker start c00b75e9f2b0'
-alias n8ndn='docker stop c00b75e9f2b0'
 alias sysupdate='/usr/local/bin/system-update.sh'
 alias note='~/=.local/bin/note'
-alias gitsync='/home/kevin/.dotfiles/.local/bin/git-push.sh'
-
+alias teamviewerd="sudo start teamvieverd && teamviewer"
