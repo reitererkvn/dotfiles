@@ -52,6 +52,7 @@ export BROWSER_CLASS="google-chrome" #browser class needed for hyprwindow rules
 # Editor + Visual (=Anzeige in zB. yazi)
 export EDITOR="nvim"
 export VISUAL="nvim"
+export SUDO_EDITOR="nvim"
 
 export PANEL="waybar"
 export WPM="hyprpaper"
