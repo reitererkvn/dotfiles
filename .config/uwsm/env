@@ -1,68 +1,14 @@
 #!/bin/sh
-#############################
-### ENVIRONMENT VARIABLES ###
-#############################
+######################################################################
+### UWSM Master Environment Loader                                 ###
+######################################################################
 
-# Global Session Environments
-# ---------------------------
-# Set variables here to be exported BEFORE the Wayland session starts.
-# This ensures a consistent environment for both Shell and D-Bus/GUI apps.
-#
-# Note: $USER is typically pre-set by 'greetd'. If redefined here,
-# ensure it matches the system UID to prevent authentication mismatches.
-#
-#For Hyprland specific values see https://wiki.hypr.land/Configuring/Environment-variables/
+ENV_DIR="$HOME/.config/uwsm/env.d"
 
-######
-# User
-######
-export USER="kevin"
-export MAIL="reitererkvn@gmail.com"
-export GIT_AUTHOR_NAME="Kevin"
-export GIT_AUTHOR_EMAIL="reitererkvn@gmail.com"
-export GIT_COMMITTER_NAME="Kevin"
-export GIT_COMMITTER_EMAIL="reitererkvn@gmail.com"
-
-#################
-# Grafik-Backends
-#################
-export GDK_BACKEND="wayland,x11,*"
-export QT_QPA_PLATFORM="wayland;xcb"
-export CLUTTER_BACKEND="wayland"
-export QT_QPA_PLATFORMTHEME="qt6ct"
-
-##################
-# Thememing & Deko
-##################
-export XCURSOR_SIZE=24
-export HYPRCURSOR_SIZE=24
-export XCURSOR_THEME="Bibata-Modern-Classic"
-export HYPRCURSOR_THEME="Bibata-Modern-Classic"
-export GTK_THEME="Adwaita:dark"
-# Deaktiviert redundante Qt-Fensterrahmen, da Hyprland diese bereits zeichnet
-  export QT_WAYLAND_DISABLE_WINDOWDECORATION=1
-  export QT_AUTO_SCREEN_SCALE_FACTOR=1
-# Wallpaper (/home/name/ path not included as different configs support different relative placeholders eg. ~/${HOME})
-export WALLPAPER0="$HOME/.config/hypr/assets/wallpapers/Forest1.png"
-#export WALLPAPER1=""
-#export WALLPAPER2=""
-#export WALLPAPER3=""
-###################
-# Standardprogramme
-###################
-export BROWSER="google-chrome-stable"
-export BROWSER_CLASS="google-chrome" #browser class needed for hyprwindow rules
-
-# Editor + Visual (=Anzeige in zB. yazi)
-export EDITOR="nvim"
-export VISUAL="nvim"
-export SUDO_EDITOR="nvim"
-
-export PANEL="waybar"
-export WPM="hyprpaper"
-export IDLEM="hypridle"
-export TERMINAL="kitty"
-export FILEMANAGER="yazi"
-export LAUNCHER="fuzzel"
-export NOTD="mako"
-export POLKIT="/usr/lib/hyprpolkitagent/hyprpolkitagent"
+if [ -d "$ENV_DIR" ]; then
+    for config_file in "$ENV_DIR"/*.sh; do
+        if [ -r "$config_file" ]; then
+            . "$config_file"
+        fi
+    done
+fi
