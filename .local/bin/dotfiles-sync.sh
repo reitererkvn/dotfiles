@@ -34,7 +34,7 @@ done
 # ==========================================
 # PHASE 2: I/O-Mapping (Daten-Verlinkung, Ignoriert .git, README.md, LIECENSE)
 # ==========================================
-find "$SRC" -mindepth 1 \( -name ".git" -o -name "REAME.md" -o -name "LICENSE" \) -prune -o -type f -printf '%P\n' | while read -r relative_file; do
+find "$SRC" -mindepth 1 \( -name ".git" -o -name "README.md" -o -name "LICENSE" \) -prune -o -type f -printf '%P\n' | while read -r relative_file; do
     source_file="$SRC/$relative_file"
     target_link="$DEST/$relative_file"
 

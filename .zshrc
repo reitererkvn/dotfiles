@@ -17,9 +17,27 @@ source /usr/share/fzf/key-bindings.zsh
 source /usr/share/fzf/completion.zsh
 eval "$(zoxide init zsh)"
 #
+# ############
 # customization
-PROMPT='%F{blue}%n%f%F{green}@%f%F{blue}%m%f %F{green}%~%f %# '
+# #############
+# Funktion zur Aktualisierung der oberen Statuszeile
+set_running_info() {
+  # Ermittelt User und Hostname
+  local user_host=" ${USER}   ${HOST}"
+
+  # Setzt den Fenster-Titel (wird von Kitty oben angezeigt)
+  # \e]2; = Startsequenz für Titel, \a = Endsequenz
+  print -Pn "\e]2;${user_host} 󰉋  %~\a"
+}
+
+# In die Zsh-Hooks einhängen
+add-zsh-hook precmd set_running_info
+
+# Dein gewünschter minimaler Prompt
+PROMPT='%# '
 #
+#
+# ##########################################################
 # Zsh Tastatur-Fix
 bindkey  "^[[H"   beginning-of-line       # Pos1
 bindkey  "^[[F"   end-of-line             # Ende
