@@ -43,5 +43,5 @@ alias vim='nvim'
 # use -l to list notes, -ly to open in filemanager
 alias note='~/.local/bin/note'
 #
-# for first start of teamviewer if to dont want to autoboot with teamvieverd
-alias teamviewerd="sudo systemctl start teamviewerd && teamviewer"
+# modified Teamviewer app link in dotfiles ensures teamviewerd will be started if you have disabled its autostart
+alias teamviewe="teamviewer && disown"
