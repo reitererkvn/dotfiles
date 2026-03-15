@@ -33,8 +33,11 @@ set_running_info() {
 # In die Zsh-Hooks einhängen
 add-zsh-hook precmd set_running_info
 
+# In die Zsh-Hooks einhängen
+add-zsh-hook precmd set_running_info
+
 # Dein gewünschter minimaler Prompt
-PROMPT='%# '
+PROMPT='󰉋 %~ %% '
 #
 #
 # ##########################################################
