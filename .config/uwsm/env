@@ -8,7 +8,7 @@
 # Set variables here to be exported BEFORE the Wayland session starts.
 # This ensures a consistent environment for both Shell and D-Bus/GUI apps.
 #
-# Note: $USER is typically pre-set by 'greetd'. If redefined here, 
+# Note: $USER is typically pre-set by 'greetd'. If redefined here,
 # ensure it matches the system UID to prevent authentication mismatches.
 #
 #For Hyprland specific values see https://wiki.hypr.land/Configuring/Environment-variables/
@@ -25,7 +25,7 @@ export GIT_COMMITTER_EMAIL="reitererkvn@gmail.com"
 
 #################
 # Grafik-Backends
-################# 
+#################
 export GDK_BACKEND="wayland,x11,*"
 export QT_QPA_PLATFORM="wayland;xcb"
 export CLUTTER_BACKEND="wayland"
@@ -42,7 +42,11 @@ export GTK_THEME="Adwaita:dark"
 # Deaktiviert redundante Qt-Fensterrahmen, da Hyprland diese bereits zeichnet
   export QT_WAYLAND_DISABLE_WINDOWDECORATION=1
   export QT_AUTO_SCREEN_SCALE_FACTOR=1
-
+# Wallpaper (/home/name/ path not included as different configs support different relative placeholders eg. ~/${HOME})
+export WALLPAPER0="$HOME/.config/hypr/assets/wallpapers/Forest1.png"
+#export WALLPAPER1=""
+#export WALLPAPER2=""
+#export WALLPAPER3=""
 ###################
 # Standardprogramme
 ###################
