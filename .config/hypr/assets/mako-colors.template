@@ -1,0 +1,11 @@
+#!/bin/bash
+
+background-color=#$BACKGROUND0
+progress-color=#$BORDERACTIVE2
+[urgency=low]
+border-color=#$BORDERACTIVE1
+[urgency=normal]
+border-color=#ffa500 #orange
+[urgency=high]
+border-color=#ff0000 #red
+

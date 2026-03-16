@@ -42,6 +42,9 @@ done
 
 # 4. envsubst auf das Template anwenden
 envsubst < "$HOME/.config/hypr/assets/colors.template.css" > "$HOME/.config/hypr/assets/colors.css"
-
+envsubst < "$HOME/.config/hypr/assets/mako-colors.template" > "$HOME/.config/hypr/assets/mako-colors"
+envsubst < "$HOME/.config/hypr/assets/kitty-colors.template" > "$HOME/.config/hypr/assets/kitty-colors"
 # 5. Signal-Reload
 killall -SIGUSR2 waybar
+hyprctl reload
+killall -SIGUSR1 kitty

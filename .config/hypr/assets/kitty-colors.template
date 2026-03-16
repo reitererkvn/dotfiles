@@ -1,0 +1,7 @@
+#!/bin/bash
+
+active_tab_foreground   #$TEXTCOLOR2
+active_tab_background   #000000
+active_tab_font_style   bold
+inactive_tab_foreground #$TEXTCOLOR3
+inactive_tab_background #000000
