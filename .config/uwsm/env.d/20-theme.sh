@@ -13,4 +13,3 @@ export QT_AUTO_SCREEN_SCALE_FACTOR=1
 
 # Dynamische Assets & Basis-Farben
 export WALLPAPER0="$HOME/.config/hypr/assets/wallpapers/Forest1.png"
-export TESTCOLOR="#000000"

@@ -21,7 +21,7 @@
 
 window#waybar {
     background-color: rgba(0,0,0,0.8);
-    background: @TESTCOLOR;
+    background: transparent;
     /* Margin unten auf 0, um am Fenster anzudocken */
     margin-bottom: 0px;
 }

@@ -1,0 +1,11 @@
+@define-color background $BACKGROUND0_RGBA;
+@define-color workspacesbackground1 $BACKGROUND0_RGBA;
+@define-color workspacesbackground2 $BACKGROUND2_RGBA;
+@define-color workspacesbackground3 $BACKGROUND1_RGBA;
+@define-color borderactive1 $BORDERACTIVE0_RGBA; /*dark blue*/
+@define-color borderactive2 $BORDERACTIVE1_RGBA; /*light blue, vibrant*/
+@define-color borderinactive $BORDERINACTIVE_RGBA; /*grey translucent*/
+@define-color textcolor1 $TEXTCOLOR1_RGBA;
+@define-color textcolor2 $TEXTCOLOR2_RGBA;
+@define-color textcolor3 $TEXTCOLOR1_RGBA;
+@define-color iconcolor $TEXTCOLOR1_RGBA;
