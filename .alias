@@ -4,9 +4,7 @@
 #
 # set if you want root to use your envs
 alias sudo='sudo -E'
-#
-# sync dotfiles to git
-alias gitsync='/home/kevin/.dotfiles/.local/bin/git-push.sh' # -u only user, -s only system
+
 #
 # system update (rank mirrors + pacman -Syyu + yay -Syyu + dependancy cleanup)
 alias sysupdate='/usr/local/bin/system-update.sh'
@@ -24,9 +22,15 @@ alias snapnow='sudo snapper -c root create --description "manuell erstellt" && s
 alias dotsync='/home/kevin/.dotfiles/.local/bin/dotfiles-sync.sh'
 alias sudodotsync='sudo /opt/system-dotfiles/usr/local/bin/dotfiles-sync.sh'
 #
-# sync dotfiles & autocommit to git
-alias fullsync='dotsync && sudodotsync && gitsync' # home & user
-alias fullsyncu='dotsync && gitsync -u' # user only
+# sync dotfiles to git
+alias gitsync='/home/kevin/.dotfiles/.local/bin/git-push.sh' # -u only user, -s only system
+#
+# applies theme, writes color configs to ~/.config for apps who dont support envs
+alias apply-theme='/home/kevin/.dotfiles/.local/bin/apply-theme.sh'
+#
+# sync dotfiles & apply theme & autocommit to git (no apply-theme for dotsyncs)
+alias fullsync='dotsync && apply-theme && sudodotsync && gitsync' # home & user
+alias fullsyncu='dotsync && apply-theme && gitsync -u' # user only
 alias fullsyncs='sudodotsync && gitsync -s' # system (root) only
 #
 # ################################################################
