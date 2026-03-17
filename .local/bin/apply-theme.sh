@@ -46,10 +46,16 @@ for var_name in $var_list; do
     export "${var_name}_8"="#${hex_value}" # format: #000000FF
 done
 
-# 4. envsubst auf das Template anwenden
-envsubst < "$HOME/.config/hypr/assets/colors.template.css" > "$HOME/.config/hypr/assets/colors.css"
-envsubst < "$HOME/.config/hypr/assets/mako-colors.template" > "$HOME/.config/hypr/assets/mako-colors"
-envsubst < "$HOME/.config/hypr/assets/kitty-colors.template" > "$HOME/.config/hypr/assets/kitty-colors"
+# 4. envsubst auf die Template anwenden
+
+templates=$(find "$HOME/.config/hypr/assets" -type f -name "*colors.template*")
+
+for template in $templates; do
+    # Erzeugt den Zielnamen (entfernt ".template" aus dem Namen)
+    target=$"{template/.template/}"
+    envsubst < "$template" > "target"
+done
+
 # 5. Signal-Reload
 killall -SIGUSR2 waybar
 hyprctl reload
