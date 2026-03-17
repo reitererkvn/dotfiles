@@ -48,7 +48,7 @@ done
 
 # 4. envsubst auf die Template anwenden
 
-templates=$(find "$HOME/.config/hypr/assets" -type f -name "*colors.template*")
+templates=$(find "$HOME/.config/hypr/assets" -name "*colors.template*")
 
 for template in $templates; do
     # Erzeugt den Zielnamen (entfernt ".template" aus dem Namen)
