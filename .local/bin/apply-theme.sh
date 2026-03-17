@@ -38,6 +38,8 @@ for var_name in $(compgen -v | grep -E '^(BACKGROUND|BORDER|TEXT|ICON)'); do
 
     # Führe die Funktion aus und exportiere die RGBA-Variable dynamisch
     export "$rgba_name"="$(hex_to_rgba "$hex_value")"
+    export "${var_name}_6"="#${hex_value:0:6}" # format: #000000
+    export "${var_name}_8"="#${hex_value}" # format: #000000FF
 done
 
 # 4. envsubst auf das Template anwenden

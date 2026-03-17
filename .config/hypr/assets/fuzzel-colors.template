@@ -1,0 +1,10 @@
+#!/bin/bash
+#
+[colors]
+# Format: RRGGBBAA
+background=$BACKGROUND0
+text=$TEXTCOLOR1
+match=$TEXTCOLOR2
+selection=$BACKGROUND1
+selection-text=$TEXTCOLOR2
+border=$BORDERACTIVE1
