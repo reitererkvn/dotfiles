@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 
 # 1. Basis-Daten laden (Source)
+#
+COLOR_FILE="$HOME/.config/uwsm/env.d/25-colors.sh"
 # Alle Variablen ($BACKGROUND0, etc.) landen jetzt im RAM
-source "$HOME/.config/uwsm/env.d/25-colors.sh"
+source "$COLOR_FILE"
 
 # 2. Verbesserte Hilfsfunktion (Akzeptiert 6- und 8-stellige Hex-Werte)
 hex_to_rgba() {
@@ -28,8 +30,10 @@ hex_to_rgba() {
 }
 
 # 3. DIE MAGISCHE SCHLEIFE (Automatischer Export)
-# Wir scannen den RAM nach Variablen, die mit BACKGROUND, BORDER, TEXT oder ICON beginnen
-for var_name in $(compgen -v | grep -E '^(BACKGROUND|BORDER|TEXT|ICON)'); do
+# 'cut' trennt am '=', 'sed' entfernt das 'export ' Präfix
+var_list=$(grep "=" "$COLOR_FILE" | sed 's/export //g' | cut -d'=' -f1)
+
+for var_name in $var_list; do
     # Hole den Hex-Wert der aktuellen Variable
     hex_value="${!var_name}"
 
