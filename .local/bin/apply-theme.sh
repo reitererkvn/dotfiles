@@ -52,8 +52,8 @@ templates=$(find "$HOME/.config/hypr/assets" -name "*colors.template*")
 
 for template in $templates; do
     # Erzeugt den Zielnamen (entfernt ".template" aus dem Namen)
-    target=$"{template/.template/}"
-    envsubst < "$template" > "target"
+    target="${template/.template/}"
+    envsubst < "$template" > "$target"
 done
 
 # 5. Signal-Reload
