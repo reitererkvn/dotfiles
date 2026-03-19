@@ -59,4 +59,5 @@ done
 # 5. Signal-Reload
 killall -SIGUSR2 waybar
 hyprctl reload
+systemctl --user restart hyprpaper.service
 killall -SIGUSR1 kitty
