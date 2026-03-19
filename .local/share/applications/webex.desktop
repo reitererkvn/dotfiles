@@ -1,0 +1,9 @@
+#!/usr/bin/env
+[Desktop Entry]
+Version=1.0
+Terminal=false
+Type=Application
+Name=Webex
+Exec=uwsm app -- google-chrome-stable --app=https://web.webex.com/
+Icon=webex
+StartupWMClass=webex
