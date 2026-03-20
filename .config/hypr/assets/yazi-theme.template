@@ -73,8 +73,8 @@ sep_outer = { open = "", close = "" }
 # : Mode {{{
 
 [mode]
-normal_main = { bg = "blue", bold = true }
-normal_alt  = { fg = "blue", bg = "gray" }
+normal_main = { bg = "$BORDERACTIVE0_6", bold = true }
+normal_alt  = { fg = "$BORDERACTIVE0_6", bg = "gray" }
 
 # Select mode
 select_main = { bg = "red", bold = true }
