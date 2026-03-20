@@ -13,3 +13,6 @@ export GDK_BACKEND="wayland,x11,*"
 export QT_QPA_PLATFORM="wayland;xcb"
 export CLUTTER_BACKEND="wayland"
 export QT_QPA_PLATFORMTHEME="qt6ct"
+
+# Proton Wayland driver (only which cahchyOS Proton)
+export PROTON_ENABLE_WAYLAND=1
