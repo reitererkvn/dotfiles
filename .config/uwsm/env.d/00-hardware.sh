@@ -13,3 +13,6 @@ export MPOS2="2560x0" # Offset Monitor 2
 # GPU settings (nvidia only)
 export LIBVA_DRIVER_NAME="nvidia"
 export NVD_BACKEND="direct"
+export XDG_SESSION_TYPE=wayland
+export __GLX_VENDOR_LIBRARY_NAME=nvidia
+export GBM_BACKEND=nvidia-drm
