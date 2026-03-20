@@ -53,8 +53,11 @@ templates=$(find "$HOME/.config/hypr/assets" -name "*colors.template*")
 for template in $templates; do
     # Erzeugt den Zielnamen (entfernt ".template" aus dem Namen)
     target="${template/.template/}"
-    envsubst < "$template" > "$target"
+    envsubst < "$HOME/.config/hypr/assets/yazi-theme.template" > "$HOME/.config/yazi/theme.toml"
 done
+
+# yazi cant source, so must recieve a direct copy to its directory
+envsubst < "$template" > "$target"
 
 # 5. Signal-Reload
 killall -SIGUSR2 waybar

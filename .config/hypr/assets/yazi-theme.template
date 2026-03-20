@@ -1,0 +1,3 @@
+[indicator]
+parent = { bg = "$TEXTCOLOR4_6", fg = "$TEXTCOLOR0_6" }
+current = { bg = "$TEXTCOLOR4_6", fg = "$TEXTCOLOR0_6" }
