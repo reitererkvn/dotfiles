@@ -3,9 +3,4 @@ on = "b"
 run = 'shell "ripdrag \"$@\" -x &" --confirm'
 desc = "Drag 'n' Drop"
 
-[[mgr.prepend_keymap]]
-on   = "y"
-run = '''
-    shell 'wl-copy < "$1"' --confirm
-'''
-desc = "Alle markierten Dateien als URI-Liste kopieren (Multi-Paste)"
+
