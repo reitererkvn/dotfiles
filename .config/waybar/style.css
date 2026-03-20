@@ -100,12 +100,19 @@ window#waybar {
 
 #temperature {
     margin: 5px 0px 0px 0px;
-    padding: 0px 10px 0px 5px;
+    padding: 0px 5px;
     color:orange;
+    background: @background;
+    border-radius: 0px;
+}
+
+#custom-nvidia {
+    margin: 5px 0px 0px 0px;
+    padding: 0px 10px 0px 5px;
+    color:lightgreen;
     background: @background;
     border-radius: 0px 30px 30px 0px;
 }
-
 /* --- Tray --- */
 #tray {
     /* Tray ebenfalls nach unten rücken */

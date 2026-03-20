@@ -1,3 +1,4 @@
+// vim: set ft=jsonc:
 // -*- mode: jsonc -*-
 {
     // "layer": "top", // Waybar at top layer
@@ -23,6 +24,7 @@
         "cpu",
         "memory",
         "temperature",
+        "custom/nvidia",
         "keyboard-state",
         "tray",
         "clock",
@@ -39,7 +41,7 @@
             "unlocked": ""
         }
     },
- 
+
     "idle_inhibitor": {
         "format": "{icon}",
         "format-icons": {
@@ -136,5 +138,12 @@
         "on-click": "activate",
         "all-outputs": true,
         "sort-by-number": true
+    },
+    "custom/nvidia": {
+        "exec": "nvidia-smi --query-gpu=utilization.gpu,temperature.gpu,memory.used,memory.total --format=csv,noheader,nounits | awk -F', ' '{printf \"{\\\"text\\\": \\\"%s%% %s°C | %d%%\\\", \\\"tooltip\\\": \\\"VRAM: %s MiB / %s MiB\\\"}\\n\", $1, $2, ($3/$4)*100, $3, $4}'",
+        "return-type": "json",
+        "interval": 2,
+        "format": "{} 󰢮 ",
+        "tooltip": true
     }
 }
