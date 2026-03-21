@@ -62,5 +62,5 @@ envsubst < "$template" > "$target"
 # 5. Signal-Reload
 killall -SIGUSR2 waybar
 hyprctl reload
-./hypr-sun.sh
+$HOME/.local/bin/hypr-sun.sh
 killall -SIGUSR1 kitty
