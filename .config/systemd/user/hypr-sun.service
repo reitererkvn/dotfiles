@@ -1,0 +1,11 @@
+[Unit]
+Description=Update Hyprpaper Wallpaper based on Sun Position
+After=graphical-session.target
+
+[Service]
+Type=oneshot
+# Nutze den absoluten Pfad zu deinem Script
+ExecStart=%h/.local/bin/hypr-sun.sh
+
+[Install]
+WantedBy=graphical-session.target
