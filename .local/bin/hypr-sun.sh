@@ -20,14 +20,16 @@ else
         # Hier entscheiden wir anhand der Uhrzeit: Morgen oder Abend?
         HOUR=$(date +%H)
         if [ $HOUR -lt 12 ]; then
-            WALLPAPER="$WALLPAPER1" # SUNRISE / MORNING
+            WALLPAPER="$WALLPAPER2" # SUNRISE / MORNING
         else
-            WALLPAPER="$WALLPAPER2" # SUNSET / EVENING
+            WALLPAPER="$WALLPAPER1" # SUNSET / EVENING
         fi
     else
         WALLPAPER="$WALLPAPER3" # NIGHT
     fi
 fi
+
+ln -sf "$WALLPAPER" $HOME/.config/hypr/WALLPAPER
 
 # Update via hyprctl (hyprpaper muss laufen)
 #hyprctl hyprpaper preload "$WALLPAPER"
