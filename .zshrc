@@ -12,10 +12,10 @@ setopt correct
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 	ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 	ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
-source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/share/fzf/key-bindings.zsh
 source /usr/share/fzf/completion.zsh
 eval "$(zoxide init zsh)"
+source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 #
 # ############
 # customization
@@ -29,9 +29,6 @@ set_running_info() {
   # \e]2; = Startsequenz für Titel, \a = Endsequenz
   print -Pn "\e]2;${user_host} 󰉋  %~\a"
 }
-
-# In die Zsh-Hooks einhängen
-add-zsh-hook precmd set_running_info
 
 # In die Zsh-Hooks einhängen
 add-zsh-hook precmd set_running_info

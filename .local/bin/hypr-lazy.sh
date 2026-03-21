@@ -10,11 +10,11 @@ declare -A LAZY_MAP
 # --- DEINE PLUGINS HIER EINTRAGEN ---
 # Syntax: LAZY_MAP["<Socket-Signal-Präfix>"]="[workspace <ziel> silent] <befehl>"
 
-# Plugin A: htop auf dem Special-Monitor
-LAZY_MAP["createworkspace>>special:monitor"]="[workspace special:monitor silent] uwsm app -- kitty --class htop-sys -e htop"
+# Plugin A: htop & nvtop auf dem Special-Monitor
+LAZY_MAP["createworkspace>>special:monitor"]="sh -c 'hyprctl dispatch exec \"[workspace special:monitor silent] uwsm app -- kitty -e htop\" && hyprctl dispatch exec \"[workspace special:monitor silent] uwsm app -- kitty -e nvtop\"'"
 
 # Plugin B: Discord auf Workspace 4 (Beispiel für einen normalen Workspace)
-#LAZY_MAP["workspace>>4"]="[workspace 4 silent] uwsm app -- discord"
+#LAZY_MAP["workspace>>4"]="[workspace 4 silent] uwsm app --Vesktop"
 
 # Plugin C: Spotify auf Workspace 5 (Beispiel)
 #LAZY_MAP["workspace>>5"]="[workspace 5 silent] uwsm app -- spotify"
