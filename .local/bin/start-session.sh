@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Dynamische Pfadauflösung im Arbeitsspeicher
-SYNC_SCRIPT="$HOME/dotfiles-sync.sh"
+SYNC_SCRIPT="$HOME/.local/bin/dotfiles-sync.sh"
 
 # Bedingte I/O-Ausführung: Nur synchronisieren, wenn das Skript physisch existiert
 if [ -f "$SYNC_SCRIPT" ]; then
