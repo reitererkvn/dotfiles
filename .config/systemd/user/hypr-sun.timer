@@ -2,9 +2,8 @@
 Description=Timer for Hyprpaper Sun Sync
 
 [Timer]
-# Läuft 1 Minute nach dem Booten das erste Mal
-OnBootSec=1min
-# Danach alle 15 Minuten (reicht völlig aus für den Sonnenverlauf)
+
+# Läuft alle 15 Minuten (reicht völlig aus für den Sonnenverlauf)
 OnUnitActiveSec=15min
 
 [Install]
