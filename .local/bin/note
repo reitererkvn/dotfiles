@@ -7,17 +7,27 @@ mkdir -p "$NOTES_DIR"
 case "$1" in
     -l|--list|list)
         # Option: Liste alle Notizen chronologisch (neueste oben)
-
-	ls -t "$NOTES_DIR" 
+        ls -t "$NOTES_DIR"
         ;;
-    
+
     -ly|--listyazi|listy)
-	# Option: Files in filemanager anzeigen
+        # Option: Files in filemanager anzeigen
         $FM "$NOTES_DIR"
-       	;;
+        ;;
 
     *)
         # Standard: Öffne die heutige Notiz
-        $EDITOR "$NOTES_DIR/$(date +%Y-%m-%d).md"
+        TODAY=$(date +%Y-%m-%d)
+        NOTE_FILE="$NOTES_DIR/$TODAY.md"
+
+        # Prüfen, ob die Datei noch NICHT existiert (-f testet auf File)
+        if [ ! -f "$NOTE_FILE" ]; then
+            # Header und eine Leerzeile injizieren
+            echo "# Notiz $TODAY" > "$NOTE_FILE"
+            echo "" >> "$NOTE_FILE"
+        fi
+
+        # Editor aufrufen und direkt ans Ende der Datei springen (+)
+        $EDITOR + "$NOTE_FILE"
         ;;
 esac
