@@ -47,3 +47,5 @@ bindkey  "^[[1;5D" backward-word          # Strg + Pfeil Links
 #
 # alias
 [[ -f "$HOME/.alias" ]] && source "$HOME/.alias"
+# test
+export XDG_RUNTIME_DIR=/run/user/$(id -u)

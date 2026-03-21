@@ -4,7 +4,6 @@
 #
 # set if you want root to use your envs
 alias sudo='sudo -E'
-
 #
 # system update (rank mirrors + pacman -Syyu + yay -Syyu + dependancy cleanup)
 alias sysupdate='/usr/local/bin/system-update.sh'
@@ -49,3 +48,12 @@ alias note='~/.local/bin/note'
 #
 # modified Teamviewer app link in dotfiles ensures teamviewerd will be started if you have disabled its autostart
 alias teamviewe="teamviewer && disown"
+#
+# open yazi in CWD with y, quit with q to stay and Q to leave CWD
+function y() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+	command yazi "$@" --cwd-file="$tmp"
+	IFS= read -r -d '' cwd < "$tmp"
+	[ "$cwd" != "$PWD" ] && [ -d "$cwd" ] && builtin cd -- "$cwd"
+	rm -f -- "$tmp"
+}
