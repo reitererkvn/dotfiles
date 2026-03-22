@@ -1,0 +1,15 @@
+[Unit]
+Description=Hyprland Lazy Load Socket Listener
+# Starte erst, wenn die grafische Session bereit ist
+After=graphical-session.target
+
+[Service]
+Type=simple
+# Hier kommt der absolute Pfad zu deinem Script rein
+ExecStart=%h/.local/bin/hypr-lazy.sh
+# Sicherheitsnetz: Wenn das Script abstürzt, startet systemd es nach 2 Sekunden neu
+Restart=on-failure
+RestartSec=2
+
+[Install]
+WantedBy=graphical-session.target
