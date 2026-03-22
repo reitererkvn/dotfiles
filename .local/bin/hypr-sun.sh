@@ -11,8 +11,11 @@ SUN_STATUS=$(sunwait poll $LAT $LON)
 # Schritt 2: Ist es zumindest DÄMMERIG (Civil)?
 CIVIL_STATUS=$(sunwait poll civil $LAT $LON)
 HOUR=$(date +%H)
+SWITCHING_TIMES=$(sunwait list $LAT $LON && sunwait list civil $LAT $LON)
 
-echo "Aktuelles Event: $EVENT (Stunde: $HOUR)"
+EVENT="Sun Status: $SUN_STATUS, Civil Status: $CIVIL_STATUS (normal/civil, Day/Night $SWITCHING_TIMES)"
+
+echo "Aktuelles Event: $EVENT"
 
 # Schritt 3: Die Logik-Matrix
 if [ "$SUN_STATUS" = "DAY" ]; then
@@ -20,12 +23,21 @@ if [ "$SUN_STATUS" = "DAY" ]; then
 elif [ "$CIVIL_STATUS" = "DAY" ]; then
     # Wenn hier DAY ist, aber oben NIGHT war -> Dämmerung!
     if [ "$HOUR" -lt 12 ]; then
-        WALLPAPER="$WALLPAPER2" # Morgen
+        WALLPAPER="$WALLPAPER1" # Morgen
     else
-        WALLPAPER="$WALLPAPER1" # Abend
+        WALLPAPER="$WALLPAPER2" # Abend
     fi
 else
     WALLPAPER="$WALLPAPER3" # Tiefe Nacht
+fi
+
+# checks if the new Wallpaper matches the old WALLPAPER symlink, if yes aborts the switch to avoid flickering
+
+OLD_LINK="$HOME/.config/hypr/WALLPAPER"
+
+if [[ -L "$OLD_LINK" && "$(readlink "$OLD_LINK")" == "$WALLPAPER" ]]; then
+    echo "[Info] Wallpaper already set correctly ($WALLPAPER) --> skipping..."
+    exit 0
 fi
 
 # 4. IPC-Befehle an hyprpaper (KEINE Kommentare mehr!)

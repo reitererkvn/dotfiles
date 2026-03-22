@@ -3,6 +3,13 @@
 # 1. Basis-Daten laden (Source)
 #
 COLOR_FILE="$HOME/.config/uwsm/env.d/25-colors.sh"
+
+# I/O-Sicherheitscheck (Fail-Fast)
+if [[ ! -f "$COLOR_FILE" ]]; then
+    echo "[FEHLER] Color-File nicht gefunden: $COLOR_FILE" >&2
+    exit 1
+fi
+
 # Alle Variablen ($BACKGROUND0, etc.) landen jetzt im RAM
 source "$COLOR_FILE"
 
@@ -48,16 +55,13 @@ done
 
 # 4. envsubst auf die Template anwenden
 
-templates=$(find "$HOME/.config/hypr/assets" -name "*colors.template*")
-
-for template in $templates; do
-    # Erzeugt den Zielnamen (entfernt ".template" aus dem Namen)
+while IFS= read -r template; do
     target="${template/.template/}"
-    envsubst < "$HOME/.config/hypr/assets/yazi-theme.template" > "$HOME/.config/yazi/theme.toml"
-done
+    envsubst < "$template" > "$target"
+done < <(find "$HOME/.config/hypr/assets" -name "*colors.template*")
 
 # yazi cant source, so must recieve a direct copy to its directory
-envsubst < "$template" > "$target"
+envsubst < "$HOME/.config/hypr/assets/yazi-theme.template" > "$HOME/.config/yazi/theme.toml"
 
 # 5. Signal-Reload
 killall -SIGUSR2 waybar
