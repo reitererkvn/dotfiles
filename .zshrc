@@ -20,19 +20,10 @@ source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zs
 # ############
 # customization
 # #############
-# Funktion zur Aktualisierung der oberen Statuszeile
-set_running_info() {
-  # Ermittelt User und Hostname
-  local user_host=" ${USER}   ${HOST}"
-
-  # Setzt den Fenster-Titel (wird von Kitty oben angezeigt)
-  # \e]2; = Startsequenz für Titel, \a = Endsequenz
-  print -Pn "\e]2;${user_host} 󰉋  %~\a"
+#
+precmd() {
+  print -Pn "\e]2;%~\a"
 }
-
-# In die Zsh-Hooks einhängen
-add-zsh-hook precmd set_running_info
-
 # Dein gewünschter minimaler Prompt
 PROMPT='󰉋 %~ %% '
 #
@@ -47,5 +38,4 @@ bindkey  "^[[1;5D" backward-word          # Strg + Pfeil Links
 #
 # alias
 [[ -f "$HOME/.alias" ]] && source "$HOME/.alias"
-# test
-export XDG_RUNTIME_DIR=/run/user/$(id -u)
+

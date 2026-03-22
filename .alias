@@ -50,7 +50,7 @@ alias note='~/.local/bin/note'
 alias teamviewe="teamviewer && disown"
 #
 # open yazi in CWD with y, quit with q to stay and Q to leave CWD
-function y() {
+function yazi() {
 	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
 	command yazi "$@" --cwd-file="$tmp"
 	IFS= read -r -d '' cwd < "$tmp"
