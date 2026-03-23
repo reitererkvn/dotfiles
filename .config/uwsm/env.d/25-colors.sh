@@ -12,3 +12,8 @@ export TEXTCOLOR2=62CDFFFF # light blue, vibrant
 export TEXTCOLOR3=7D7D7DFF # light grey
 export TEXTCOLOR4=0071A6FF # dark blue
 export ICONCOLOR=FFFFFFFF
+#
+# notification / status based colors
+export COL_NOT_LOW=0071A6FF # dark blue
+export COL_NOT_NORMAL=FFA500FF # orange
+export COL_NOT_CRITICAL=FF0000FF # red

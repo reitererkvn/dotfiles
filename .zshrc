@@ -21,9 +21,18 @@ source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zs
 # customization
 # #############
 #
+# Signal-Hooks für das Kitty Python-Interface
 precmd() {
-  print -Pn "\e]2;%~\a"
+    # Sendet: "idle:::[Aktueller Pfad]"
+    print -Pn "\e]2;idle:::%~\a"
 }
+
+preexec() {
+    # $1 enthält den rohen Ausführungsbefehl (z.B. "sudo pacman -Syu")
+    # Sendet: "[Befehl]:::[Aktueller Pfad]"
+    print -Pn "\e]2;$1:::%~\a"
+}
+#
 # Dein gewünschter minimaler Prompt
 PROMPT='󰉋 %~ %% '
 #

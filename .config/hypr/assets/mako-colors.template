@@ -3,8 +3,8 @@
 background-color=$BACKGROUND0_6
 progress-color=$BORDERACTIVE1_6
 [urgency=low]
-border-color=$BORDERACTIVE0_6
+border-color=$COL_NOT_LOW_6
 [urgency=normal]
-border-color=#ffa500
+border-color=$COL_NOT_NORMAL_6
 [urgency=high]
-border-color=#ff0000
+border-color=$COL_NOT_CRITICAL_6
