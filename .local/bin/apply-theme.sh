@@ -54,11 +54,19 @@ for var_name in $var_list; do
     export "${var_name}_8"="#${hex_value}" # format: #000000FF
 done
 
-# 4. envsubst auf die Template anwenden
+# 4. envsubst
+# Liste vorbereiten, damit nur die Werte ersetzt werden, die auch tatsächlich existieren
 
+envsubst_list=""
+for var in $var_list; do
+    envsubst_list+=" \$$var \$${var}_RGBA \$${var}_6 \$${var}_6x \$${var}_8"
+done
+
+# envsubst auf die Templates anwenden
 while IFS= read -r template; do
     target="${template/.template/}"
-    envsubst < "$template" > "$target"
+    # Nur die Variablen aus unserer Liste ersetzen, Hyprland-Variablen bleiben unberührt
+    envsubst "$envsubst_list" < "$template" > "$target"
 done < <(find "$HOME/.config/hypr/assets" -name "*colors.template*")
 
 # yazi cant source, so must recieve a direct copy to its directory

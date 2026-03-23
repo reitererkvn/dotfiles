@@ -1,21 +1,22 @@
 import os
+import sys
 import socket
+from pathlib import Path
 from kitty.fast_data_types import Screen
 from kitty.tab_bar import DrawData, ExtraData, TabBarData, as_rgb
+
+assets_path = str(Path.home() / ".config/hypr/assets")
+if assets_path not in sys.path:
+    sys.path.append(assets_path)
+import colors
 
 # System-Envs
 USER = os.getenv("USER", "kevin")
 HOSTNAME = socket.gethostname()
 HOME_DIR = os.path.expanduser("~")
 
-TEXTCOLOR1 = os.getenv("TEXTCOLOR1", "FFFFFF")[:6]
-TEXTCOLOR2 = os.getenv("TEXTCOLOR2", "FFFFFF")[:6]
-TEXTCOLOR3 = os.getenv("TEXTCOLOR3", "FFFFFF")[:6]
-BACKGROUND0 = os.getenv("BACKGROUND0", "FFFFFF")[:6]
-
 # Definition der kritischen Prozesse (Naturwissenschaftliche Signalisierung)
 CRITICAL_PROCS = ["ssh", "sudo", "su", "root"]
-WARNING_COLOR = os.getenv("COL_NOT_CRITICAL", "FF0000")[:6] # Signal-Rot für den Alert-State
 
 def draw_tab(
     draw_data: DrawData,
@@ -49,8 +50,8 @@ def draw_tab(
     # 2. Statischer Global-Prompt (Keine Tab-Daten mehr hier!)
     if index == 1:
         screen.cursor.bold = True
-        screen.cursor.fg = as_rgb(int(TEXTCOLOR2, 16))
-        screen.cursor.bg = as_rgb(int(BACKGROUND0, 16))
+        screen.cursor.fg = as_rgb(int(colors.TEXTCOLOR2, 16))
+        screen.cursor.bg = as_rgb(int(colors.BACKGROUND0, 16))
 
         # Pfad entfernt, um die Scope-Bindung an Tab 1 zu lösen
         prompt = f"  {USER}  {HOSTNAME} │"
@@ -63,19 +64,19 @@ def draw_tab(
     # Anti-Flicker State-Machine
     if is_critical:
         # ALERT: Zeigt den gefährlichen Prozessnamen in Rot
-        screen.cursor.fg = as_rgb(int(WARNING_COLOR, 16))
+        screen.cursor.fg = as_rgb(int(colors.WARNING_COLOR, 16))
         display_title = f"   {active_process} "
     else:
         # NORMAL: Zeigt IMMER den aktuellen Pfad des Tabs
         # Befehle im Millisekundenbereich werden gerendert, stören aber die Pfadanzeige nicht
-        screen.cursor.fg = as_rgb(int(TEXTCOLOR2, 16)) if tab.is_active else as_rgb(int(TEXTCOLOR3, 16))
+        screen.cursor.fg = as_rgb(int(colors.TEXTCOLOR2, 16)) if tab.is_active else as_rgb(int(colors.TEXTCOLOR3, 16))
         display_title = f"   {path} "
 
     screen.draw(display_title)
     screen.cursor.bold = False
 
     # 4. Trennstrich
-    screen.cursor.fg = as_rgb(int(TEXTCOLOR3, 16))
+    screen.cursor.fg = as_rgb(int(colors.TEXTCOLOR3, 16))
     if not is_last:
         screen.draw(" | ")
     else:
