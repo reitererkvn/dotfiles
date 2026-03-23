@@ -50,6 +50,7 @@ for var_name in $var_list; do
     # Führe die Funktion aus und exportiere die RGBA-Variable dynamisch
     export "$rgba_name"="$(hex_to_rgba "$hex_value")"
     export "${var_name}_6"="#${hex_value:0:6}" # format: #000000
+    export "${var_name}_6x"="${hex_value:0:6}" # format: 000000
     export "${var_name}_8"="#${hex_value}" # format: #000000FF
 done
 
@@ -67,4 +68,5 @@ envsubst < "$HOME/.config/hypr/assets/yazi-theme.template" > "$HOME/.config/yazi
 killall -SIGUSR2 waybar
 hyprctl reload
 $HOME/.local/bin/hypr-sun.sh
+sudo g815-led -p $HOME/.config/hypr/assets/g815-colors
 killall -SIGUSR1 kitty

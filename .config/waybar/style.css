@@ -69,9 +69,34 @@ window#waybar {
     background-color: @background;
 
 }
+/* --- custom: g903-battery --- */
+#custom-g903-battery {
+    color: @textcolor1; /* Deine Standard-Textfarbe (z.B. TEXTCOLOR2) */
+    padding: 0 10px;
+}
 
+/* Status-Overrides */
+#custom-g903-battery.charging {
+    color: lightgreen; /* Grün beim Laden */
+}
+
+#custom-g903-battery.warning {
+    color: yellow; /* Gelb unter 45% */
+}
+
+/* Pulsierende Warnung bei kritischem Akkustand */
+@keyframes blink {
+    0% { color: red; }
+    50% { color: #FFFFFF; }
+    100% { color: red; }
+}
+
+#custom-g903-battery.critical {
+    color: red; /* Signal-Rot */
+    animation: blink 2s ease-in-out infinite;
+}
 /* --- Hardware Gruppe (CPU, Memory, etc.) --- */
-#keyboard-state, #clock, #pulseaudio, #network, #battery, #custom-power, #backlight, #idle_inhibitor {
+#keyboard-state, #clock, #pulseaudio, #network, #battery, #custom-power, #backlight, #idle_inhibitor, #custom-g903-battery {
     margin: 5px 5px 0px 5px;
     padding: 0px 10px;
     border-radius: 30px;
@@ -121,3 +146,4 @@ window#waybar {
     margin-top: 5px;
     padding: 0px 10px;
 }
+

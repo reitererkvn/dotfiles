@@ -26,6 +26,7 @@
         "temperature",
         "custom/nvidia",
         "keyboard-state",
+        "custom/g903-battery",
         "tray",
         "clock",
         "custom/power"
@@ -33,6 +34,7 @@
     // Modules configuration
     "include": [
         "~/.config/waybar/modules/basic.jsonc",
-        "~/.config/waybar/modules/nvidia.jsonc"
+        "~/.config/waybar/modules/nvidia.jsonc",
+        "~/.config/waybar/modules/g903-battery.jsonc"
     ]
 }

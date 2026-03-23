@@ -1,0 +1,29 @@
+# 1. Globale Zonen (Basis-Matrix)
+g logo $TEXTCOLOR2_6x
+i $TEXTCOLOR2_6x
+g gkeys $TEXTCOLOR2_6x
+g fkeys $TEXTCOLOR2_6x
+g modifiers $TEXTCOLOR2_6x
+g multimedia $TEXTCOLOR2_6x
+g arrows $TEXTCOLOR2_6x
+g numeric $TEXTCOLOR2_6x
+g functions $TEXTCOLOR2_6x
+g keys $TEXTCOLOR2_6x
+
+# 2. ISO-DE (QWERTZ) Hardware-Overrides
+k semicolon $TEXTCOLOR2_6x     # ö
+k quote $TEXTCOLOR2_6x         # ä
+k bracketleft $TEXTCOLOR2_6x   # ü
+k backslash $TEXTCOLOR2_6x     # #
+k tilde $TEXTCOLOR2_6x         # ^
+k comma $TEXTCOLOR2_6x         # ,
+k period $TEXTCOLOR2_6x        # .
+k slash $TEXTCOLOR2_6x         # -
+k bracketright $TEXTCOLOR2_6x  # +
+k intl_backslash $TEXTCOLOR2_6x # <
+k minus $TEXTCOLOR2_6x         # ß
+k equal $TEXTCOLOR2_6x         # ´
+k capslock $TEXTCOLOR2_6x      # Capslock (Basis-Zustand)
+
+# 3. Speicher-Ausführung
+c

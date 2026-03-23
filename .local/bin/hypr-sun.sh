@@ -31,12 +31,13 @@ else
     WALLPAPER="$WALLPAPER3" # Tiefe Nacht
 fi
 
-# checks if the new Wallpaper matches the old WALLPAPER symlink, if yes aborts the switch to avoid flickering
+# checks if active Wallpaper and Symlink for hypridle are set correctly, if yes aborts the switch to avoid flickering
 
-OLD_LINK="$HOME/.config/hypr/WALLPAPER"
+ACTIVE_WALLPAPER=$(hyprctl hyprpaper listactive | grep "$MONITOR1" | awk '{print $NF}')
+OLD_LINK="$HOME/.config/hypr/assets/WALLPAPER"
 
-if [[ -L "$OLD_LINK" && "$(readlink "$OLD_LINK")" == "$WALLPAPER" ]]; then
-    echo "[Info] Wallpaper already set correctly ($WALLPAPER) --> skipping..."
+if [[ "$(readlink "$OLD_LINK")" == "$WALLPAPER" && "$ACTIVE_WALLPAPER" == "$WALLPAPER" ]]; then
+    echo "[Info] Wallpaper already active and symlink correct ($WALLPAPER) --> skipping..."
     exit 0
 fi
 
@@ -49,7 +50,7 @@ if [[ -f "$WALLPAPER" ]]; then
     hyprctl hyprpaper wallpaper "$MONITOR2,$WALLPAPER,cover"
 
     # Symlink für andere Apps aktualisieren
-    ln -sf "$WALLPAPER" "$HOME/.config/hypr/WALLPAPER"
+    ln -sf "$WALLPAPER" "$HOME/.config/hypr/assets/WALLPAPER"
 
 else
     echo "FEHLER: Datei $WALLPAPER nicht gefunden!"

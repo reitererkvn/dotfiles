@@ -1,0 +1,8 @@
+{
+    "custom/g903-battery": {
+        "exec": "~/.local/bin/g903-battery.sh",
+        "return-type": "json",
+        "format": "{}",
+        "tooltip": true
+    }
+}

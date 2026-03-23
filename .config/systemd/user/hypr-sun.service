@@ -1,21 +1,22 @@
 [Unit]
 Description=Update Hyprpaper Wallpaper based on Sun Position
-After=hyprpaper.service
-Requires=hyprpaper.service
+# Wir entfernen den harten Ordering-Cycle
+After=graphical-session.target
+# Erlaubt dem System 5 Versuche innerhalb von 60s
+StartLimitIntervalSec=60s
+StartLimitBurst=5
 
 [Service]
 Type=oneshot
-# Nutze den absoluten Pfad zu deinem Script
+# DER FIX: Wir zwingen systemd zu einer Pause VOR dem Skriptstart,
+# ohne das Skript selbst zu verändern.
+ExecStartPre=/usr/bin/sleep 3
 ExecStart=%h/.local/bin/hypr-sun.sh
 
-# --- ERROR HANDLING ---
-# Startet den Service neu, wenn das Script mit einem Fehler (Status 1) beendet wird
+# Error-Handling wie gehabt, aber mit Puffer
 Restart=on-failure
-# Warte 1 Sekunde vor dem nächsten Versuch, damit die 1070ti Zeit hat
 RestartSec=1s
-# Versuche es maximal 5-mal, danach gib auf (verhindert Endlosschleifen)
-StartLimitIntervalSec=30s
-StartLimitBurst=5
 
 [Install]
-WantedBy=hyprpaper.service
+# Wichtig: Bindung an das User-Target für stabilere Umgebung
+WantedBy=default.target

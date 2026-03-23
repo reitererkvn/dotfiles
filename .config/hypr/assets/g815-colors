@@ -1,0 +1,29 @@
+# 1. Globale Zonen (Basis-Matrix)
+logo 62CDFFFF
+i 62CDFFFF
+g gkeys 62CDFFFF
+g fkeys 62CDFFFF
+g modifiers 62CDFFFF
+g multimedia 62CDFFFF
+g arrows 62CDFFFF
+g numeric 62CDFFFF
+g functions 62CDFFFF
+g keys 62CDFFFF
+
+# 2. ISO-DE (QWERTZ) Hardware-Overrides
+k semicolon 62CDFFFF     # ö
+k quote 62CDFFFF         # ä
+k bracketleft 62CDFFFF   # ü
+k backslash 62CDFFFF     # #
+k tilde 62CDFFFF         # ^
+k comma 62CDFFFF         # ,
+k period 62CDFFFF        # .
+k slash 62CDFFFF         # -
+k bracketright 62CDFFFF  # +
+k intl_backslash 62CDFFFF # <
+k minus 62CDFFFF         # ß
+k equal 62CDFFFF         # ´
+k capslock 62CDFFFF      # Capslock (Basis-Zustand)
+
+# 3. Speicher-Ausführung
+c
