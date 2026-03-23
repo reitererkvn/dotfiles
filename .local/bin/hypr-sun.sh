@@ -2,6 +2,7 @@
 # Standort-Koordinaten: Wien
 LAT="48.20N"
 LON="16.30E"
+SYMLINK="$HOME/.config/hypr/assets/images/WALLPAPER"
 
 source "$HOME/.config/uwsm/env.d/00-hardware.sh"
 source "$HOME/.config/uwsm/env.d/20-theme.sh"
@@ -33,10 +34,9 @@ fi
 
 # checks if active Wallpaper and Symlink for hypridle are set correctly, if yes aborts the switch to avoid flickering
 
-ACTIVE_WALLPAPER=$(hyprctl hyprpaper listactive | grep "$MONITOR1" | awk '{print $NF}')
-OLD_LINK="$HOME/.config/hypr/assets/WALLPAPER"
+ACTIVE_WALLPAPER=$(hyprctl hyprpaper listactive | grep "$MONITOR1" | cut -d: -f2- | xargs)
 
-if [[ "$(readlink "$OLD_LINK")" == "$WALLPAPER" && "$ACTIVE_WALLPAPER" == "$WALLPAPER" ]]; then
+if [[ "$(readlink -f "$SYMLINK")" == "$WALLPAPER" && "$ACTIVE_WALLPAPER" == "$WALLPAPER" ]]; then
     echo "[Info] Wallpaper already active and symlink correct ($WALLPAPER) --> skipping..."
     exit 0
 fi
@@ -50,7 +50,7 @@ if [[ -f "$WALLPAPER" ]]; then
     hyprctl hyprpaper wallpaper "$MONITOR2,$WALLPAPER,cover"
 
     # Symlink für andere Apps aktualisieren
-    ln -sf "$WALLPAPER" "$HOME/.config/hypr/assets/WALLPAPER"
+    ln -sf "$WALLPAPER" "$SYMLINK"
 
 else
     echo "FEHLER: Datei $WALLPAPER nicht gefunden!"

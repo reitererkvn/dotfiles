@@ -12,7 +12,7 @@ export QT_WAYLAND_DISABLE_WINDOWDECORATION=1
 export QT_AUTO_SCREEN_SCALE_FACTOR=1
 
 # Wallpapers
-export WALLPAPER0="$HOME/.config/hypr/assets/wallpapers/Forest1.png" # day
-export WALLPAPER1="$HOME/.config/hypr/assets/wallpapers/Forest3.png" # sunrise
-export WALLPAPER2="$HOME/.config/hypr/assets/wallpapers/Forest2.png" # sunset
-export WALLPAPER3="$HOME/.config/hypr/assets/wallpapers/Forest4.png" # night
+export WALLPAPER0="$HOME/Bilder/wallpapers/Archive_desktop/Forest 1.png" # day
+export WALLPAPER1="$HOME/Bilder/wallpapers/Archive_desktop/Forest 3.png" # sunrise
+export WALLPAPER2="$HOME/Bilder/wallpapers/Archive_desktop/Forest 2.png" # sunset
+export WALLPAPER3="$HOME/Bilder/wallpapers/Archive_desktop/Forest 4.png" # night
