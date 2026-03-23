@@ -35,7 +35,7 @@ print_battery() {
 
     # 3. Cold-Boot Fallback (Wenn der Rechner startet und die Maus wirklich aus ist)
     if [ "$CACHE_CAP" = "0" ]; then
-        printf '{"text": "󰂲 Offline", "tooltip": "Maus nicht verbunden", "class": "disconnected"}\n'
+        printf '{"text": "Offline 󰂲", "tooltip": "Maus nicht verbunden", "class": "disconnected"}\n'
         return
     fi
 
@@ -62,7 +62,7 @@ print_battery() {
     fi
 
     # Deterministischer Output
-    printf '{"text": "%s %s%%", "tooltip": "%s", "class": "%s"}\n' "$ICON" "$CACHE_CAP" "$TOOLTIP" "$CLASS"
+    printf '{"text": "%s%% %s", "tooltip": "%s", "class": "%s"}\n' "$CACHE_CAP" "$ICON" "$TOOLTIP" "$CLASS"
 }
 
 # Initialer Render-Vorgang
