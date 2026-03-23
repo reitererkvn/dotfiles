@@ -3,4 +3,7 @@ on = "b"
 run = 'shell "ripdrag \"$@\" -x &" --confirm'
 desc = "Drag 'n' Drop"
 
-
+[[mgr.prepend_keymap]]
+on  = "y"
+run = [ 'shell -- for path in %s; do echo "file://$path"; done | wl-copy -t text/uri-list', "yank" ]
+desc = "Yank files internally and copy to Wayland clipboard as URI"
