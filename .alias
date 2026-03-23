@@ -3,7 +3,7 @@
 # #####
 #
 # set if you want root to use your envs
-alias sudo='sudo -E'
+#alias sudo='sudo -E'
 #
 # system update (rank mirrors + pacman -Syyu + yay -Syyu + dependancy cleanup)
 alias sysupdate='/usr/local/bin/system-update.sh'

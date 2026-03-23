@@ -100,6 +100,19 @@
             "hibernate": "systemctl hibernate"
         }
     },
+    "hyprland/window": {
+        "format": "{title}",
+        "rewrite": {
+            // 1. Idle (Exakter Match, blockiert alles andere)
+            "^idle:::(.*)": "  $1",
+
+            // 2. Kritisch (C++ Safe Regex: Sucht nach einem der Begriffe links vom :::)
+            "^(.*sudo.*|.*root.*|.*su.*|.*ssh.*|.*sysupdate.*):::(.*)": "  $1",
+
+            // 3. Normal (Alle gefährlichen Begriffe sind explizit durch ?! ausgeschlossen)
+            "^(?!idle)(?!.*sudo)(?!.*root)(?!.*su)(?!.*ssh)(?!.*sysupdate)([^:]+):::(.*)": "  $1    $2"
+        }
+    },
     "hyprland/workspaces": {
         "format": "{name}",
         "on-click": "activate",

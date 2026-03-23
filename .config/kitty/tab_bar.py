@@ -47,14 +47,26 @@ def draw_tab(
 
     is_critical = any(proc in active_process for proc in CRITICAL_PROCS)
 
-    # 2. Statischer Global-Prompt (Keine Tab-Daten mehr hier!)
+    # 2. Statischer Global-Prompt
     if index == 1:
-        screen.cursor.bold = True
-        screen.cursor.fg = as_rgb(int(colors.TEXTCOLOR2, 16))
-        screen.cursor.bg = as_rgb(int(colors.BACKGROUND0, 16))
+        # Heuristik für dynamische User-Erkennung
+        current_user = f"{USER}" # Fallback (kevin)
 
-        # Pfad entfernt, um die Scope-Bindung an Tab 1 zu lösen
-        prompt = f"  {USER}  {HOSTNAME} │"
+        # Fall 1: Shell sendet explizit user@host
+        if "@" in active_process:
+            current_user = active_process.split("@")[0]
+        # Fall 2: Wenn wir im absoluten root-Verzeichnis sind
+        elif path.startswith("/root") or path == "/root":
+            current_user = "root"
+        # Fall 3: Der Prozess ist eine direkte Rechte-Eskalation
+        elif active_process.startswith("su ") or active_process == "su":
+            current_user = "root"
+
+        screen.cursor.bold = True
+        screen.cursor.fg = as_rgb(int(colors.TEXTCOLOR2[:6], 16))
+        screen.cursor.bg = as_rgb(int(colors.BACKGROUND0[:6], 16))
+
+        prompt = f"  {current_user}  {HOSTNAME} │"
         screen.draw(prompt)
         screen.cursor.bold = False
 
@@ -66,6 +78,11 @@ def draw_tab(
         # ALERT: Zeigt den gefährlichen Prozessnamen in Rot
         screen.cursor.fg = as_rgb(int(colors.WARNING_COLOR, 16))
         display_title = f"   {active_process} "
+    elif active_process != "idle":
+        # NEU: Normale laufende Prozesse (zeigt Befehl + Pfad)
+        color_active = colors.TEXTCOLOR2[:6] if tab.is_active else colors.TEXTCOLOR3[:6]
+        screen.cursor.fg = as_rgb(int(color_active, 16))
+        display_title = f"   {active_process} "
     else:
         # NORMAL: Zeigt IMMER den aktuellen Pfad des Tabs
         # Befehle im Millisekundenbereich werden gerendert, stören aber die Pfadanzeige nicht

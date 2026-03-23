@@ -95,6 +95,7 @@ window#waybar {
     color: red; /* Signal-Rot */
     animation: blink 2s ease-in-out infinite;
 }
+
 /* --- Hardware Gruppe (CPU, Memory, etc.) --- */
 #keyboard-state, #clock, #pulseaudio, #network, #battery, #custom-power, #backlight, #idle_inhibitor, #custom-g903-battery {
     margin: 5px 5px 0px 5px;
