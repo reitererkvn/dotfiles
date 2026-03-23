@@ -1,0 +1,12 @@
+[Unit]
+Description=Applies theme on Logitech G815-LED
+# Wir warten, bis die User-Grafik-Session bereit ist
+After=graphical-session.target
+
+[Service]
+Type=oneshot
+# %h funktioniert hier perfekt, da es ein User-Service ist!
+ExecStart=/usr/bin/g815-led -p %h/.config/hypr/assets/g815-colors
+
+[Install]
+WantedBy=default.target

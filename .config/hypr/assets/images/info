@@ -1,1 +1,2 @@
-# conains symlinks for heavy assets such as wallpapers etc.
+# conainer for symlinks of heavy assets such as wallpapers etc.
+# use symlinking to this dir to ensure all services are using the same physical assets eg. Wallpapers are defined as envs, physically are saved in "~/Bilder/wallpapers/.." and referenced, a symlink to the active wallpapers is placed in this directory (not in .dotfiles, real config folder!) for all other apps to source the same active wallpaper in order to be in sync

@@ -76,5 +76,5 @@ envsubst < "$HOME/.config/hypr/assets/yazi-theme.template" > "$HOME/.config/yazi
 killall -SIGUSR2 waybar
 hyprctl reload
 $HOME/.local/bin/hypr-sun.sh
-sudo g815-led -p $HOME/.config/hypr/assets/g815-colors
+sudo systemctl restart g815-apply-theme
 killall -SIGUSR1 kitty
