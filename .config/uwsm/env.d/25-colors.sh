@@ -1,6 +1,6 @@
 # colors
 # use $COLOR_RGBA in your themes to get RGBA values when using apply-theme.sh
-export BACKGROUND0=000000CC
+export BACKGROUND0=000000E6
 export BACKGROUND1=7D7D7DB3
 export BACKGROUND2=7D7D7D66
 export BORDERACTIVE0=0071A6FF # dark blue

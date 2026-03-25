@@ -14,7 +14,7 @@
 
 
 * {
-    font-family: "Fira Sans Semibold", "Font Awesome 7 Free", "Font Awesome 7 Brands", "Font Awesome 6 Free", "Font Awesome 6 Brands", FontAwesome, Roboto, Helvetica, Arial, sans-serif;
+    font-family: "JetBrainsMono Nerd Font", "Font Awesome 7 Free", sans-serif;
     border: none;
     border-radius: 0px;
 }
@@ -31,25 +31,15 @@ window#waybar {
     background: @workspacesbackground1;
     margin: 5px 5px 0px 5px;
     padding: 1px 2px;
-    border-radius: 30px;
+    border-radius: 20px;
     font-weight: bold;
     color: @textcolor2;
 }
 
 #workspaces button {
-    /* Padding: Oben (drückt Text runter) | Rechts | Unten | Links */
-    padding: 2px 5px 0px 5px;
-    margin: 2px;
+    padding: 0px;
+    margin: 1px;
     border-radius: 20px;
-}
-
-#workspaces button.active {
-    color: @textcolor2;
-    background: @workspacesbackground3;
-    border-radius: 20px;
-    min-width: 30px;
-    transition: all 0.1s linear;
-    opacity:1.0;
 }
 
 #workspaces button:hover {
@@ -58,8 +48,18 @@ window#waybar {
     border-radius: 20px;
 }
 
+#workspaces button.active {
+    padding: 0px 5px 0px 5px;
+    color: @textcolor2;
+    background: @workspacesbackground3;
+    border-radius: 20px;
+    min-width: 25px;
+    transition: all 0.1s linear;
+    opacity:1.0;
+}
+
 .modules-left > widget:first-child > #workspaces {
-    margin-left: 5;
+    margin-left: 5px;
 }
 
 /* --- Window (Center) --- */
@@ -107,6 +107,23 @@ window#waybar {
 
 #keyboard-state label {
     padding: 0 5px;
+}
+
+/* Die Simulation des 'Inneren Buttons' */
+/* Da es kein 'button'-Tag gibt, nutzen wir den Hauptselektor */
+#idle_inhibitor {
+    padding: 0px 12px 0px 8px;
+    transition: all 0.1s linear;
+}
+
+/* Der 'Aktiviert'-Zustand (entspricht #workspaces button.active) */
+#idle_inhibitor.activated {
+    color: @textcolor2;
+}
+
+/* Der Hover-Zustand (entspricht #workspaces button:hover) */
+#idle_inhibitor:hover {
+    background-color: @workspacesbackground3;
 }
 
 #cpu {

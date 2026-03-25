@@ -12,8 +12,8 @@
     "idle_inhibitor": {
         "format": "{icon}",
         "format-icons": {
-            "activated": "",
-            "deactivated": ""
+            "activated": "󰈈",
+            "deactivated": "󰈉"
         },
     "return-type": "json",
     "exec": "if pgrep -x hypridle > /dev/null; then echo '{\"alt\": \"inactive\", \"tooltip\": \"Energiesparen aktiv\"}'; else echo '{\"alt\": \"active\", \"tooltip\": \"System bleibt wach\"}'; fi",
@@ -89,7 +89,7 @@
         "on-click": "pavucontrol"
     },
     "custom/power": {
-        "format" : "⏻",
+        "format" : "󰐥",
         "tooltip": false,
         "menu": "on-click",
         "menu-file": "$HOME/.config/waybar/power_menu.xml", // Menu file in resources folder
