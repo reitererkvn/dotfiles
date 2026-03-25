@@ -29,16 +29,17 @@ window#waybar {
 /* --- Workspaces --- */
 #workspaces {
     background: @workspacesbackground1;
-    margin: 5px 18px 0px 0px;
-    padding: 0px 2px;
+    margin: 5px 5px 0px 5px;
+    padding: 1px 2px;
     border-radius: 30px;
     font-weight: bold;
     color: @textcolor2;
 }
 
 #workspaces button {
-    padding: 0px 6px;
-    margin: 3px 2px 3px 2px;
+    /* Padding: Oben (drückt Text runter) | Rechts | Unten | Links */
+    padding: 2px 5px 0px 5px;
+    margin: 2px;
     border-radius: 20px;
 }
 
