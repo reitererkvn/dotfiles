@@ -3,6 +3,7 @@
 # 1. Basis-Daten laden (Source)
 #
 COLOR_FILE="$HOME/.config/uwsm/env.d/25-colors.sh"
+THEME_FILE="$HOME/.config/uwsm/env.d/20-theme.sh"
 
 # I/O-Sicherheitscheck (Fail-Fast)
 if [[ ! -f "$COLOR_FILE" ]]; then
@@ -10,8 +11,14 @@ if [[ ! -f "$COLOR_FILE" ]]; then
     exit 1
 fi
 
+if [[ ! -f "$THEME_FILE" ]]; then
+    echo "[FEHLER] Color-File nicht gefunden: $THEME_FILE" >&2
+    exit 1
+fi
+
 # Alle Variablen ($BACKGROUND0, etc.) landen jetzt im RAM
 source "$COLOR_FILE"
+source "$THEME_FILE"
 
 # 2. Verbesserte Hilfsfunktion (Akzeptiert 6- und 8-stellige Hex-Werte)
 hex_to_rgba() {
@@ -54,6 +61,13 @@ for var_name in $var_list; do
     export "${var_name}_8"="#${hex_value}" # format: #000000FF
 done
 
+# Thema variablen lsiten und exportieren
+theme_var_list=$(grep "=" "$THEME_FILE" | sed 's/export //g' | cut -d'=' -f1)
+
+for t_var in $theme_var_list; do
+    export "$t_var"="${!t_var}"
+done
+
 # 4. envsubst
 # Liste vorbereiten, damit nur die Werte ersetzt werden, die auch tatsächlich existieren
 
@@ -61,16 +75,19 @@ envsubst_list=""
 for var in $var_list; do
     envsubst_list+=" \$$var \$${var}_RGBA \$${var}_6 \$${var}_6x \$${var}_8"
 done
+for t_var in $theme_var_list; do
+    envsubst_list+=" \$$t_var"
+done
 
 # envsubst auf die Templates anwenden
 while IFS= read -r template; do
     target="${template/.template/}"
     # Nur die Variablen aus unserer Liste ersetzen, Hyprland-Variablen bleiben unberührt
     envsubst "$envsubst_list" < "$template" > "$target"
-done < <(find "$HOME/.config/hypr/assets" -name "*colors.template*")
+done < <(find "$HOME/.config/hypr/assets" -name "*.template*")
 
 # yazi cant source, so must recieve a direct copy to its directory
-envsubst < "$HOME/.config/hypr/assets/yazi-theme.template" > "$HOME/.config/yazi/theme.toml"
+envsubst < "$HOME/.config/hypr/assets/yazi-theme.xtemplate" > "$HOME/.config/yazi/theme.toml"
 
 # 5. Signal-Reload
 killall -SIGUSR2 waybar

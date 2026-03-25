@@ -1,3 +1,5 @@
+# named .xtemplate so it wont be affected by the other stnadard envsubst of apply-theme.sh
+
 # If the user's terminal is in dark mode, Yazi will load `theme-dark.toml` on startup; otherwise, `theme-light.toml`.
 # You can override any parts of them that are not related to the dark/light mode in your own `theme.toml`.
 
