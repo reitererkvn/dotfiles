@@ -16,7 +16,7 @@
             "deactivated": "󰈉"
         },
     "return-type": "json",
-    "exec": "if pgrep -x hypridle > /dev/null; then echo '{\"alt\": \"inactive\", \"tooltip\": \"Energiesparen aktiv\"}'; else echo '{\"alt\": \"active\", \"tooltip\": \"System bleibt wach\"}'; fi",
+    "exec": "if pgrep -x hypridle > /dev/null; then echo '{\"alt\": \"deactivated\", \"tooltip\": \"Energiesparen aktiv\"}'; else echo '{\"alt\": \"activated\", \"tooltip\": \"System bleibt wach\"}'; fi",
     "interval": 2,
     "on-click": "if pgrep -x hypridle > /dev/null; then systemctl --user stop hypridle.service; else systemctl --user start hypridle.service; fi",
     "tooltip": true
