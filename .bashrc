@@ -17,3 +17,4 @@ PS1='[\u@\h \W]\$ '
 export TERMINAL=kitty
 
 export LIBVA_DRIVER_NAME=nvidia
+. "$HOME/.cargo/env"

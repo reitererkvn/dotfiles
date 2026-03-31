@@ -93,5 +93,4 @@ envsubst < "$HOME/.config/hypr/assets/yazi-theme.xtemplate" > "$HOME/.config/yaz
 killall -SIGUSR2 waybar
 hyprctl reload
 $HOME/.local/bin/hypr-sun.sh
-systemctl --user restart g815-apply-theme
 killall -SIGUSR1 kitty
