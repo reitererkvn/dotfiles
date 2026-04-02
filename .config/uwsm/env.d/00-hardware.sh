@@ -7,8 +7,8 @@ export RES1="2560x1440" # Resolution Monitor 1
 export RES2="2560x1440" # Resolution Monitor 2
 export RFR1="144" # Refreshrate Monitor 1
 export RFR2="60" # Refreshrate Monitor 2
-export MPOS1="0x0" # Offset Monitor 1
-export MPOS2="2560x0" # Offset Monitor 2
+export MPOS1="0x0" # Offset Monitor 1 (divide by scaling)
+export MPOS2="2048x0" # Offset Monitor 2 (divide by scaling)
 
 # GPU settings (nvidia only)
 export LIBVA_DRIVER_NAME="nvidia"
