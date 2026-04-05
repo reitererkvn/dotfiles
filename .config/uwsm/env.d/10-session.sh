@@ -2,6 +2,7 @@
 
 # Identität & Git-Umgebung
 export USER="kevin"
+export NAME_FULL="Kevin Reiterer"
 export MAIL="reitererkvn@gmail.com"
 export GIT_AUTHOR_NAME="Kevin"
 export GIT_AUTHOR_EMAIL="reitererkvn@gmail.com"

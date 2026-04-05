@@ -1,0 +1,59 @@
+# =====================================================
+# 1. IDENTITÄT & KRYPTOGRAFISCHE AUTHENTIFIZIERUNG
+# =====================================================
+set realname = $NAME_FULL
+set from = $MAIL
+set use_from = yes
+
+set imap_user = $MAIL
+set imap_pass = `pass email/gmail`
+set smtp_pass = $imap_pass
+
+# =====================================================
+# 2. SERVER-ROUTING (GMAIL IMAP/SMTP)
+# =====================================================
+set folder = "imaps://imap.gmail.com:993"
+set smtp_url = "smtps://$MAIL@smtp.gmail.com:465"
+
+set spoolfile = "+INBOX"
+set postponed = "+[Gmail]/Entwürfe"
+set record = "+[Gmail]/Gesendet"
+set trash = "+[Gmail]/Papierkorb"
+
+# =====================================================
+# 3. VERBINDUNG & SICHERHEIT
+# =====================================================
+set ssl_force_tls = yes
+set ssl_starttls = yes
+set mail_check = 60       # Prüfintervall in Sekunden
+set timeout = 10          # Timeout für IMAP-Verbindungen
+
+# =====================================================
+# 4. LOKALES CACHING (PERFORMANCE-MAXIMIERUNG)
+# =====================================================
+# Verhindert, dass Kopfzeilen bei jedem Start neu geladen werden müssen
+set header_cache = ~/.cache/neomutt/headers
+set message_cachedir = ~/.cache/neomutt/bodies
+
+# =====================================================
+# 5. BENUTZEROBERFLÄCHE & SORTIERUNG
+# =====================================================
+set sort = threads        # E-Mails als chronologische Konversationen gruppieren
+set sort_aux = reverse-last-date-received # Neueste Nachrichten ganz oben
+set pager_index_lines = 10 # Teilt das Terminal: Liste oben, E-Mail-Text unten
+set menu_scroll = yes     # Flüssiges Scrollen ohne Cursor-Sprünge
+
+# =====================================================
+# 6. SIDEBAR (ORDNER-NAVIGATION)
+# =====================================================
+set sidebar_visible = yes
+set sidebar_width = 25
+set sidebar_short_path = yes
+set sidebar_format = "%B%?F? [%F]?%* %?N?%N/?%S"
+
+# Sidebar Tastenkürzel (Strg+J / Strg+K zum Navigieren, Strg+O zum Öffnen)
+bind index,pager \Cj sidebar-next
+bind index,pager \Ck sidebar-prev
+bind index,pager \Co sidebar-open
+
+
