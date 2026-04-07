@@ -7,11 +7,11 @@ export BORDERACTIVE0=0071A6FF # dark blue
 export BORDERACTIVE1=62CDFFFF # light blue, vibrant
 export BORDERINACTIVE=595959AA #grey translucent
 export TEXTCOLOR0=00000000
-export TEXTCOLOR1=FFFFFFFF
+export TEXTCOLOR1=F0F0F0FF
 export TEXTCOLOR2=62CDFFFF # light blue, vibrant
 export TEXTCOLOR3=7D7D7DFF # light grey
 export TEXTCOLOR4=0071A6FF # dark blue
-export ICONCOLOR=FFFFFFFF
+export ICONCOLOR=F0F0F0FF
 #
 # notification / status based colors
 export COL_NOT_LOW=0071A6FF # dark blue

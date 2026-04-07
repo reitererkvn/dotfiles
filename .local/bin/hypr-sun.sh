@@ -47,7 +47,7 @@ if [[ -f "$WALLPAPER" ]]; then
 
     # Auf beiden Monitoren setzen (2560x1440)
     hyprctl hyprpaper wallpaper "$MONITOR1,$WALLPAPER,cover"
-    hyprctl hyprpaper wallpaper "$MONITOR2,$WALLPAPER,cover"
+    #hyprctl hyprpaper wallpaper "$MONITOR2,$WALLPAPER,cover"
 
     # Symlink für andere Apps aktualisieren
     ln -sf "$WALLPAPER" "$SYMLINK"

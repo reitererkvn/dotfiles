@@ -1,0 +1,23 @@
+[Desktop Entry]
+Encoding=UTF-8
+Type=Application
+Icon=horizon-client
+Exec=horizon-client %u
+MimeType=x-scheme-handler/horizon-client;x-scheme-handler/vmware-view;
+Categories=Application;Network;
+Actions=about-window;
+# TRANSLATORS: Ignore this string; do not translate.
+Name=Omnissa Horizon Client
+Comment=Connect to Omnissa Horizon View virtual machines
+StartupWMClass=Horizon-client
+
+[Desktop Action about-window]
+Name=About
+Name[de]=
+Name[es]=
+Name[fr]=
+Name[ja]=
+Name[ko]=
+Name[zh_CN]=
+Name[zh_TW]=
+Exec=horizon-client --about --useExisting

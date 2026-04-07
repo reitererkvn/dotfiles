@@ -89,8 +89,12 @@ done < <(find "$HOME/.config/hypr/assets" -name "*.template*")
 # yazi cant source, so must recieve a direct copy to its directory
 envsubst < "$HOME/.config/hypr/assets/yazi-theme.xtemplate" > "$HOME/.config/yazi/theme.toml"
 
+# GTK-settings
+envsubst < "$HOME/.config/hypr/assets/gtk-settings.xtemplate.ini" > "$HOME/.config/gtk-3.0/settings.ini"
+envsubst < "$HOME/.config/hypr/assets/gtk-settings.xtemplate.ini" > "$HOME/.config/gtk-4.0/settings.ini"
+
 # 5. Signal-Reload
 killall -SIGUSR2 waybar
 hyprctl reload
-$HOME/.local/bin/hypr-sun.sh
+"$HOME/.local/bin/hypr-sun.sh"
 killall -SIGUSR1 kitty
