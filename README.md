@@ -1,53 +1,52 @@
-# 🚀 Dotfiles: Hyprland, Minimal & Performant CLI Setup
+# 🚀 HyprCachyOS: Cognitive Ergonomics meets SRE Principles
 
-A highly optimized, minimalistic, and CLI-focused configuration for a fast and reliable Linux desktop experience. This setup leverages modular scripting and native service management to ensure unparalleled performance and session stability.
+**HyprCachyOS** is a specialized, performant, and reliable Linux desktop environment designed from the ground up to address the challenges of neurodivergence (ADHD). By combining the blistering speed of **CachyOS** and the **Hyprland** compositor with strict **Site Reliability Engineering (SRE)** principles, this setup minimizes cognitive load, eliminates context-switching friction, and ensures absolute system stability.
 
-## ✨ Key Features
+## 🧠 The Vision: Cognitive Ergonomics
 
-This repository is built around the principle of speed and stability, moving away from common pitfalls like messy `exec once` chains.
+For users with ADHD, cognitive and physical ergonomics are not just preferences—they are necessities for productive work. Unnecessary visual stimuli, sluggish response times, and jarring context switches derail problem-solving and break focus.
 
-| Feature | Description | File Reference |
+HyprCachyOS solves this through:
+*   **Bimodal Window Management:** A distraction-free, highly predictable layout system that reduces the mental overhead of window hunting.
+*   **Process Isolation via Special Workspaces:** Telemetry, background apps, and communication tools are rigorously isolated into dedicated workspaces. Out of sight, out of mind, until explicitly needed.
+*   **SSOT (Single Source of Truth):** Strict separation and management of system-wide and user-specific configurations to prevent configuration drift and unexpected behavior.
+
+## ⚙️ Architecture & SRE "Reality"
+
+This repository is built with an infrastructure-as-code mindset. It actively rejects brittle desktop Linux conventions (like messy `exec-once` chains in compositor configs) in favor of robust, production-grade system management.
+
+| Principle | Implementation (The Reality) | File Reference |
 | :--- | :--- | :--- |
-| **Systemd User Units** | Daemons (Waybar, Agents, etc.) are managed via `systemd --user` units, completely eliminating the brittle `exec once` in the compositor. This ensures robust lifecycle management, proper shutdown, and reliable restarts. | `install-userservice.sh` |
-| **UWSM Environment Manager** | The User-Workspace-Session-Manager is used to load a clean and highly modular environment before the session starts, preventing configuration conflicts and ensuring a single source of truth for all environment variables. | `.config/uwsm/env` |
-| **Lazy-Loading Workspaces** | Resource-intensive applications (e.g., htop, nvtop) are set to only launch when their dedicated workspace is accessed for the first time, significantly accelerating boot time and freeing up resources. | `hypr-lazy.sh` |
-| **Automated Sync** | Scripts for automatically creating necessary symlinks across the home directory (`dotsync`), as well as dedicated tools for Git auto-committing and pushing dotfile changes (`gitsync`). | `dotfiles-sync.sh`, `git-push.sh`, `.alias` |
-| **Dynamic Theming** | A utility script is included to dynamically convert hex color values into RGBA format and apply them across different applications (like Waybar or Kitty), ensuring a consistent look and feel based on the primary color palette. | `apply-theme.sh` |
-| **Location-Aware Wallpaper** | A script to dynamically switch wallpapers based on the sunrise/sunset time and your geographic coordinates, ensuring a seamless visual transition between day and night themes. | `hypr-sun.sh` |
-| **Snapper Integration** | Contains a simple alias (`snapnow`) for instant, concurrent BTRFS snapshots of the root (`@`) and home (`@home`) subvolumes, offering a quick rollback mechanism. | `.alias` |
+| **Reliability via Systemd** | Daemons (Waybar, Agents, etc.) are managed as `systemd --user` units with proper dependency trees. This ensures clean lifecycle management, automatic restarts on failure, and predictable session teardowns. | `.config/systemd/user/` |
+| **State Modularity & SSOT** | Leveraging **UWSM** (Universal Wayland Session Manager), the environment variables are loaded modularly via an `env.d` structure. This guarantees a clean state and a Single Source of Truth before the compositor even starts. | `.config/uwsm/env` |
+| **Resource Optimization (IPC)** | High-overhead tools (e.g., htop, nvtop) are not launched at startup. Instead, a custom daemon (`hypr-lazy.sh`) listens to the Hyprland IPC socket and lazy-loads these processes *only* when their specific workspace is accessed, exiting itself once its job is done. | `.local/bin/hypr-lazy.sh` |
+| **Idempotent Synchronization** | The `dotfiles-sync.sh` script acts as a state enforcer. It safely creates symlinks, performs garbage collection on orphaned links, and strictly validates I/O paths to prevent accidental data loss. | `.local/bin/dotfiles-sync.sh` |
+| **Fail-Safe Operations** | Built-in aliases like `snapnow` trigger instant, concurrent BTRFS snapshots of the root (`@`) und home (`@home`) subvolumes, providing an immediate rollback mechanism before risky operations. | `.alias` |
 
-## ⚙️ Core Components
+## 🤖 AI-Driven Engineering (The LLM Factor)
 
-The choice of software is strictly focused on a minimal overhead and command-line control:
+This entire ecosystem was built from scratch in just **6 weeks, starting with zero prior Linux knowledge**. Achieving this depth of system architecture (IPC sockets, systemd user sessions, idempotent synchronization) in such a short timeframe is not a claim of traditional Linux mastery—it is a showcase of **AI-driven Systems Engineering**.
 
-| Component | Function | Reason for Choice |
-| :--- | :--- | :--- |
-| **Hyprland** | Window Manager (Tiling Compositor) | Extreme performance, GPU-acceleration, and fine-grained configuration via Wayland. |
-| **Kitty** | Terminal Emulator | GPU-accelerated for speed, highly customizable, and supports remote control. |
-| **Neovim (Kickstart)** | Text Editor | The ultimate CLI text editor, configured using the popular and easily understandable `kickstart.nvim` base for a fast development environment. |
-| **Fuzzel** | Application Launcher | Fast and lightweight Wayland-native launcher. |
-| **Waybar** | Status Bar | Highly customizable and modular status bar for Wayland, complementing the minimalist design. |
-| **ZSH** | Shell | Used with performance-focused plugins like `zsh-autosuggestions` and `zsh-syntax-highlighting` to enhance CLI workflow. |
+*   **The Engine (Gemini LLM):** Used as an intelligent compiler to translate high-level architectural requirements into functional, optimized Bash and configuration syntax.
+*   **The Architect (Human):** My role focused on the *vision* and *verification*. Instead of blindly accepting code, I rigorously steered the LLM to avoid "dirty hacks" and enforce SRE best practices. I dictated the *Why* (e.g., "We need fail-safes, use systemd instead of exec-once") and validated the *How* (e.g., verifying that socket communication is the most performant way to lazy-load).
+
+This project serves as a proof-of-work for modern engineering: orchestrating AI tools not just to write code, but to build robust, production-grade systems rapidly and cleanly.
+
+## 🛠 Core Components
+
+The choice of software is strictly focused on minimal overhead, maximum performance, and keyboard-centric control:
+
+*   **OS Base:** CachyOS (Arch Linux optimized for extreme performance and low latency).
+*   **Compositor:** Hyprland (Wayland Tiling Window Manager).
+*   **Terminal:** Kitty (GPU-accelerated, highly customizable).
+*   **Editor:** Neovim (Configured via `kickstart.nvim` for a fast development loop).
+*   **Launcher & Bar:** Fuzzel & Waybar (Lightweight, Wayland-native).
+*   **Theming Engine:** Custom bash Templating (`apply-theme.sh`) using `envsubst` for dynamic, consistent RGBA injection across all UI elements.
 
 ## 📦 Installation & Setup
 
-These dotfiles are ideally suited as the base for an Arch Linux-based distribution, leveraging the power of its ecosystem.
-
 ### **Prerequisites**
-
-You must have the following dependencies installed on your system (among others):
-
-*   `Hyprland` (Wayland compositor)
-*   `Kitty` (Terminal)
-*   `Neovim`
-*   `Waybar`
-*   `Fuzzel`
-*   `UWSM` (For advanced session/environment management)
-*   `systemd` (Specifically the `systemd --user` component)
-
-### **Recommended AUR Package Base**
-
-These dotfiles provide the perfect foundation for an **Arch User Repository (AUR) package**, which would offer a complete "quick-setup" solution.
+Ensure your base system (preferably CachyOS/Arch Linux) has the necessary Wayland tools installed, specifically `Hyprland`, `UWSM`, and standard GNU userland utilities.
 
 ### **Manual Installation**
 
@@ -56,33 +55,30 @@ These dotfiles provide the perfect foundation for an **Arch User Repository (AUR
     git clone git@github.com:reitererkvn/dotfiles.git ~/.dotfiles
     ```
 
-2.  **Run the Sync Script:**
-    The core script automates the creation of all necessary symlinks from the repository to your home directory (`~`).
+2.  **Enforce Configuration State (Sync):**
+    Run the idempotent sync script to link the repository to your `$HOME`.
     ```bash
     ~/.dotfiles/.local/bin/dotfiles-sync.sh
     ```
 
-3.  **Install Daemons/Services:**
-    Use the service manager script to ensure your background services are running correctly via systemd:
+3.  **Activate Service Daemons:**
+    Enable the systemd user units to hand over process control to systemd.
     ```bash
     ~/.dotfiles/.local/bin/install-userservice.sh
     ```
 
-4.  **Full Setup (Optional):**
-    Use the all-in-one alias to sync files, apply the theme, and commit the changes to Git (if desired):
-    ```bash
-    fullsync
-    ```
+4.  **Launch Session:**
+    Start your session via UWSM (or your display manager configured for UWSM) to utilize the SSOT environment loader.
 
 ## 📜 Key Configuration Scripts
 
-The setup relies on several helper scripts, located in `.local/bin`, to manage the system state and developer workflow:
+Located in `.local/bin`, these scripts manage the system state and ensure the "HyprCachyOS" logic is enforced:
 
 | Script Name | Purpose |
 | :--- | :--- |
-| `dotfiles-sync.sh` | Creates symlinks from the repository into the user's `$HOME` directory. |
-| `git-push.sh` | Automates `git add .`, `git commit -m "Auto-Sync..."`, and `git push` for both user and optional system dotfiles. |
-| `apply-theme.sh` | Reads color variables and exports theme-specific configurations (including RGBA) for compatible applications. |
-| `gdrive-live-sync.sh` | Manages rclone-based live syncs with Google Drive for backups, following an exclusion list for caches and temporary files. |
-| `hypr-lazy.sh` | The core "lazy-loader" for workspaces, using the Hyprland socket to only execute commands when a user switches to a specific workspace. |
-| `start-session.sh` | The main script to be called by your display manager (or manually) to initiate the Hyprland session, ensuring all prerequisites are met. |
+| `hypr-lazy.sh` | The IPC socket listener for cognitive offloading and lazy-loading of heavy applications. |
+| `dotfiles-sync.sh` | The idempotent state synchronizer and garbage collector for symlinks. |
+| `apply-theme.sh` | The dynamic template renderer using `envsubst` for system-wide theming. |
+| `git-push.sh` | Automates Git state synchronization for the dotfiles repository. |
+| `gdrive-live-sync.sh` | Manages rclone-based live syncs with intelligent exclusion lists. |
+| `hypr-sun.sh` | Dynamically adjusts aesthetics based on geographic time, reducing eye strain and cognitive fatigue during twilight hours. |
