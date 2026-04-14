@@ -47,7 +47,7 @@ alias vim='nvim'
 alias note='~/.local/bin/note'
 #
 # modified Teamviewer app link in dotfiles ensures teamviewerd will be started if you have disabled its autostart
-alias teamviewe="teamviewer && disown"
+alias teamviewer="teamviewer && disown"
 #
 # open yazi in CWD with y, quit with q to stay and Q to leave CWD
 function yazi() {
