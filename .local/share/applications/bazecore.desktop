@@ -2,4 +2,5 @@
 Name=Bazecor
 Exec=/home/kevin/Dygma/Bazecor-1.8.3-x64.AppImage --ozone-platform-hint=auto --enable-features=WaylandWindowDecorations
 Type=Application
+Icon=bazecore
 Terminal=false
