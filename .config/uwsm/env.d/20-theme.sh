@@ -10,6 +10,7 @@ export FONT="FiraMono Nerd Font"
 export GTK_ICON_THEME_NAME="Papirus-Dark"
 
 # Qt-Architektur (Deaktiviert CSD-Schatten für sauberes Hyprland-Rendering)
+export QT_QPA_PLATFORMTHEME=hyprqt6engine
 export QT_WAYLAND_DISABLE_WINDOWDECORATION=1
 export QT_AUTO_SCREEN_SCALE_FACTOR=1
 
