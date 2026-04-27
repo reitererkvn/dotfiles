@@ -15,4 +15,4 @@ export SUDO_EDITOR="nvim"
 export TERMINAL="kitty"
 export FILEMANAGER="yazi"
 export LAUNCHER="fuzzel"
-
+export GRIMBLAST_EDITOR=imv

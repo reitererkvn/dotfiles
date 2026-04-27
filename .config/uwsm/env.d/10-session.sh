@@ -17,3 +17,7 @@ export QT_QPA_PLATFORMTHEME="qt6ct"
 
 # Proton Wayland driver (only which cahchyOS Proton)
 export PROTON_ENABLE_WAYLAND=1
+
+# misc
+export XDG_PICTURES_DIR="$HOME/Bilder/"
+export XDG_SCREENSHOTS_DIR="$HOME/Bilder/screenshots"
