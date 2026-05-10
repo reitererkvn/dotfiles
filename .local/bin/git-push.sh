@@ -42,8 +42,8 @@ if [ "$SYNC_NAS01" = true ]; then
     echo "» nas-01: Verarbeite /opt/system-dotfiles remote via SSH..."
 
     # Der SSH-Befehl kapselt die gesamte Kette.
-    # WICHTIG: Ersetze 'kevin@nas-01' mit deinem tatsächlichen User/Host.
-    ssh kevin@nas-01 "cd /opt/system-dotfiles && git add . && git commit -m \"Auto-Sync: \$(date +'%Y-%m-%d %H:%M')\" && git push"
+    # -A leitet den lokalen SSH-Agent weiter, damit das NAS den Key vom Desktop nutzen kann.
+    ssh -A kevin@nas-01 "cd /opt/system-dotfiles && git add . && git commit -m \"Auto-Sync: \$(date +'%Y-%m-%d %H:%M')\" && git push"
 fi
 
 echo "--- ✅ Sync done ---"
