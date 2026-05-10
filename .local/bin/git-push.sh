@@ -2,13 +2,15 @@
 
 SYNC_USER=false
 SYNC_SYSTEM=false
+SYNC_NAS01=false
 
 # Flag-Verarbeitung
-while getopts "us" opt; do
+while getopts "usn" opt; do
   case $opt in
     u) SYNC_USER=true ;;
     s) SYNC_SYSTEM=true ;;
-    *) echo "Usage: $0 [-u] [-s]"; exit 1 ;;
+    n) SYNC_NAS01=true ;;
+    *) echo "Usage: $0 [-u] [-s] [-n]"; exit 1 ;;
   esac
 done
 
@@ -16,6 +18,7 @@ done
 if [ $OPTIND -eq 1 ]; then
     SYNC_USER=true
     SYNC_SYSTEM=true
+    SYNC_NAS01=true
 fi
 
 echo "--- 📦 Starting git commit & GitHub sync ---"
@@ -32,6 +35,15 @@ echo "--------------------------------------------"
 if [ "$SYNC_SYSTEM" = true ]; then
     echo "» Verarbeite /opt/system-dotfiles..."
     cd /opt/system-dotfiles && git add . && git commit -m "Auto-Sync: $(date +'%Y-%m-%d %H:%M')" && git push
+fi
+
+# 3. nas-01 Dotfiles (Remote via SSH)
+if [ "$SYNC_NAS01" = true ]; then
+    echo "» nas-01: Verarbeite /opt/system-dotfiles remote via SSH..."
+
+    # Der SSH-Befehl kapselt die gesamte Kette.
+    # WICHTIG: Ersetze 'kevin@nas-01' mit deinem tatsächlichen User/Host.
+    ssh kevin@nas-01 "cd /opt/system-dotfiles && git add . && git commit -m \"Auto-Sync: \$(date +'%Y-%m-%d %H:%M')\" && git push"
 fi
 
 echo "--- ✅ Sync done ---"
