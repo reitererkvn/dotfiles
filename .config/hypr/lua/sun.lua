@@ -20,26 +20,38 @@ local function apply_wallpaper(path)
         return
     end
 
+    -- Ensure HOME is expanded (safety check)
+    local full_path = path:gsub("^~", os.getenv("HOME"))
+
     -- Check if already active to prevent flickering
     local handle = io.popen("readlink -f " .. SYMLINK)
     local current_symlink = handle:read("*a"):gsub("%s+", "")
     handle:close()
 
-    if current_symlink == path then
+    if current_symlink == full_path then
         return
     end
 
-    hl.exec_cmd("ln -sf " .. path .. " " .. SYMLINK)
-    hl.dispatch(hl.dsp.exec_cmd("hyprctl hyprpaper wallpaper '" .. MONITOR .. "," .. path .. ",cover'"))
-    print("[Sun] Switched wallpaper to: " .. path)
+    -- Update Symlink
+    hl.exec_cmd("ln -sf " .. full_path .. " " .. SYMLINK)
+
+    -- Hyprpaper: Preload then Wallpaper
+    -- Using a slight delay between commands or combined string
+    hl.exec_cmd("hyprctl hyprpaper preload " .. full_path)
+    hl.exec_cmd("hyprctl hyprpaper wallpaper '" .. MONITOR .. "," .. full_path .. ",cover'")
+
+    -- Clean up old preloads (optional, keeps memory usage low)
+    hl.timer(function()
+        hl.exec_cmd("hyprctl hyprpaper unload all")
+    end, { timeout = 2000, type = "oneshot" })
+
+    print("[Sun] Switched wallpaper to: " .. full_path)
 end
 
 local function update_solar_schedule()
-    print("[Sun] Updating solar schedule...")
+    print("[Sun] Checking solar state...")
 
     -- Get times from sunwait
-    -- list: sunrise, sunset
-    -- list civil: rise, set
     local h1 = io.popen("sunwait list " .. LAT .. " " .. LON)
     local r1 = h1:read("*a")
     h1:close()
@@ -74,7 +86,7 @@ local function update_solar_schedule()
     -- Safety check: if parsing failed, don't crash
     if not (times.sunrise and times.sunset and times.rise and times.set) then
         print("[Sun] Error: Could not parse solar times. Retrying in 1 hour.")
-        hl.timer(update_solar_schedule, { timeout = 3600000, type = "once" })
+        hl.timer(update_solar_schedule, { timeout = 3600000, type = "oneshot" })
         return
     end
 
@@ -96,22 +108,28 @@ local function update_solar_schedule()
         local target = times[event]
         if target > now then
             local delay = (target - now + 1) * 1000 -- +1s buffer
-            hl.timer(update_solar_schedule, { timeout = delay, type = "once" })
+            hl.timer(update_solar_schedule, { timeout = delay, type = "oneshot" })
             print("[Sun] Next transition scheduled: " .. event .. " at " .. os.date("%H:%M", target))
             next_event_found = true
-            break -- Only schedule the VERY next one to avoid multiple triggers
+            break
         end
     end
 
-    -- If all events for today are passed, schedule daily refresh at midnight + 1min
     if not next_event_found then
         local tomorrow = os.date("*t", now + 86400)
         local midnight =
             os.time({ year = tomorrow.year, month = tomorrow.month, day = tomorrow.day, hour = 0, min = 1, sec = 0 })
         hl.timer(update_solar_schedule, { timeout = (midnight - now) * 1000, type = "oneshot" })
-        print("[Sun] All events for today passed. Scheduled refresh for tomorrow.")
     end
 end
 
--- Initial Trigger
-update_solar_schedule()
+-- Startup logic: wait 2 seconds for hyprpaper to be ready
+hl.on("hyprland.start", function()
+    print("[Sun] Startup delay (2s)...")
+    hl.timer(update_solar_schedule, { timeout = 2000, type = "oneshot" })
+end)
+
+-- If already running (manual reload), execute immediately
+if hl.get_config("general:layout") then
+    update_solar_schedule()
+end
