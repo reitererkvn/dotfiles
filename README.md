@@ -25,7 +25,9 @@ This repository is built with an infrastructure-as-code mindset. It actively rej
 
 ## 🤖 AI-Driven Engineering (The LLM Factor)
 
-This entire ecosystem was built from scratch in just **6 weeks, starting with zero prior Linux knowledge**. Achieving this depth of system architecture (IPC sockets, systemd user sessions, idempotent synchronization) in such a short timeframe is not a claim of traditional Linux mastery—it is a showcase of **AI-driven Systems Engineering**.
+This entire ecosystem was built from absolute **zero prior Linux knowledge**, beginning in **February 2026**. The first **6 weeks** were a rapid sprint to establish a production-grade desktop environment and early cloud backup pipelines. Achieving this level of architectural depth in such a short timeframe—just a few months in total—is not a claim of traditional Linux mastery—it is a showcase of **AI-driven Systems Engineering**.
+
+*   **Continuous Evolution:** What began as a personal productivity tool has since evolved into a full SRE infrastructure. Since that initial milestone, the project has expanded into multi-host NAS orchestration, sophisticated storage tiering (MergerFS/Btrfs), and most recently, a fully programmable Lua-native compositor environment.
 
 *   **The Engine (Gemini LLM):** Used as an intelligent compiler to translate high-level architectural requirements into functional, optimized Bash and configuration syntax.
 *   **The Architect (Human):** My role focused on the *vision* and *verification*. Instead of blindly accepting code, I rigorously steered the LLM to avoid "dirty hacks" and enforce SRE best practices. I dictated the *Why* (e.g., "We need fail-safes, use systemd instead of exec-once") and validated the *How* (e.g., verifying that socket communication is the most performant way to lazy-load).

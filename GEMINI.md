@@ -27,7 +27,17 @@
 *   **SSH Auth:** Desktop-Root nutzt `id_ed25519_nas`. User `kevin` nutzt Desktop-Agent-Forwarding (`-A`).
 *   **Colors:** `colors.lua` konvertiert `RRGGBBAA` (Env) zu `rgba()` (Hyprland), um Hex-Format-Konflikte (AARRGGBB) zu vermeiden.
 
-## 5. Abgeschlossene Projekte
+## 5. Offene Projekte
+- **Paperless-ngx:** Einrichtung geplant (Pfade: SSD für DB/Ingest, HDD für Media).
+- **Monitoring:** Grafana/Prometheus Roadmap steht (Metriken -> Logging -> Alerting).
+- **Gemini Telegram Bot:** 
+    - **Ziel:** Remote-Steuerung des Systems via Telegram.
+    - **Anforderung:** Vollständige Konversations-Unterstützung (CLI bleibt aktiv).
+    - **Workflow:** Session startet bei Nachricht, endet erst bei `/quit`. Integration als `systemd --user` Service.
+- **Secret Management:** Implementierung einer zentralen Lösung für Tokens, Passwörter, SSH-Keys und Passkeys (z.B. HashiCorp Vault oder Vaultwarden).
+- **Active Directory (AD) Evaluation:** Prüfung einer zentralen Identitätsverwaltung (z.B. Samba AD oder FreeIPA) zur Synchronisation von Usern und Rechten zwischen Desktop und NAS.
+
+## 6. Abgeschlossene Projekte
 *   ✅ Hyprland Lua Migration (Mai 2026)
 *   ✅ Integration intelligenter Wallpaper-Scheduler in Lua
 *   ✅ Bereinigung Legacy Systemd-Units (hypr-sun)
