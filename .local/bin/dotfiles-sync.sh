@@ -22,19 +22,19 @@ done
 echo "Done removing, resuming..."
 
 # ==========================================
-# PHASE 1: Topologische Replikation (Ignoriert .git)
+# PHASE 1: Topologische Replikation (Ignoriert .git und Dygma)
 # -name ".git" -prune blockiert das Betreten des Versionskontroll-Graphen
 # ==========================================
-find "$SRC" -mindepth 1 -name ".git" -prune -o -type d -printf '%P\n' |  while read -r relative_dir; do
+find "$SRC" -mindepth 1 \( -name ".git" -o -name "Dygma" \) -prune -o -type d -printf '%P\n' |  while read -r relative_dir; do
     echo "Destined dir $DEST not found, creating $DEST/$relative_dir..."
     mkdir -p "$DEST/$relative_dir"
     echo "$DEST/$relative_dir created..."
 done
 
 # ==========================================
-# PHASE 2: I/O-Mapping (Daten-Verlinkung, Ignoriert .git, README.md, LIECENSE)
+# PHASE 2: I/O-Mapping (Daten-Verlinkung, Ignoriert .git, README.md, LIECENSE, Dygma)
 # ==========================================
-find "$SRC" -mindepth 1 \( -name ".git" -o -name "README.md" -o -name "LICENSE" \) -prune -o -type f -printf '%P\n' | while read -r relative_file; do
+find "$SRC" -mindepth 1 \( -name ".git" -o -name "README.md" -o -name "LICENSE" -o -name "Dygma" \) -prune -o -type f -printf '%P\n' | while read -r relative_file; do
     source_file="$SRC/$relative_file"
     target_link="$DEST/$relative_file"
 
