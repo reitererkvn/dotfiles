@@ -70,14 +70,5 @@ hl.layout.register("master-grid", {
 
         layout_side(left_slaves, area.x, lw)
         layout_side(right_slaves, area.x + mw + lw, rw)
-    end,
-
-    layout_msg = function(msg)
-        if msg == "swap_master" then
-            local active = hl.get_active_window()
-            local ws = hl.get_active_workspace()
-            -- Use hyprctl-style dispatch for maximum compatibility
-            hl.exec_cmd("hyprctl dispatch swapwithmaster")
-        end
     end
 })
