@@ -11,7 +11,7 @@ hl.config({
             active_border = { colors = { colors.active1, colors.active2 }, angle = 45 },
             inactive_border = { colors = { colors.inactive } },
         },
-        layout = "master"
+        layout = "lua:master-grid"
     },
     decoration = {
         rounding = 10,
