@@ -20,8 +20,18 @@ hl.bind(mainMod .. " + L", hl.dsp.exec_cmd("loginctl lock-session"))
 hl.bind(mainMod .. " + B", hl.dsp.exec_cmd("uwsm app -- " .. browser))
 hl.bind(mainMod .. " + A", function()
     local current = hl.get_config("general.layout")
-    local next = (current == "dwindle") and "master" or "dwindle"
-    hl.config({ general = { layout = next } })
+    local layouts = { "dwindle", "master", "lua:master-grid" }
+    local next_layout = layouts[1]
+    
+    for i, l in ipairs(layouts) do
+        if l == current then
+            next_layout = layouts[(i % #layouts) + 1]
+            break
+        end
+    end
+    
+    hl.config({ general = { layout = next_layout } })
+    print("[Layout] Switched to: " .. next_layout)
 end)
 
 -- Navigation

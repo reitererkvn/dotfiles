@@ -15,6 +15,7 @@ require("keybinds")
 require("windowrules")
 require("autostart")
 require("sun")
+require("layout")
 
 -- 3. GLOBAL CONFIG
 hl.config({
