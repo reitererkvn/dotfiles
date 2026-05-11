@@ -1,0 +1,7 @@
+{
+  "projects": {
+    "/home/kevin": "kevin",
+    "/home/kevin/.dotfiles": "dotfiles",
+    "/": "project"
+  }
+}
