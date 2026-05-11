@@ -16,73 +16,49 @@ hl.layout.register("master-grid", {
             return
         end
 
-        -- Calculate dimensions
+        -- Calculate dimensions for fixed centering (Turn 40 logic)
         local mw = math.floor(area.w * mfact)
-        local sw_avail = area.w - mw
+        local sw_total = area.w - mw
+        local lw = math.floor(sw_total / 2)
+        local rw = sw_total - lw
 
-        -- Slaves
-        local slaves = {}
-        for i = 2, n do
-            table.insert(slaves, windows[i])
-        end
-
-        -- Distribute slaves (L, R, L, R...)
-        local left_slaves = {}
-        local right_slaves = {}
-        for i, s in ipairs(slaves) do
-            if i % 2 == 1 then
-                table.insert(left_slaves, s)
-            else
-                table.insert(right_slaves, s)
-            end
-        end
-
-        -- Dynamic Master Positioning & Stack Widths
-        local lw, rw, mx
-        if #left_slaves > 0 and #right_slaves > 0 then
-            -- Both sides occupied: Master in center
-            lw = math.floor(sw_avail / 2)
-            rw = sw_avail - lw
-            mx = area.x + lw
-        elseif #left_slaves > 0 then
-            -- Only left side: Master moves to the right
-            lw = sw_avail
-            rw = 0
-            mx = area.x + lw
-        elseif #right_slaves > 0 then
-            -- Only right side: Master moves to the left
-            lw = 0
-            rw = sw_avail
-            mx = area.x
-        else
-            -- Safety fallback
-            lw, rw = 0, 0
-            mx = area.x
-        end
-
-        -- 1. Place Master
+        -- Master Window (Fixed Center)
         windows[1]:place({
-            x = mx,
+            x = area.x + lw,
             y = area.y,
             w = mw,
             h = area.h
         })
 
-        -- 2. Helper for Side-Grid logic
+        -- Slaves
+        local left_slaves = {}
+        local right_slaves = {}
+        for i = 2, n do
+            if (i - 2) % 2 == 0 then
+                table.insert(left_slaves, windows[i])
+            else
+                table.insert(right_slaves, windows[i])
+            end
+        end
+
+        -- Helper for Side Layout
         local function layout_side(side_slaves, side_x, side_w)
             local num = #side_slaves
             if num == 0 then return end
 
-            if num == 1 then
-                -- Single slave: fills height and side-width
-                side_slaves[1]:place({
-                    x = side_x,
-                    y = area.y,
-                    w = side_w,
-                    h = area.h
-                })
+            if num <= 2 then
+                -- Vertical Stack (fills width)
+                local h = math.floor(area.h / num)
+                for i, s in ipairs(side_slaves) do
+                    s:place({
+                        x = side_x,
+                        y = area.y + (i - 1) * h,
+                        w = side_w,
+                        h = h
+                    })
+                end
             else
-                -- Grid: arranges side-by-side starting from 2 windows
+                -- Smart Grid with Width Fill
                 local cols = 2
                 local rows = math.ceil(num / cols)
                 local rh = math.floor(area.h / rows)
@@ -91,12 +67,12 @@ hl.layout.register("master-grid", {
                     local r = math.floor((i - 1) / cols)
                     local c = (i - 1) % cols
                     
-                    -- Check if it's the last row to "fill width"
+                    -- Optimization: If it's the last row and only has 1 window, fill full side width
                     local is_last_row = (r == rows - 1)
                     local windows_in_last_row = num % cols
                     if windows_in_last_row == 0 then windows_in_last_row = cols end
                     
-                    local current_row_cols = is_last_row and windows_in_last_row or cols
+                    local current_row_cols = (is_last_row) and windows_in_last_row or cols
                     local cw = math.floor(side_w / current_row_cols)
 
                     s:place({
