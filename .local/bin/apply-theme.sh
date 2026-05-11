@@ -96,5 +96,4 @@ envsubst < "$HOME/.config/hypr/assets/gtk-settings.xtemplate.ini" > "$HOME/.conf
 # 5. Signal-Reload
 killall -SIGUSR2 waybar
 hyprctl reload
-"$HOME/.local/bin/hypr-sun.sh"
 killall -SIGUSR1 kitty

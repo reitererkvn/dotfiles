@@ -18,7 +18,11 @@ hl.bind(mainMod .. " + J", hl.dsp.layout("togglesplit"))
 hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen({ action = "toggle" }))
 hl.bind(mainMod .. " + L", hl.dsp.exec_cmd("loginctl lock-session"))
 hl.bind(mainMod .. " + B", hl.dsp.exec_cmd("uwsm app -- " .. browser))
-hl.bind(mainMod .. " + A", hl.dsp.exec_cmd("hyprctl keyword general:layout $(hyprctl getoption general:layout -j | jq -r '.str' | grep -q 'dwindle' && echo 'master' || echo 'dwindle')"))
+hl.bind(mainMod .. " + A", function()
+    local current = hl.get_config("general.layout")
+    local next = (current == "dwindle") and "master" or "dwindle"
+    hl.config({ general = { layout = next } })
+end)
 
 -- Navigation
 local directions = { left = "l", right = "r", up = "u", down = "d" }

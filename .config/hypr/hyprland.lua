@@ -14,15 +14,18 @@ require("look")
 require("keybinds")
 require("windowrules")
 require("autostart")
+require("sun")
 
 -- 3. GLOBAL CONFIG
 hl.config({
     input = {
-        kb_layout = "de"
+        kb_layout = "de",
+        numlock_by_default = true
     }
 })
 
 -- 4. SRE LOGGING (Optional)
+print("Hyprland session initialized with Lua logic.")
 -- hl.on("startup", function()
 --     print("Hyprland session initialized with Lua logic.")
 -- end)
