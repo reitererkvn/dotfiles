@@ -16,13 +16,13 @@ hl.layout.register("master-grid", {
             return
         end
 
-        -- Calculate dimensions for fixed centering (Turn 40 logic)
+        -- Dimensions
         local mw = math.floor(area.w * mfact)
         local sw_total = area.w - mw
         local lw = math.floor(sw_total / 2)
         local rw = sw_total - lw
 
-        -- Master Window (Fixed Center)
+        -- Master (Window 1)
         windows[1]:place({
             x = area.x + lw,
             y = area.y,
@@ -34,59 +34,50 @@ hl.layout.register("master-grid", {
         local left_slaves = {}
         local right_slaves = {}
         for i = 2, n do
-            if (i - 2) % 2 == 0 then
+            if i % 2 == 0 then
                 table.insert(left_slaves, windows[i])
             else
                 table.insert(right_slaves, windows[i])
             end
         end
 
-        -- Helper for Side Layout
-        local function layout_side(side_slaves, side_x, side_w)
+        local function layout_side(side_slaves, sx, sw)
             local num = #side_slaves
             if num == 0 then return end
 
             if num <= 2 then
-                -- Vertical Stack (fills width)
                 local h = math.floor(area.h / num)
                 for i, s in ipairs(side_slaves) do
-                    s:place({
-                        x = side_x,
-                        y = area.y + (i - 1) * h,
-                        w = side_w,
-                        h = h
-                    })
+                    s:place({ x = sx, y = area.y + (i-1)*h, w = sw, h = h })
                 end
             else
-                -- Smart Grid with Width Fill
-                local cols = 2
-                local rows = math.ceil(num / cols)
+                local rows = math.ceil(num / 2)
                 local rh = math.floor(area.h / rows)
-                
                 for i, s in ipairs(side_slaves) do
-                    local r = math.floor((i - 1) / cols)
-                    local c = (i - 1) % cols
-                    
-                    -- Optimization: If it's the last row and only has 1 window, fill full side width
+                    local r = math.floor((i-1) / 2)
+                    local c = (i-1) % 2
                     local is_last_row = (r == rows - 1)
-                    local windows_in_last_row = num % cols
-                    if windows_in_last_row == 0 then windows_in_last_row = cols end
+                    local last_row_count = num % 2
+                    if last_row_count == 0 then last_row_count = 2 end
                     
-                    local current_row_cols = (is_last_row) and windows_in_last_row or cols
-                    local cw = math.floor(side_w / current_row_cols)
-
-                    s:place({
-                        x = side_x + c * cw,
-                        y = area.y + r * rh,
-                        w = cw,
-                        h = rh
-                    })
+                    local cur_cols = is_last_row and last_row_count or 2
+                    local cw = math.floor(sw / cur_cols)
+                    
+                    s:place({ x = sx + c*cw, y = area.y + r*rh, w = cw, h = rh })
                 end
             end
         end
 
-        -- Apply side layouts
         layout_side(left_slaves, area.x, lw)
         layout_side(right_slaves, area.x + mw + lw, rw)
+    end,
+
+    layout_msg = function(msg)
+        if msg == "swap_master" then
+            local active = hl.get_active_window()
+            local ws = hl.get_active_workspace()
+            -- Use hyprctl-style dispatch for maximum compatibility
+            hl.exec_cmd("hyprctl dispatch swapwithmaster")
+        end
     end
 })

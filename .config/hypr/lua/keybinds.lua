@@ -79,8 +79,7 @@ hl.bind("XF86AudioPlay", hl.dsp.exec_cmd("playerctl play-pause"), lock_opts)
 hl.bind("XF86AudioPrev", hl.dsp.exec_cmd("playerctl previous"), lock_opts)
 
 -- Custom
-hl.bind(mainMod .. " + SHIFT + D", hl.dsp.layout("swapprev master"))
-hl.bind(mainMod .. " + D", hl.dsp.layout("swapwithmaster master"))
+hl.bind(mainMod .. " + D", hl.dsp.layout("swap_master"))
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd("uwsm app -- " .. terminal .. " zsh -i -c '" .. filemanager .. "; exec zsh'"))
 hl.bind(mainMod .. " + CTRL + V", hl.dsp.exec_cmd("cliphist list | fuzzel --dmenu | cliphist decode | wl-copy"))
 hl.bind(mainMod .. " + SHIFT + W", hl.dsp.dpms({ action = "off" }))
