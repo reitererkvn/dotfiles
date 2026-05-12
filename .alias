@@ -22,15 +22,16 @@ alias dotsync='/home/kevin/.dotfiles/.local/bin/dotfiles-sync.sh'
 alias sudodotsync='sudo /opt/system-dotfiles/usr/local/bin/dotfiles-sync.sh'
 #
 # sync dotfiles to git
-alias gitsync='/home/kevin/.dotfiles/.local/bin/git-push.sh' # -u only user, -s only system
+alias gitsync='/home/kevin/.dotfiles/.local/bin/git-push.sh' # -u only user, -s only system, -n nas only
 #
 # applies theme, writes color configs to ~/.config for apps who dont support envs
 alias apply-theme='uwsm app -- /home/kevin/.dotfiles/.local/bin/apply-theme.sh'
 #
 # sync dotfiles & apply theme & autocommit to git (no apply-theme for dotsyncs)
-alias fullsync='dotsync && apply-theme && sudodotsync && gitsync' # home & user
+alias fullsync='dotsync && apply-theme && sudodotsync && sudo ssh kevin@nas-01 "sudo /opt/system-dotfiles/usr/local/bin/dotfiles-sync.sh" && gitsync' # home & user
 alias fullsyncu='dotsync && apply-theme && gitsync -u' # user only
 alias fullsyncs='sudodotsync && gitsync -s' # system (root) only
+alias fullsyncn='sudo ssh kevin@nas-01 "sudo /opt/system-dotfiles/usr/local/bin/dotfiles-sync.sh" && gitsync -n'
 #
 # ################################################################
 # ################################################################
