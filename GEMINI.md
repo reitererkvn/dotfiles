@@ -16,10 +16,11 @@
 *   **Custom Layout:** `lua:master-grid` (Zentriertes Master, Grid-Seiten mit Breiten-Auffüllung).
 *   **Automation:** `sun.lua` verwaltet Wallpaper-Wechsel event-basiert (ersetzt `hypr-sun.sh` und Systemd-Timer).
 
-## 3. Workflows (Source of Truth)
-*   **Repo-First:** Änderungen an Skripten MÜSSEN zuerst in den Repositories vorgenommen werden.
-    *   System-Configs: `/opt/system-dotfiles/`
-    *   User-Configs: `/home/kevin/.dotfiles/`
+## 3. Workflows & Repo-Exklusivität (Source of Truth)
+*   **STRIKTE TRENNUNG:** Dieses Repo (`~/.dotfiles/`) enthält AUSSCHLIESSLICH User-Konfigurationen.
+    *   **NAS-Skripte:** (z.B. `nas_cloud_sync.sh`, `immich-mover.sh`) dürfen hier NIEMALS existieren oder bearbeitet werden. Diese liegen ausschließlich auf `nas-01:/opt/system-dotfiles/`.
+    *   **System-Skripte:** (z.B. Snapshot-Management) liegen ausschließlich in `/opt/system-dotfiles/` auf dem Desktop.
+*   **Repo-First:** Änderungen an Skripten MÜSSEN zuerst in den jeweiligen Repositories vorgenommen werden.
 *   **Deployment:** Nach Repo-Änderung erfolgt das Deployment nach `/usr/local/bin/` (System) oder via `dotfiles-sync.sh` (User).
 
 ## 4. Bekannte Fallstricke & Fixes
