@@ -13,42 +13,37 @@ HyprCachyOS solves this through:
 
 ## ⚙️ Architecture & SRE "Reality"
 
-This repository is built with an infrastructure-as-code mindset. It actively rejects brittle desktop Linux conventions (like messy `exec-once` chains in compositor configs) in favor of robust, production-grade system management.
+This repository is built with an infrastructure-as-code mindset. It actively rejects brittle desktop Linux conventions in favor of robust, production-grade system management and a fully programmable compositor environment.
 
 | Principle | Implementation (The Reality) | File Reference |
 | :--- | :--- | :--- |
-| **Reliability via Systemd** | Daemons (Waybar, Agents, etc.) are managed as `systemd --user` units with proper dependency trees. This ensures clean lifecycle management, automatic restarts on failure, and predictable session teardowns. | `.config/systemd/user/` |
-| **State Modularity & SSOT** | Leveraging **UWSM** (Universal Wayland Session Manager), the environment variables are loaded modularly via an `env.d` structure. This guarantees a clean state and a Single Source of Truth before the compositor even starts. | `.config/uwsm/env` |
-| **Resource Optimization (IPC)** | High-overhead tools (e.g., htop, nvtop) are not launched at startup. Instead, a custom daemon (`hypr-lazy.sh`) listens to the Hyprland IPC socket and lazy-loads these processes *only* when their specific workspace is accessed, exiting itself once its job is done. | `.local/bin/hypr-lazy.sh` |
-| **Idempotent Synchronization** | The `dotfiles-sync.sh` script acts as a state enforcer. It safely creates symlinks, performs garbage collection on orphaned links, and strictly validates I/O paths to prevent accidental data loss. | `.local/bin/dotfiles-sync.sh` |
-| **Fail-Safe Operations** | Built-in aliases like `snapnow` trigger instant, concurrent BTRFS snapshots of the root (`@`) und home (`@home`) subvolumes, providing an immediate rollback mechanism before risky operations. | `.alias` |
+| **Programmable Compositing** | Hyprland 0.55+ uses a **native Lua API**. This moves logic from static strings to a modular, event-driven architecture (Solar scheduling, dynamic layouts). | `.config/hypr/lua/` |
+| **Reliability via Systemd** | Daemons (Waybar, Agents, etc.) are managed as `systemd --user` units with proper dependency trees. This ensures clean lifecycle management and automatic restarts. | `.config/systemd/user/` |
+| **State Modularity & SSOT** | Leveraging **UWSM** (Universal Wayland Session Manager), environment variables are loaded modularly via an `env.d` structure before the compositor starts. | `.config/uwsm/env` |
+| **Resource Optimization** | High-overhead tools are lazy-loaded via a custom daemon (`hypr-lazy.sh`) that listens to the Hyprland IPC socket and triggers processes only when needed. | `.local/bin/hypr-lazy.sh` |
+| **Idempotent Sync** | The `dotfiles-sync.sh` script acts as a state enforcer, safely creating symlinks and performing garbage collection on orphaned links. | `.local/bin/dotfiles-sync.sh` |
+| **Unified Documentation** | SRE-level system facts and topology are managed via a centralized `GEMINI.md` logic, synchronized across Desktop & NAS. | `gemini-sync-docs.sh` |
 
 ## 🤖 AI-Driven Engineering (The LLM Factor)
 
-This entire ecosystem was built from absolute **zero prior Linux knowledge**, beginning in **February 2026**. The first **6 weeks** were a rapid sprint to establish a production-grade desktop environment and early cloud backup pipelines. Achieving this level of architectural depth in such a short timeframe—just a few months in total—is not a claim of traditional Linux mastery—it is a showcase of **AI-driven Systems Engineering**.
+This entire ecosystem was built from absolute **zero prior Linux knowledge**, beginning in **February 2026**. Since then, it has evolved from a simple setup to a complex SRE infrastructure.
 
-*   **Continuous Evolution:** What began as a personal productivity tool has since evolved into a full SRE infrastructure. Since that initial milestone, the project has expanded into multi-host NAS orchestration, sophisticated storage tiering (MergerFS/Btrfs), and most recently, a fully programmable Lua-native compositor environment.
-
-*   **The Engine (Gemini LLM):** Used as an intelligent compiler to translate high-level architectural requirements into functional, optimized Bash and configuration syntax.
-*   **The Architect (Human):** My role focused on the *vision* and *verification*. Instead of blindly accepting code, I rigorously steered the LLM to avoid "dirty hacks" and enforce SRE best practices. I dictated the *Why* (e.g., "We need fail-safes, use systemd instead of exec-once") and validated the *How* (e.g., verifying that socket communication is the most performant way to lazy-load).
-
-This project serves as a proof-of-work for modern engineering: orchestrating AI tools not just to write code, but to build robust, production-grade systems rapidly and cleanly.
+*   **Lua-Native Migration (May 2026):** Transitioned from legacy `.conf` files to a fully modular Lua architecture, while maintaining the robust **UWSM/Systemd** foundation for process management.
+*   **The Engine (Gemini LLM):** Used as an intelligent compiler and SRE consultant to enforce best practices and ensure architectural integrity across multi-host environments.
 
 ## 🛠 Core Components
 
-The choice of software is strictly focused on minimal overhead, maximum performance, and keyboard-centric control:
-
-*   **OS Base:** CachyOS (Arch Linux optimized for extreme performance and low latency).
-*   **Compositor:** Hyprland (Wayland Tiling Window Manager).
-*   **Terminal:** Kitty (GPU-accelerated, highly customizable).
-*   **Editor:** Neovim (Configured via `kickstart.nvim` for a fast development loop).
-*   **Launcher & Bar:** Fuzzel & Waybar (Lightweight, Wayland-native).
-*   **Theming Engine:** Custom bash Templating (`apply-theme.sh`) using `envsubst` for dynamic, consistent RGBA injection across all UI elements.
+*   **OS Base:** CachyOS (Arch Linux optimized for extreme performance).
+*   **Compositor:** Hyprland 0.55+ (**Lua-native API**).
+*   **Terminal:** Kitty (GPU-accelerated).
+*   **Editor:** Neovim (Kickstart.nvim).
+*   **Launcher & Bar:** Fuzzel & Waybar.
+*   **Theming:** Custom bash Templating (`apply-theme.sh`) using `envsubst`.
 
 ## 📦 Installation & Setup
 
 ### **Prerequisites**
-Ensure your base system (preferably CachyOS/Arch Linux) has the necessary Wayland tools installed, specifically `Hyprland`, `UWSM`, and standard GNU userland utilities.
+Ensure your base system has `Hyprland` (0.55+), `UWSM`, `sunwait`, and standard GNU utilities installed.
 
 ### **Manual Installation**
 
@@ -58,29 +53,34 @@ Ensure your base system (preferably CachyOS/Arch Linux) has the necessary Waylan
     ```
 
 2.  **Enforce Configuration State (Sync):**
-    Run the idempotent sync script to link the repository to your `$HOME`.
     ```bash
     ~/.dotfiles/.local/bin/dotfiles-sync.sh
     ```
 
-3.  **Activate Service Daemons:**
-    Enable the systemd user units to hand over process control to systemd.
+3.  **Synchronize System Documentation:**
+    ```bash
+    ~/.dotfiles/.local/bin/gemini-sync-docs.sh
+    ```
+
+4.  **Activate Service Daemons:**
     ```bash
     ~/.dotfiles/.local/bin/install-userservice.sh
     ```
 
-4.  **Launch Session:**
-    Start your session via UWSM (or your display manager configured for UWSM) to utilize the SSOT environment loader.
+5.  **Launch Session:**
+    Start your session via **UWSM** (e.g., `uwsm start hyprland.desktop`) to utilize the SSOT environment loader and systemd integration.
 
 ## 📜 Key Configuration Scripts
 
-Located in `.local/bin`, these scripts manage the system state and ensure the "HyprCachyOS" logic is enforced:
+Located in `.local/bin`, these scripts manage the system state:
 
 | Script Name | Purpose |
 | :--- | :--- |
+| `gemini-sync-docs.sh` | **SRE Master Sync:** Distributes the central `GEMINI.md` across all repositories (Desktop/NAS). |
+| `dotfiles-sync.sh` | The idempotent state synchronizer for symlinks. |
 | `hypr-lazy.sh` | The IPC socket listener for cognitive offloading and lazy-loading of heavy applications. |
-| `dotfiles-sync.sh` | The idempotent state synchronizer and garbage collector for symlinks. |
-| `apply-theme.sh` | The dynamic template renderer using `envsubst` for system-wide theming. |
 | `git-push.sh` | Automates Git state synchronization for the dotfiles repository. |
-| `gdrive-live-sync.sh` | Manages rclone-based live syncs with intelligent exclusion lists. |
-| `hypr-sun.sh` | Dynamically adjusts aesthetics based on geographic time, reducing eye strain and cognitive fatigue during twilight hours. |
+| `gdrive-live-sync.sh` | Manages rsync-based live syncs with Google Drive using intelligent exclusion lists. |
+| `apply-theme.sh` | Dynamic template renderer for system-wide theming. |
+| `install-userservice.sh` | Deploys and enables the `systemd --user` units for session management. |
+| `sun.lua` (Config) | **Solar Scheduler:** Lua-native event handler for wallpaper and aesthetic transitions. |
