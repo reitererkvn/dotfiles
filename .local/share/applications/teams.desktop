@@ -1,0 +1,9 @@
+#!/usr/bin/env
+[Desktop Entry]
+Version=1.0
+Terminal=false
+Type=Application
+Name=Microsoft Teams
+Exec=uwsm app -- google-chrome-stable --app=https://teams.live.com/
+Icon=teams
+StartupWMClass=teams
