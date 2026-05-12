@@ -1,8 +1,13 @@
 # SRE Infrastructure & Dotfiles Context
-**Stand:** 11. Mai 2026
+**Stand:** 12. Mai 2026
 **Architektur-Level:** Senior SRE / Modular Decoupled
 
-## 1. System-Architektur (HyprCachyOS & NAS-01)
+## 1. System-Topologie (Hardware & Netz)
+*   **Desktop (`homeserver`):** CachyOS Linux | i7-7700K | 16GB RAM | GTX 1070 Ti | 5K Display | IP: `192.168.178.22`
+*   **NAS (`nas-01`):** Debian 13 | AMD A10-6700 | 8GB RAM | 256GB SSD + 1TB HDD (`/mnt/HDD-01`) | IP: `192.168.178.46`
+*   **Connectivity:** SSH via Desktop-Agent-Forwarding; NAS -> Cloud via GDrive (SRE-Limit: 200 TPS, 16 Conn).
+
+## 2. System-Architektur (HyprCachyOS & NAS-01)
 *   **Storage (NAS-01):** Hybrid-Modell (SSD für DB/Ingest, HDD für Archiv) via `MergerFS` unter `/lib/immich`.
 *   **Snapshot-Logik:** SSD-Subvolumes via Snapper. HDD-Snapshots nachts via Sync-Skript.
 *   **Trigger-Logik:** Event-basierte Trigger via SSD-Files (`/var/lib/nas-sync-triggers/`) zur HDD-Schonung.
@@ -22,6 +27,7 @@
     *   **NAS-Skripte:** (z.B. `nas_cloud_sync.sh`, `immich-mover.sh`) dürfen hier NIEMALS existieren oder bearbeitet werden. Diese liegen ausschließlich auf `nas-01:/opt/system-dotfiles/`.
     *   **System-Skripte:** (z.B. Snapshot-Management) liegen ausschließlich in `/opt/system-dotfiles/` auf dem Desktop.
 *   **Repo-First:** Änderungen an Skripten MÜSSEN zuerst in den jeweiligen Repositories vorgenommen werden.
+*   **Doc-Sync (MANDATORY):** Nach Änderungen an einer `GEMINI.md` muss das Skript `gemini-sync-docs.sh` ausgeführt werden, um alle Repos synchron zu halten.
 *   **Deployment:** Nach Repo-Änderung erfolgt das Deployment nach `/usr/local/bin/` (System) oder via `dotfiles-sync.sh` (User).
 
 ## 4. Bekannte Fallstricke & Fixes
