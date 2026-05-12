@@ -1,6 +1,6 @@
 #!/bin/bash
 WATCH_LIST="$HOME/.config/rclone/inotify-watch.txt"
-CLOUD_ROOT="gdrive:backups/live"
+CLOUD_ROOT="gdrive,shared_with_me:backups/live"
     :q
 
 # --- NEU: PFADE EINLESEN ---
@@ -46,7 +46,7 @@ echo "[System] Inotify-Überwachung aktiv..."
 inotifywait -m -r -q -e modify,create,delete,move --format "%w%f" "${VALID_PATHS[@]}" | \
 while read -r FULL_EVENT_PATH; do
     echo "[Event] Änderung an: $FULL_EVENT_PATH"
-    
+
     # Debounce, damit der i7-7700K bei schnellen Schreibvorgängen nicht überlastet
     sleep 2
 
