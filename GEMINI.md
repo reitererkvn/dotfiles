@@ -4,10 +4,11 @@
 
 ## 1. System-Architektur (HyprCachyOS & NAS-01)
 *   **Storage (NAS-01):** Hybrid-Modell (SSD für DB/Ingest, HDD für Archiv) via `MergerFS` unter `/lib/immich`.
-*   **Snapshot-Logik:** SSD-Subvolumes via Snapper. HDD-Snapshots nachts via Sync-Skript (Timeline DEAKTIVIERT).
+*   **Snapshot-Logik:** SSD-Subvolumes via Snapper. HDD-Snapshots nachts via Sync-Skript.
+*   **Trigger-Logik:** Event-basierte Trigger via SSD-Files (`/var/lib/nas-sync-triggers/`) zur HDD-Schonung.
 *   **Backup-Kette:** 
-    *   Desktop -> NAS via `upload_snapshots.sh` (Trigger-File: `.sync_done`).
-    *   NAS Cloud Sync via Restic (`nas_cloud_sync.sh`) mit SRE-Limits zum Schutz der Google Drive API.
+    *   Desktop -> NAS via `upload_snapshots.sh` (Trigger: `homeserver_sync.done`).
+    *   NAS Cloud Sync via Restic (`nas_cloud_sync.sh`) nach lokalem Sync (Trigger: `nas_local_sync.done`).
 
 ## 2. Hyprland Configuration (Lua-Native)
 *   **Version:** 0.55+ (Lua API).
