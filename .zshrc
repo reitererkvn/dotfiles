@@ -47,4 +47,4 @@ bindkey  "^[[1;5D" backward-word          # Strg + Pfeil Links
 #
 # alias
 [[ -f "$HOME/.alias" ]] && source "$HOME/.alias"
-
+[[ -f "$HOME/.vaultwarden" ]] && source "$HOME/.vaultwarden"
