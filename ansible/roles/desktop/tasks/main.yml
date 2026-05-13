@@ -57,8 +57,9 @@
 - name: Update global npm packages
   become: true
   ansible.builtin.command: npm update -g
+  register: npm_update_output
   when: npm_check.rc == 0
-  changed_when: true
+  changed_when: "npm_update_output.stdout != ''"
 
 - name: Ensure Bitwarden CLI is installed globally
   become: true

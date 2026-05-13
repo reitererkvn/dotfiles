@@ -50,3 +50,4 @@
     project_src: /opt/containerd/admin_stack/
     state: present
     wait: true
+  tags: [ infrastructure_only ]
