@@ -8,13 +8,13 @@ services:
       POSTGRES_DB: semaphore
     volumes:
       - /opt/containerd/semaphore/db:/var/lib/postgresql/data
+    networks:
+      - admin_stack_net
     restart: unless-stopped
 
   semaphore:
     image: semaphoreui/semaphore:latest
     container_name: semaphore
-    ports:
-      - "13000:3000" # Moved host port to 13000 to avoid conflict with Caddy on 3000
     environment:
       SEMAPHORE_DB_USER: semaphore
       SEMAPHORE_DB_PASS: semaphore_password
@@ -31,37 +31,37 @@ services:
       - semaphore-db
     volumes:
       - /opt/containerd/semaphore/playbooks:/home/semaphore/playbooks
+    networks:
+      - admin_stack_net
     restart: unless-stopped
 
   prometheus:
     image: prom/prometheus:latest
     container_name: prometheus
-    ports:
-      - "19090:9090" # Moved host port to 19090 to avoid conflict with Caddy on 9090
     volumes:
       - /opt/containerd/prometheus/config:/etc/prometheus
       - /opt/containerd/prometheus/data:/prometheus
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/prometheus'
+    networks:
+      - admin_stack_net
     restart: unless-stopped
 
   grafana:
     image: grafana/grafana-oss:latest
     container_name: grafana
-    ports:
-      - "13001:3000" # Moved host port to 13001 to avoid conflict with Caddy on 3001
     volumes:
       - /opt/containerd/grafana/data:/var/lib/grafana
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=admin_password
+    networks:
+      - admin_stack_net
     restart: unless-stopped
 
   node-exporter-nas:
     image: prom/node-exporter:latest
     container_name: node-exporter-nas
-    ports:
-      - "9101:9100" # Moved host port to 9101 to keep 9100 free if needed
     volumes:
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
@@ -70,4 +70,11 @@ services:
       - '--path.procfs=/host/proc'
       - '--path.sysfs=/host/sys'
       - '--collector.filesystem.ignored-mount-points=^/(sys|proc|dev|host|etc)($$|/)'
+    networks:
+      - admin_stack_net
     restart: unless-stopped
+
+networks:
+  admin_stack_net:
+    name: admin_stack_net
+    driver: bridge
