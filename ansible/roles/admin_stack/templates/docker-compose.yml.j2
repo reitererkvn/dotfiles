@@ -3,9 +3,9 @@ services:
     image: postgres:15-alpine
     container_name: semaphore-db
     environment:
-      POSTGRES_USER: semaphore
-      POSTGRES_PASSWORD: semaphore_password
-      POSTGRES_DB: semaphore
+      POSTGRES_USER: ${SEMAPHORE_DB_USER:-semaphore}
+      POSTGRES_PASSWORD: ${SEMAPHORE_DB_PASS}
+      POSTGRES_DB: ${SEMAPHORE_DB_NAME:-semaphore}
     volumes:
       - /opt/containerd/semaphore/db:/var/lib/postgresql/data
     restart: unless-stopped
@@ -16,17 +16,17 @@ services:
     ports:
       - "13000:3000"
     environment:
-      SEMAPHORE_DB_USER: semaphore
-      SEMAPHORE_DB_PASS: semaphore_password
+      SEMAPHORE_DB_USER: ${SEMAPHORE_DB_USER:-semaphore}
+      SEMAPHORE_DB_PASS: ${SEMAPHORE_DB_PASS}
       SEMAPHORE_DB_HOST: semaphore-db
       SEMAPHORE_DB_PORT: "5432"
       SEMAPHORE_DB_DIALECT: postgres
-      SEMAPHORE_DB: semaphore
+      SEMAPHORE_DB: ${SEMAPHORE_DB_NAME:-semaphore}
       SEMAPHORE_PLAYBOOK_PATH: /home/semaphore/playbooks
-      SEMAPHORE_ADMIN_PASSWORD: admin_password
-      SEMAPHORE_ADMIN_NAME: Admin
-      SEMAPHORE_ADMIN_EMAIL: admin@example.com
-      SEMAPHORE_ADMIN: admin
+      SEMAPHORE_ADMIN_PASSWORD: ${SEMAPHORE_ADMIN_PASS}
+      SEMAPHORE_ADMIN_NAME: ${SEMAPHORE_ADMIN_NAME:-Admin}
+      SEMAPHORE_ADMIN_EMAIL: ${SEMAPHORE_ADMIN_EMAIL:-admin@example.com}
+      SEMAPHORE_ADMIN: ${SEMAPHORE_ADMIN_USER:-admin}
     depends_on:
       - semaphore-db
     volumes:
@@ -54,7 +54,7 @@ services:
     volumes:
       - /opt/containerd/grafana/data:/var/lib/grafana
     environment:
-      - GF_SECURITY_ADMIN_PASSWORD=admin_password
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASS}
     restart: unless-stopped
 
   node-exporter-nas:
