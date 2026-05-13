@@ -1,0 +1,20 @@
+---
+- name: Dotfiles Deployment
+  hosts: all
+  gather_facts: true
+  tasks:
+    - name: Ping all hosts
+      ansible.builtin.ping:
+
+    - name: Ensure dotfiles repository is present
+      ansible.builtin.git:
+        repo: 'https://github.com/kevin/.dotfiles.git'
+        dest: "{{ ansible_env.HOME }}/.dotfiles"
+        version: main
+        update: true
+
+    - name: Execute dotfiles-sync script
+      ansible.builtin.shell: "{{ ansible_env.HOME }}/.dotfiles/.local/bin/dotfiles-sync.sh"
+      args:
+        executable: /bin/bash
+      changed_when: true

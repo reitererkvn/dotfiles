@@ -1,0 +1,55 @@
+---
+# Tasks for Arch-based Desktop (CachyOS)
+
+- name: Update Arch/CachyOS Keyrings
+  become: true
+  community.general.pacman:
+    name:
+      - archlinux-keyring
+      - cachyos-keyring
+    state: latest
+    update_cache: true
+
+- name: Check for paru availability
+  ansible.builtin.command: which paru
+  register: paru_check
+  failed_when: false
+  changed_when: false
+
+- name: Perform full system upgrade with paru
+  ansible.builtin.shell: paru -Syu --noconfirm
+  when: paru_check.rc == 0
+  register: update_output
+  changed_when: "'nothing to do' not in update_output.stdout"
+
+- name: Prune pacman cache (paccache)
+  become: true
+  ansible.builtin.command: paccache -r
+  when: system_cleanup | default(false)
+  register: paccache_output
+  changed_when: "'no candidate packages found for pruning' not in paccache_output.stdout"
+
+- name: Clear AUR build cache (yay)
+  ansible.builtin.command: yay -Scc --aur --noconfirm
+  when: system_cleanup | default(false)
+  changed_when: true
+
+- name: Check for npm availability
+  ansible.builtin.command: which npm
+  register: npm_check
+  failed_when: false
+  changed_when: false
+
+- name: Update global npm packages
+  become: true
+  ansible.builtin.command: npm update -g
+  when: npm_check.rc == 0
+  changed_when: true
+
+- name: Ensure Bitwarden CLI is installed globally
+  become: true
+  community.general.npm:
+    name: "@bitwarden/cli"
+    global: true
+    state: present
+  when: npm_check.rc == 0
