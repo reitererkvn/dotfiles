@@ -2,18 +2,17 @@
 - name: Ensure configuration directories exist
   become: true
   ansible.builtin.file:
-    path: "{{ item }}"
+    path: "{{ item.path }}"
     state: directory
     mode: '0755'
-    owner: "{{ ansible_user }}"
-    group: "{{ ansible_user }}"
+    owner: "{{ item.owner | default(ansible_user) }}"
+    group: "{{ item.group | default(ansible_user) }}"
   loop:
-    - /opt/containerd/semaphore/db
-    - /opt/containerd/semaphore/playbooks
-    - /opt/containerd/prometheus/config
-    - /opt/containerd/prometheus/data
-    - /opt/containerd/grafana/data
-    - /opt/containerd/admin_stack/
+    - { path: /opt/containerd/semaphore/db }
+    - { path: /opt/containerd/semaphore/playbooks }
+    - { path: /opt/containerd/prometheus/config }
+    - { path: /opt/containerd/prometheus/data, owner: '65534' } # prometheus (nobody)
+    - { path: /opt/containerd/grafana/data, owner: '472' }       # grafana
 
 - name: Deploy Prometheus configuration
   become: true
