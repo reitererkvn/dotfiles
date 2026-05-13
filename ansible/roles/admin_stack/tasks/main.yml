@@ -1,0 +1,37 @@
+---
+- name: Ensure configuration directories exist
+  become: true
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+  loop:
+    - /opt/containerd/semaphore/db
+    - /opt/containerd/semaphore/playbooks
+    - /opt/containerd/prometheus/config
+    - /opt/containerd/prometheus/data
+    - /opt/containerd/grafana/data
+    - /opt/containerd/admin_stack/
+
+- name: Deploy Prometheus configuration
+  become: true
+  ansible.builtin.template:
+    src: prometheus.yml.j2
+    dest: /opt/containerd/prometheus/config/prometheus.yml
+    mode: '0644'
+
+- name: Deploy Docker Compose file
+  become: true
+  ansible.builtin.template:
+    src: docker-compose.yml.j2
+    dest: /opt/containerd/admin_stack/docker-compose.yml
+    mode: '0644'
+
+- name: Start Monitoring Stack (Docker Compose)
+  become: true
+  community.docker.docker_compose_v2:
+    project_src: /opt/containerd/admin_stack/
+    state: present
+    wait: true

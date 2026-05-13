@@ -1,6 +1,20 @@
 ---
 # Tasks for Arch-based Desktop (CachyOS)
 
+- name: Check mirrorlist age
+  ansible.builtin.find:
+    paths: /etc/pacman.d
+    patterns: mirrorlist
+    age: 7d
+  register: mirrorlist_old
+
+- name: Update Arch Mirrorlist (reflector)
+  become: true
+  ansible.builtin.command:
+    cmd: reflector --latest 20 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
+  when: mirrorlist_old.matched > 0
+  changed_when: true
+
 - name: Update Arch/CachyOS Keyrings
   become: true
   community.general.pacman:
@@ -53,3 +67,16 @@
     global: true
     state: present
   when: npm_check.rc == 0
+
+- name: Install Prometheus Node Exporter
+  become: true
+  community.general.pacman:
+    name: prometheus-node-exporter
+    state: present
+
+- name: Enable and start Node Exporter service
+  become: true
+  ansible.builtin.systemd:
+    name: prometheus-node-exporter
+    state: started
+    enabled: true

@@ -14,3 +14,4 @@
   hosts: nas
   roles:
     - nas
+    - admin_stack
