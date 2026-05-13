@@ -13,6 +13,8 @@
     - { path: /opt/containerd/prometheus/config }
     - { path: /opt/containerd/prometheus/data, owner: '65534' } # prometheus (nobody)
     - { path: /opt/containerd/grafana/data, owner: '472' }       # grafana
+    - { path: /opt/containerd/admin_stack }
+    - { path: /opt/containerd/caddy }
 
 - name: Deploy Prometheus configuration
   become: true
@@ -27,6 +29,20 @@
     src: docker-compose.yml.j2
     dest: /opt/containerd/admin_stack/docker-compose.yml
     mode: '0644'
+
+- name: Deploy Caddyfile configuration
+  become: true
+  ansible.builtin.template:
+    src: Caddyfile.j2
+    dest: /opt/containerd/caddy/Caddyfile
+    mode: '0644'
+  register: caddyfile_status
+
+- name: Reload Caddy to apply changes
+  become: true
+  ansible.builtin.command:
+    cmd: docker exec caddy caddy reload --config /etc/caddy/Caddyfile
+  when: caddyfile_status.changed
 
 - name: Start Monitoring Stack (Docker Compose)
   become: true

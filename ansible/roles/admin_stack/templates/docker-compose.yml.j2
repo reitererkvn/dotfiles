@@ -14,7 +14,7 @@ services:
     image: semaphoreui/semaphore:latest
     container_name: semaphore
     ports:
-      - "3000:3000"
+      - "13000:3000" # Moved host port to 13000 to avoid conflict with Caddy on 3000
     environment:
       SEMAPHORE_DB_USER: semaphore
       SEMAPHORE_DB_PASS: semaphore_password
@@ -37,7 +37,7 @@ services:
     image: prom/prometheus:latest
     container_name: prometheus
     ports:
-      - "9090:9090"
+      - "19090:9090" # Moved host port to 19090 to avoid conflict with Caddy on 9090
     volumes:
       - /opt/containerd/prometheus/config:/etc/prometheus
       - /opt/containerd/prometheus/data:/prometheus
@@ -50,7 +50,7 @@ services:
     image: grafana/grafana-oss:latest
     container_name: grafana
     ports:
-      - "3001:3000"
+      - "13001:3000" # Moved host port to 13001 to avoid conflict with Caddy on 3001
     volumes:
       - /opt/containerd/grafana/data:/var/lib/grafana
     environment:
@@ -61,7 +61,7 @@ services:
     image: prom/node-exporter:latest
     container_name: node-exporter-nas
     ports:
-      - "9100:9100"
+      - "9101:9100" # Moved host port to 9101 to keep 9100 free if needed
     volumes:
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
