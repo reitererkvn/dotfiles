@@ -5,8 +5,8 @@
     path: "{{ item.path }}"
     state: directory
     mode: '0755'
-    owner: "{{ item.owner | default(ansible_user) }}"
-    group: "{{ item.group | default(ansible_user) }}"
+    owner: root
+    group: root
   loop:
     - { path: /opt/containerd/semaphore/db }
     - { path: /opt/containerd/semaphore/playbooks }
@@ -22,6 +22,8 @@
     src: prometheus.yml.j2
     dest: /opt/containerd/prometheus/config/prometheus.yml
     mode: '0644'
+    owner: root
+    group: root
 
 - name: Deploy Docker Compose file
   become: true
@@ -29,6 +31,8 @@
     src: docker-compose.yml.j2
     dest: /opt/containerd/admin_stack/docker-compose.yml
     mode: '0644'
+    owner: root
+    group: root
 
 - name: Deploy Caddyfile configuration
   become: true
@@ -36,6 +40,8 @@
     src: Caddyfile.j2
     dest: /opt/containerd/caddy/Caddyfile
     mode: '0644'
+    owner: root
+    group: root
   register: caddyfile_status
 
 - name: Reload Caddy to apply changes
