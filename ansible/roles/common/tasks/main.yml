@@ -1,3 +1,0 @@
----
-- name: Verify connectivity
-  ansible.builtin.ping:
