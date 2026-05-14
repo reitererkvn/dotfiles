@@ -5,10 +5,10 @@
     path: "{{ item.path }}"
     state: directory
     mode: '0755'
-    owner: root
-    group: root
+    owner: "{{ item.owner | default('root') }}"
+    group: "{{ item.group | default('root') }}"
   loop:
-    - { path: /opt/containerd/semaphore/db }
+    - { path: /opt/containerd/semaphore/db, owner: '70' }       # postgres
     - { path: /opt/containerd/semaphore/playbooks }
     - { path: /opt/containerd/prometheus/config }
     - { path: /opt/containerd/prometheus/data, owner: '65534' } # prometheus (nobody)
