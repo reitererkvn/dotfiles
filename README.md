@@ -15,17 +15,20 @@ HyprCachyOS solves this through:
 
 ## ⚙️ Architecture & SRE "Reality"
 
-This repository is built with an infrastructure-as-code mindset. It actively rejects brittle desktop Linux conventions in favor of robust, production-grade system management and a fully programmable compositor environment.
+This repository is part of a **multi-repo SRE ecosystem**. It focuses on the "Upper Stack" (User Experience), while system-level orchestration is delegated to specialized system repositories.
 
-| Principle | Implementation (The Reality) | File Reference |
+| Layer | Repository | Responsibility |
 | :--- | :--- | :--- |
-| **Programmable Compositing** | Hyprland 0.55+ uses a **native Lua API**. This moves logic from static strings to a modular, event-driven architecture (Solar scheduling, dynamic layouts). | `.config/hypr/lua/` |
-| **Reliability via Systemd** | Daemons (Waybar, Agents, etc.) are managed as `systemd --user` units with proper dependency trees. This ensures clean lifecycle management and automatic restarts. | `.config/systemd/user/` |
-| **State Modularity & SSOT** | Leveraging **UWSM** (Universal Wayland Session Manager), environment variables are loaded modularly via an `env.d` structure before the compositor starts. | `.config/uwsm/env` |
-| **Resource Optimization** | High-overhead tools are lazy-loaded via a custom daemon (`hypr-lazy.sh`) that listens to the Hyprland IPC socket and triggers processes only when needed. | `.local/bin/hypr-lazy.sh` |
-| **Infrastructure as Code** | **Ansible** & **Semaphore** manage package installation and directory structures across Desktop (`homeserver`) and NAS (`nas-01`). | `ansible/` |
-| **Idempotent Sync** | The `dotfiles-sync.sh` script acts as a state enforcer, safely creating symlinks and performing garbage collection on orphaned links. | `.local/bin/dotfiles-sync.sh` |
-| **Unified Documentation** | SRE-level system facts and topology are managed via a centralized `GEMINI.md` logic, synchronized across Desktop & NAS. | `gemini-sync-docs.sh` |
+| **User-Space** | `~/.dotfiles` (This) | Cognitive ergonomics, Hyprland Lua, userland prep. |
+| **System-Brain** | `/opt/system-dotfiles` | **Ansible Master**, hardware tweaks, systemd units. |
+| **Data-Custodian** | `nas-01:/opt/system-dotfiles` | Storage tiering, Semaphore UI, backup chain. |
+
+### Core User-Space Principles
+*   **Programmable Compositing:** Hyprland 0.55+ uses a **native Lua API**. This moves logic from static strings to a modular, event-driven architecture (Solar scheduling, dynamic layouts).
+*   **Reliability via Systemd:** Daemons (Waybar, Agents, etc.) are managed as `systemd --user` units with proper dependency trees.
+*   **State Modularity & SSOT:** Leveraging **UWSM** (Universal Wayland Session Manager), environment variables are loaded modularly via an `env.d` structure.
+*   **Resource Optimization:** High-overhead tools are lazy-loaded via a custom daemon (`hypr-lazy.sh`) that listens to the Hyprland IPC socket.
+*   **Idempotent Sync:** The `dotfiles-sync.sh` script acts as a state enforcer for user-level symlinks.
 
 ## 🔒 Security & Secret Management (Zero-Leak Policy)
 
