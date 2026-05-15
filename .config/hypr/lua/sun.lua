@@ -15,7 +15,7 @@ local wp = {
     night = os.getenv("WALLPAPER3"), -- Deep Night
 }
 
-local function apply_wallpaper(path)
+local function apply_wallpaper(path, force)
     if not path or path == "" then
         return
     end
@@ -23,12 +23,12 @@ local function apply_wallpaper(path)
     -- Ensure HOME is expanded (safety check)
     local full_path = path:gsub("^~", os.getenv("HOME"))
 
-    -- Check if already active to prevent flickering
+    -- Check if already active to prevent flickering (skip if forced)
     local handle = io.popen("readlink -f " .. SYMLINK)
     local current_symlink = handle:read("*a"):gsub("%s+", "")
     handle:close()
 
-    if current_symlink == full_path then
+    if not force and current_symlink == full_path then
         return
     end
 
@@ -36,21 +36,21 @@ local function apply_wallpaper(path)
     hl.exec_cmd("ln -sf " .. full_path .. " " .. SYMLINK)
 
     -- Hyprpaper: Preload then Wallpaper
-    -- Using a slight delay between commands or combined string
     hl.exec_cmd("hyprctl hyprpaper preload " .. full_path)
     hl.exec_cmd("hyprctl hyprpaper wallpaper '" .. MONITOR .. "," .. full_path .. ",cover'")
 
-    -- Clean up old preloads (optional, keeps memory usage low)
+    -- Clean up old preloads
     hl.timer(function()
         hl.exec_cmd("hyprctl hyprpaper unload all")
     end, { timeout = 2000, type = "oneshot" })
 
-    print("[Sun] Switched wallpaper to: " .. full_path)
+    print("[Sun] Switched wallpaper to: " .. full_path .. (force and " (forced)" or ""))
 end
 
-local function update_solar_schedule()
+local function update_solar_schedule(force)
     print("[Sun] Checking solar state...")
-
+    force = force or false
+    
     -- Get times from sunwait
     local h1 = io.popen("sunwait list " .. LAT .. " " .. LON)
     local r1 = h1:read("*a")
@@ -92,13 +92,13 @@ local function update_solar_schedule()
 
     -- Determine current state
     if now >= times.sunrise and now < times.sunset then
-        apply_wallpaper(wp.day)
+        apply_wallpaper(wp.day, force)
     elseif now >= times.rise and now < times.sunrise then
-        apply_wallpaper(wp.morning)
+        apply_wallpaper(wp.morning, force)
     elseif now >= times.sunset and now < times.set then
-        apply_wallpaper(wp.evening)
+        apply_wallpaper(wp.evening, force)
     else
-        apply_wallpaper(wp.night)
+        apply_wallpaper(wp.night, force)
     end
 
     -- Schedule next transitions
@@ -124,12 +124,14 @@ local function update_solar_schedule()
 end
 
 -- Startup logic: wait 2 seconds for hyprpaper to be ready
-hl.on("hyprland.start", function()
-    print("[Sun] Startup delay (2s)...")
-    hl.timer(update_solar_schedule, { timeout = 2000, type = "oneshot" })
-end)
-
--- If already running (manual reload), execute immediately
-if hl.get_config("general:layout") then
-    update_solar_schedule()
+-- We use both the event AND a direct timer for maximum robustness
+local function startup_refresh()
+    print("[Sun] Initializing solar schedule...")
+    update_solar_schedule(true)
 end
+
+hl.on("hyprland.start", startup_refresh)
+
+-- If we are loading (boot or reload), start a timer anyway
+hl.timer(startup_refresh, { timeout = 2500, type = "oneshot" })
+
