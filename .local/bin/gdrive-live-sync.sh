@@ -1,14 +1,13 @@
 #!/bin/bash
 WATCH_LIST="$HOME/.config/rclone/inotify-watch.txt"
-CLOUD_ROOT="gdrive,shared_with_me:backups/live"
-    :q
+EXCLUDE_FILE="$HOME/.config/rclone/exclude-list.txt"
+CLOUD_REMOTE="gdrive:"
+CLOUD_BASE="backups/live"
 
 # --- NEU: PFADE EINLESEN ---
-# Ohne diesen Block bleibt VALID_PATHS leer und das Skript bricht ab.
 VALID_PATHS=()
 if [[ -f "$WATCH_LIST" ]]; then
     while IFS= read -r line || [[ -n "$line" ]]; do
-        # Entferne Kommentare und Leerzeichen
         clean_path=$(echo "$line" | sed 's/#.*//' | xargs)
         if [[ -n "$clean_path" ]]; then
             VALID_PATHS+=("$clean_path")
@@ -19,11 +18,13 @@ else
     exit 1
 fi
 
-# Sicherheitscheck
 if [ ${#VALID_PATHS[@]} -eq 0 ]; then
     echo "[Fehler] Keine gültigen Pfade in $WATCH_LIST gefunden."
     exit 1
 fi
+
+# RCLONE BASE COMMAND
+RCLONE_OPTS=("-l" "--fast-list" "--bwlimit" "15M" "--exclude-from" "$EXCLUDE_FILE")
 
 # --- PHASE 1: INITIALER SYNC ---
 echo "[System] Baseline-Sync startet..."
@@ -32,11 +33,17 @@ for p in "${VALID_PATHS[@]}"; do
         echo "[Warnung] Pfad existiert nicht: $p"
         continue
     fi
-    echo "[Sync] Initialisiere: $p"
+    
+    # Zielpfad normalisieren: /home/kevin/Bilder -> backups/live/home/kevin/Bilder
+    # Wir entfernen den führenden Slash für rclone Ziel-Konventionen
+    DEST_PATH="${CLOUD_BASE}${p}"
+    
+    echo "[Sync] Initialisiere: $p -> ${CLOUD_REMOTE}${DEST_PATH}"
     if [ -d "$p" ]; then
-        rclone sync "$p" "${CLOUD_ROOT}${p}" -l --fast-list --bwlimit 15M
+        rclone sync "$p" "${CLOUD_REMOTE}${DEST_PATH}" "${RCLONE_OPTS[@]}"
     else
-        rclone copy "$p" "${CLOUD_ROOT}$(dirname "$p")" -l
+        # Für Dateien: kopiere in den Zielordner
+        rclone copy "$p" "${CLOUD_REMOTE}${DEST_PATH%/*}" "${RCLONE_OPTS[@]}"
     fi
 done
 echo "[System] Baseline-Sync abgeschlossen."
@@ -45,16 +52,21 @@ echo "[System] Baseline-Sync abgeschlossen."
 echo "[System] Inotify-Überwachung aktiv..."
 inotifywait -m -r -q -e modify,create,delete,move --format "%w%f" "${VALID_PATHS[@]}" | \
 while read -r FULL_EVENT_PATH; do
+    # Skip temporary or excluded files early if possible (optional)
+    [[ "$FULL_EVENT_PATH" == *".git"* ]] && continue
+    
     echo "[Event] Änderung an: $FULL_EVENT_PATH"
 
-    # Debounce, damit der i7-7700K bei schnellen Schreibvorgängen nicht überlastet
+    # Debounce
     sleep 2
 
+    DEST_PATH="${CLOUD_BASE}${FULL_EVENT_PATH}"
+
     if [ -f "$FULL_EVENT_PATH" ]; then
-        REL_DIR=$(dirname "$FULL_EVENT_PATH")
-        rclone copy "$FULL_EVENT_PATH" "${CLOUD_ROOT}${REL_DIR}" -l
+        rclone copy "$FULL_EVENT_PATH" "${CLOUD_REMOTE}${DEST_PATH%/*}" "${RCLONE_OPTS[@]}"
     elif [ -d "$FULL_EVENT_PATH" ]; then
-        rclone sync "$FULL_EVENT_PATH" "${CLOUD_ROOT}${FULL_EVENT_PATH}" -l --fast-list
+        rclone sync "$FULL_EVENT_PATH" "${CLOUD_REMOTE}${DEST_PATH}" "${RCLONE_OPTS[@]}"
     fi
 done
+
 
