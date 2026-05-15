@@ -123,15 +123,11 @@ local function update_solar_schedule(force)
     end
 end
 
--- Startup logic: wait 2 seconds for hyprpaper to be ready
--- We use both the event AND a direct timer for maximum robustness
-local function startup_refresh()
+-- Startup logic: wait 2.5 seconds for hyprpaper to be ready
+-- This covers both initial boot and manual config reloads
+hl.timer(function()
     print("[Sun] Initializing solar schedule...")
     update_solar_schedule(true)
-end
+end, { timeout = 2500, type = "oneshot" })
 
-hl.on("hyprland.start", startup_refresh)
-
--- If we are loading (boot or reload), start a timer anyway
-hl.timer(startup_refresh, { timeout = 2500, type = "oneshot" })
 
