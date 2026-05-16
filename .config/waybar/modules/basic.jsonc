@@ -114,7 +114,7 @@
         }
     },
     "hyprland/workspaces": {
-        "format": "{name}",
+        "format": "{id}",
         "on-click": "activate",
         "all-outputs": true,
         "sort-by-number": true
