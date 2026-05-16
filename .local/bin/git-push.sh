@@ -37,6 +37,8 @@ if [ "$SYNC_SYSTEM" = true ]; then
     cd /opt/system-dotfiles && git add . && git commit -m "Auto-Sync: $(date +'%Y-%m-%d %H:%M')" && git push
 fi
 
+echo "--------------------------------------------"
+
 # 3. nas-01 Dotfiles (Remote via SSH)
 if [ "$SYNC_NAS01" = true ]; then
     echo "» nas-01: Verarbeite /opt/system-dotfiles remote via SSH..."
