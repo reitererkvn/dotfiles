@@ -2,7 +2,7 @@
 WATCH_LIST="$HOME/.config/rclone/inotify-watch.txt"
 EXCLUDE_FILE="$HOME/.config/rclone/exclude-list.txt"
 CLOUD_REMOTE="gdrive:"
-CLOUD_BASE="backups/live"
+CLOUD_BASE="backups/live/homeserver"
 
 # --- NEU: PFADE EINLESEN ---
 VALID_PATHS=()
@@ -33,11 +33,11 @@ for p in "${VALID_PATHS[@]}"; do
         echo "[Warnung] Pfad existiert nicht: $p"
         continue
     fi
-    
+
     # Zielpfad normalisieren: /home/kevin/Bilder -> backups/live/home/kevin/Bilder
     # Wir entfernen den führenden Slash für rclone Ziel-Konventionen
     DEST_PATH="${CLOUD_BASE}${p}"
-    
+
     echo "[Sync] Initialisiere: $p -> ${CLOUD_REMOTE}${DEST_PATH}"
     if [ -d "$p" ]; then
         rclone sync "$p" "${CLOUD_REMOTE}${DEST_PATH}" "${RCLONE_OPTS[@]}"
@@ -54,7 +54,7 @@ inotifywait -m -r -q -e modify,create,delete,move --format "%w%f" "${VALID_PATHS
 while read -r FULL_EVENT_PATH; do
     # Skip temporary or excluded files early if possible (optional)
     [[ "$FULL_EVENT_PATH" == *".git"* ]] && continue
-    
+
     echo "[Event] Änderung an: $FULL_EVENT_PATH"
 
     # Debounce
