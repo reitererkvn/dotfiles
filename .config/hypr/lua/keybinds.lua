@@ -22,14 +22,14 @@ hl.bind(mainMod .. " + A", function()
     local current = hl.get_config("general.layout")
     local layouts = { "dwindle", "master", "lua:master-grid" }
     local next_layout = layouts[1]
-    
+
     for i, l in ipairs(layouts) do
         if l == current then
             next_layout = layouts[(i % #layouts) + 1]
             break
         end
     end
-    
+
     hl.config({ general = { layout = next_layout } })
     print("[Layout] Switched to: " .. next_layout)
 end)
@@ -50,13 +50,14 @@ end
 
 -- Scratchpads
 hl.bind(mainMod .. " + S", function()
-    if monitor2 ~= "" then hl.dispatch(hl.dsp.focus({ monitor = monitor2 })) end
+    if monitor2 ~= "" then
+        hl.dispatch(hl.dsp.focus({ monitor = monitor2 }))
+    end
     hl.dispatch(hl.dsp.workspace.toggle_special("magic"))
 end)
 hl.bind(mainMod .. " + SHIFT + S", hl.dsp.window.move({ workspace = "special:magic" }))
 
 hl.bind(mainMod .. " + M", function()
-    if monitor2 ~= "" then hl.dispatch(hl.dsp.focus({ monitor = monitor2 })) end
     hl.dispatch(hl.dsp.workspace.toggle_special("monitor"))
 end)
 hl.bind(mainMod .. " + SHIFT + M", hl.dsp.window.move({ workspace = "special:monitor" }))
@@ -67,7 +68,11 @@ hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_
 hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"), media_opts)
 hl.bind("XF86AudioMute", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"), media_opts)
 hl.bind("SHIFT + XF86AudioMute", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"), media_opts)
-hl.bind("SHIFT + XF86AudioRaiseVolume", hl.dsp.exec_cmd("wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SOURCE@ 5%+"), media_opts)
+hl.bind(
+    "SHIFT + XF86AudioRaiseVolume",
+    hl.dsp.exec_cmd("wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SOURCE@ 5%+"),
+    media_opts
+)
 hl.bind("SHIFT + XF86AudioLowerVolume", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 5%-"), media_opts)
 hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%+"), media_opts)
 hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%-"), media_opts)
@@ -81,7 +86,9 @@ hl.bind("XF86AudioPrev", hl.dsp.exec_cmd("playerctl previous"), lock_opts)
 -- Custom
 hl.bind(mainMod .. " + D", function()
     local active = hl.get_active_window()
-    if not active or active.floating then return end
+    if not active or active.floating then
+        return
+    end
     local ws = hl.get_active_workspace()
     local windows = hl.get_windows({ workspace = ws.id, tiled = true })
     if #windows > 1 then
@@ -91,7 +98,10 @@ hl.bind(mainMod .. " + D", function()
         end
     end
 end)
-hl.bind(mainMod .. " + E", hl.dsp.exec_cmd("uwsm app -- " .. terminal .. " zsh -i -c '" .. filemanager .. "; exec zsh'"))
+hl.bind(
+    mainMod .. " + E",
+    hl.dsp.exec_cmd("uwsm app -- " .. terminal .. " zsh -i -c '" .. filemanager .. "; exec zsh'")
+)
 hl.bind(mainMod .. " + CTRL + V", hl.dsp.exec_cmd("cliphist list | fuzzel --dmenu | cliphist decode | wl-copy"))
 hl.bind(mainMod .. " + SHIFT + W", hl.dsp.dpms({ action = "off" }))
 hl.bind(mainMod .. " + W", hl.dsp.dpms({ action = "on" }))

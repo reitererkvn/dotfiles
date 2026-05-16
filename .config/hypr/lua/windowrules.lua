@@ -8,7 +8,7 @@ hl.window_rule({ match = { class = "hyprland-run" }, float = true })
 hl.window_rule({ match = { fullscreen = true }, border_size = 0 })
 
 -- Workspace Rules: Monitors
-hl.window_rule({ match = { class = "htop-sys" }, opacity = 0.95, workspace = "special:monitor" })
+hl.window_rule({ match = { class = "btop-sys" }, opacity = 0.95, workspace = "special:monitor" })
 hl.window_rule({ match = { class = "nvtop-sys" }, opacity = 0.95, workspace = "special:monitor" })
 hl.window_rule({ match = { class = "org.pulseaudio.pavucontrol" }, float = true })
 
