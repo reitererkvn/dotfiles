@@ -26,7 +26,7 @@ echo "--- 📦 Starting git commit & GitHub sync ---"
 # 1. User Dotfiles
 if [ "$SYNC_USER" = true ]; then
     echo "» Verarbeite ~/.dotfiles..."
-    cd ~/.dotfiles && git add . && git commit -m "Auto-Sync: $(date +'%Y-%m-%d %H:%M')" && git push
+    cd ~/.dotfiles && git add . && oco --yes && git push
 fi
 
 echo "--------------------------------------------"
@@ -34,7 +34,7 @@ echo "--------------------------------------------"
 # 2. System Dotfiles
 if [ "$SYNC_SYSTEM" = true ]; then
     echo "» Verarbeite /opt/system-dotfiles..."
-    cd /opt/system-dotfiles && git add . && git commit -m "Auto-Sync: $(date +'%Y-%m-%d %H:%M')" && git push
+    cd /opt/system-dotfiles && git add . && oco --yes && git push
 fi
 
 echo "--------------------------------------------"
@@ -45,7 +45,7 @@ if [ "$SYNC_NAS01" = true ]; then
 
     # Der SSH-Befehl kapselt die gesamte Kette.
     # -A leitet den lokalen SSH-Agent weiter, damit das NAS den Key vom Desktop nutzen kann.
-    ssh kevin@nas-01 "source ~/.keychain/nas-01-sh && cd /opt/system-dotfiles && git add . && git commit -m \"Auto-Sync: \$(date +'%Y-%m-%d %H:%M')\" && git push"
+    ssh kevin@nas-01 "source ~/.keychain/nas-01-sh && cd /opt/system-dotfiles && git add . && oco --yes && git push"
 fi
 
 echo "--- ✅ Sync done ---"
