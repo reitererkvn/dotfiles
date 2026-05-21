@@ -73,7 +73,7 @@ Ensure your base system has `Hyprland` (0.55+), `UWSM`, `sunwait`, and standard 
 
 3.  **Synchronize System Documentation:**
     ```bash
-    ~/.dotfiles/.local/bin/gemini-sync-docs.sh
+    ~/.dotfiles/.local/bin/antigravity-sync-docs.sh
     ```
 
 4.  **Activate Service Daemons:**
@@ -90,7 +90,7 @@ Located in `.local/bin`, these scripts manage the system state:
 
 | Script Name | Purpose |
 | :--- | :--- |
-| `gemini-sync-docs.sh` | **Document Sync:** Distributes the central `GEMINI.md` across all repositories (Desktop/NAS). |
+| `antigravity-sync-docs.sh` | **Document Sync:** Distributes the central `GEMINI.md` across all repositories (Desktop/NAS). |
 | `dotfiles-sync.sh` | The idempotent state synchronizer for symlinks. |
 | `hypr-lazy.sh` | The IPC socket listener for cognitive offloading and lazy-loading of heavy applications. |
 | `git-push.sh` | Automates Git state synchronization for the dotfiles repository. |
