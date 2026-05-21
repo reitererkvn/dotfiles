@@ -1,8 +1,8 @@
-# 🚀 HyprCachyOS: Cognitive Ergonomics meets Senior SRE
+# 🚀 HyprCachyOS: Optimized & Ergonomic Linux Desktop Setup
 
-**HyprCachyOS** is a specialized, performant, and reliable Linux desktop environment designed from the ground up to address the challenges of neurodivergence (ADHD). By combining the blistering speed of **CachyOS** and the **Hyprland** compositor with strict **Site Reliability Engineering (SRE)** principles, this setup minimizes cognitive load, eliminates context-switching friction, and ensures absolute system stability in a multi-host environment.
+**HyprCachyOS** is a specialized, performant, and reliable Linux desktop environment designed from the ground up to address the challenges of neurodivergence (ADHD). By combining the blistering speed of **CachyOS** and the **Hyprland** compositor with a structured, reliable automation setup, this repository minimizes cognitive load, eliminates context-switching friction, and keeps a multi-host environment stable and easy to maintain.
 
-> **Status:** Senior SRE / Modular Decoupled Architecture (Stand: Mai 2026)
+> **Status:** Modular Decoupled Architecture (Stand: Mai 2026)
 
 ## 🧠 The Vision: Cognitive Ergonomics (ADHD-First Design)
 
@@ -13,9 +13,9 @@ HyprCachyOS solves this through:
 *   **Process Isolation via Special Workspaces:** Telemetry, background apps, and communication tools are rigorously isolated into dedicated workspaces. Out of sight, out of mind, until explicitly needed.
 *   **SSOT (Single Source of Truth):** Strict separation and management of system-wide and user-specific configurations to prevent configuration drift and unexpected behavior.
 
-## ⚙️ Architecture & SRE "Reality"
+## ⚙️ Architecture & Setup Organization
 
-This repository is part of a **multi-repo SRE ecosystem**. It focuses on the "Upper Stack" (User Experience), while system-level orchestration is delegated to specialized system repositories.
+This repository is part of a **multi-repo desktop and automation setup**. It focuses on the "Upper Stack" (User Experience), while system-level orchestration is delegated to specialized system repositories.
 
 | Layer | Repository | Responsibility |
 | :--- | :--- | :--- |
@@ -39,11 +39,11 @@ Reliability requires security. This system implements a strict zero-leak policy 
 
 ## 🤖 AI-Driven Engineering (The LLM Factor)
 
-This entire ecosystem was built from absolute **zero prior Linux knowledge**, beginning in **February 2026**. Since then, it has evolved from a simple setup to a complex SRE infrastructure—a proof-of-concept for modern, AI-augmented engineering.
+This entire ecosystem was built from absolute **zero prior Linux knowledge**, beginning in **February 2026**. Since then, it has evolved from a simple setup to a robust, fully automated multi-host environment—a proof-of-concept for modern, AI-augmented engineering.
 
 *   **Lua-Native Migration (May 2026):** Transitioned from legacy `.conf` files to a fully modular Lua architecture, while maintaining the robust **UWSM/Systemd** foundation for process management.
 *   **Multi-Host Orchestration:** Expanded from a single desktop to a multi-host NAS architecture with sophisticated storage tiering (MergerFS/Btrfs) and cloud backup pipelines.
-*   **The Engine (Gemini LLM):** Used as an intelligent compiler and SRE consultant to enforce best practices and ensure architectural integrity.
+*   **The Engine (Gemini LLM):** Used as an assistant and advisor to ensure best practices and structured configurations.
 
 ## 🛠 Core Components
 
@@ -90,7 +90,7 @@ Located in `.local/bin`, these scripts manage the system state:
 
 | Script Name | Purpose |
 | :--- | :--- |
-| `gemini-sync-docs.sh` | **SRE Master Sync:** Distributes the central `GEMINI.md` across all repositories (Desktop/NAS). |
+| `gemini-sync-docs.sh` | **Document Sync:** Distributes the central `GEMINI.md` across all repositories (Desktop/NAS). |
 | `dotfiles-sync.sh` | The idempotent state synchronizer for symlinks. |
 | `hypr-lazy.sh` | The IPC socket listener for cognitive offloading and lazy-loading of heavy applications. |
 | `git-push.sh` | Automates Git state synchronization for the dotfiles repository. |
@@ -101,4 +101,4 @@ Located in `.local/bin`, these scripts manage the system state:
 | `sun.lua` (Config) | **Solar Scheduler:** Lua-native event handler for wallpaper and aesthetic transitions. |
 
 ---
-*Refer to GEMINI.md for architectural rules and SRE guidelines.*
+*Refer to GEMINI.md for architectural rules and system guidelines.*

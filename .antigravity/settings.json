@@ -8,7 +8,12 @@
       "command(ls)",
       "command(which)",
       "command(find)",
-      "command(/home/kevin/.local/bin/antigravity-sync-docs.sh)"
+      "command(/home/kevin/.local/bin/antigravity-sync-docs.sh)",
+      "command(git status)",
+      "command(git ls-files)",
+      "command(git diff)",
+      "command(diff)",
+      "command(/home/kevin/.dotfiles/.local/bin/antigravity-sync-docs.sh)"
     ]
   },
   "trustedWorkspaces": [

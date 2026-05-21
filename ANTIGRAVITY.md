@@ -1,11 +1,11 @@
-# SRE Infrastructure & Dotfiles Context
+# Home Server, Desktop & Dotfiles Configuration
 **Stand:** 21. Mai 2026
-**Architektur-Level:** Senior SRE / Modular Decoupled
+**Fokus:** Modular, stabil & automatisiert
 
 ## 1. System-Topologie (Hardware & Netz)
 *   **Desktop (`homeserver`):** CachyOS Linux | i7-7700K | 16GB RAM | GTX 1070 Ti | 5K Display | IP: `192.168.178.22`
 *   **NAS (`nas-01`):** Debian 13 | AMD A10-6700 | 8GB RAM | 256GB SSD + 1TB HDD (`/mnt/HDD-01`) | IP: `192.168.178.46`
-*   **Connectivity:** SSH via Desktop-Agent-Forwarding; NAS -> Cloud via GDrive (SRE-Limit: 200 TPS, 16 Conn).
+*   **Connectivity:** SSH via Desktop-Agent-Forwarding; NAS -> Cloud via GDrive (API-Limit: 200 TPS, 16 Conn).
 
 ## 2. System-Architektur (HyprCachyOS & NAS-01)
 *   **Storage (NAS-01):** Hybrid-Modell (SSD für DB/Ingest, HDD für Archiv) via `MergerFS` unter `/lib/immich`.
@@ -58,7 +58,7 @@
 ## 6. Abgeschlossene Projekte
 *   ✅ Hyprland Lua Migration (Mai 2026)
 *   ✅ Integration intelligenter Wallpaper-Scheduler in Lua
-*   ✅ SRE Secret Management Foundation (Vaultwarden & CLI Automation)
+*   ✅ Secret Management Foundation (Vaultwarden & CLI Automation)
 *   ✅ Zentralisierung der Dokumentations-Infrastruktur (`antigravity-sync-docs.sh`)
 
 ---
@@ -70,6 +70,7 @@
 *   **Idempotenz-Nachweis bei Ansible & Skripten:** Führe geänderte Ansible-Playbooks oder Skripte ein zweites Mal aus, um sicherzustellen, dass sie idempotente Zustände erzeugen und keine unbeabsichtigten Nebenwirkungen oder wiederholte Änderungen auftreten.
 *   **Validierung vor Dateierstellungen (Dry-Run / Lint):** Nutze verfügbare Validierungstools (z. B. `systemd-analyze verify`, `caddy validate`) vor dem Schreiben von Konfigurationen und arbeite mit minimalen Zeilen-Ersetzungen (diffs).
 *   **Rollback-Sicherung (Fail-Safe):** Erstelle vor Skriptänderungen Backups (`.bak`) oder verifiziere das Vorhandensein von Snapper-Snapshots, um im Fehlerfall ein direktes Rollback durchführen zu können.
+*   **LLM-Empfehlung bei Bedarf (Model Suggestions):** Falls du im Vorhinein abschätzen kannst, dass eine Aufgabe mit einem anderen verfügbaren LLM (z. B. Claude für tiefes Coding/Refactoring oder ChatGPT für breites Reasoning) zuverlässiger gelöst werden kann, schlage dem Nutzer explizit vor, das Modell vor der Bearbeitung zu wechseln.
 
 ---
 *Dieses Dokument ist die primäre Instruktion für Antigravity CLI Sessions in diesem Workspace.*
