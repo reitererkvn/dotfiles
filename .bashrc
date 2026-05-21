@@ -18,3 +18,7 @@ export TERMINAL=kitty
 
 export LIBVA_DRIVER_NAME=nvidia
 . "$HOME/.cargo/env"
+
+
+# Added by Antigravity CLI installer
+export PATH="/home/kevin/.local/bin:$PATH"

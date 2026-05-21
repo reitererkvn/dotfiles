@@ -1,5 +1,5 @@
 # SRE Infrastructure & Dotfiles Context
-**Stand:** 12. Mai 2026
+**Stand:** 21. Mai 2026
 **Architektur-Level:** Senior SRE / Modular Decoupled
 
 ## 1. System-Topologie (Hardware & Netz)
@@ -11,7 +11,7 @@
 *   **Storage (NAS-01):** Hybrid-Modell (SSD für DB/Ingest, HDD für Archiv) via `MergerFS` unter `/lib/immich`.
 *   **Snapshot-Logik:** SSD-Subvolumes via Snapper. HDD-Snapshots nachts via Sync-Skript.
 *   **Trigger-Logik:** Event-basierte Trigger via SSD-Files (`/var/lib/nas-sync-triggers/`) zur HDD-Schonung.
-*   **Backup-Kette:** 
+*   **Backup-Kette:**
     *   Desktop -> NAS via `upload_snapshots.sh` (Trigger: `homeserver_sync.done`).
     *   NAS Cloud Sync via Restic (`nas_cloud_sync.sh`) nach lokalem Sync (Trigger: `nas_local_sync.done`).
 
@@ -23,7 +23,7 @@
 *   **Automation:** `sun.lua` verwaltet Wallpaper-Wechsel event-basiert (ersetzt `hypr-sun.sh` und Systemd-Timer).
 
 ## 3. Workflows & Repo-Exklusivität (Source of Truth)
-*   **STRIKTE TRENNUNG:** 
+*   **STRIKTE TRENNUNG:**
     *   **User-Space (`~/.dotfiles/`):** Enthält User-Konfigurationen (Zsh, Hyprland, etc.) und das Master-Ansible-Playbook für Infrastruktur-Vorbereitung.
     *   **NAS-System (`nas-01:/opt/system-dotfiles/`):** Source of Truth für NAS-Dienste (Semaphore, Caddy, Backup-Skripte).
     *   **Desktop-System (`/opt/system-dotfiles/`):** Source of Truth für Desktop-Systemd-Units und Hardware-Skripte.
@@ -50,7 +50,7 @@
     *   *Status:* `admin_stack` Rolle verwaltet Docker-Services (Caddy, Prometheus, Grafana, Semaphore).
     *   *Backup:* Ansible stellt nur Infrastruktur/Pakete bereit; Skripte verbleiben in `/opt/system-dotfiles/`.
 - **DNS-Infrastruktur:** Lokaler DNS-Server (z.B. Pi-hole/AdGuard) für herstellerunabhängige Namensauflösung (ohne Tailscale-Zwang).
-- **Gemini Telegram Bot:** 
+- **Gemini Telegram Bot:**
     - **Ziel:** Remote-Steuerung des Systems via Telegram.
     - **Anforderung:** Vollständige Konversations-Unterstützung.
     - **Workflow:** Session startet bei Nachricht, endet bei `/quit`. Integration als `systemd --user` Service.
@@ -59,7 +59,17 @@
 *   ✅ Hyprland Lua Migration (Mai 2026)
 *   ✅ Integration intelligenter Wallpaper-Scheduler in Lua
 *   ✅ SRE Secret Management Foundation (Vaultwarden & CLI Automation)
-*   ✅ Zentralisierung der Dokumentations-Infrastruktur (`gemini-sync-docs.sh`)
+*   ✅ Zentralisierung der Dokumentations-Infrastruktur (`antigravity-sync-docs.sh`)
 
 ---
-*Dieses Dokument ist die primäre Instruktion für Gemini CLI Sessions in diesem Workspace.*
+
+## 7. Allgemeine Agenten-Richtlinien & System-Prompts
+*   **Niemals raten (Never guess):** Antworten müssen so deterministisch wie möglich sein. Falls Informationen fehlen, frage nach oder ermittle sie über System-Tools.
+*   **Fakten verifizieren (Verify facts):** Lösungen und Antworten müssen mit Live-Daten, dem Internet oder Dokumentationen abgeglichen werden, um Halluzinationen auszuschließen.
+*   **Live-Statusprüfung vor kritischen Aktionen (Live State Check):** Überprüfe vor jeder systemkritischen Aktion (z. B. Snapper-Snapshots, Service-Restarts) den tatsächlichen Ist-Zustand des Systems via CLI.
+*   **Idempotenz-Nachweis bei Ansible & Skripten:** Führe geänderte Ansible-Playbooks oder Skripte ein zweites Mal aus, um sicherzustellen, dass sie idempotente Zustände erzeugen und keine unbeabsichtigten Nebenwirkungen oder wiederholte Änderungen auftreten.
+*   **Validierung vor Dateierstellungen (Dry-Run / Lint):** Nutze verfügbare Validierungstools (z. B. `systemd-analyze verify`, `caddy validate`) vor dem Schreiben von Konfigurationen und arbeite mit minimalen Zeilen-Ersetzungen (diffs).
+*   **Rollback-Sicherung (Fail-Safe):** Erstelle vor Skriptänderungen Backups (`.bak`) oder verifiziere das Vorhandensein von Snapper-Snapshots, um im Fehlerfall ein direktes Rollback durchführen zu können.
+
+---
+*Dieses Dokument ist die primäre Instruktion für Antigravity CLI Sessions in diesem Workspace.*

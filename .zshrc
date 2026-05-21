@@ -48,3 +48,8 @@ bindkey  "^[[1;5D" backward-word          # Strg + Pfeil Links
 # alias
 [[ -f "$HOME/.alias" ]] && source "$HOME/.alias"
 [[ -f "$HOME/.vaultwarden" ]] && source "$HOME/.vaultwarden"
+
+
+# Added by Antigravity CLI installer
+export PATH="/home/kevin/.local/bin:$PATH"
+export PATH="/home/kevin/.local/bin:$PATH"

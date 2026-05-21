@@ -1,0 +1,17 @@
+{
+  "allowNonWorkspaceAccess": true,
+  "colorScheme": "tokyo night",
+  "enableTelemetry": false,
+  "model": "Gemini 3.5 Flash (High)",
+  "permissions": {
+    "allow": [
+      "command(ls)",
+      "command(which)",
+      "command(find)",
+      "command(/home/kevin/.local/bin/antigravity-sync-docs.sh)"
+    ]
+  },
+  "trustedWorkspaces": [
+    "/home/kevin/.dotfiles"
+  ]
+}

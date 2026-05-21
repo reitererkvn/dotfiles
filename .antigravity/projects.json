@@ -1,0 +1,10 @@
+{
+  "projects": {
+    "/home/kevin": "kevin",
+    "/home/kevin/.dotfiles": "dotfiles",
+    "/": "project",
+    "/mnt/nas-01/opt/system-dotfiles": "system-dotfiles",
+    "/opt/system-dotfiles": "system-dotfiles-1",
+    "/home/kevin/.antigravity/antigravity-cli/scratch": "scratch"
+  }
+}
