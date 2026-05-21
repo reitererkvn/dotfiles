@@ -14,7 +14,10 @@
       "command(git diff)",
       "command(diff)",
       "command(/home/kevin/.dotfiles/.local/bin/antigravity-sync-docs.sh)",
-      "command(npm -v)"
+      "command(npm -v)",
+      "command(git log)",
+      "command(git -C /home/kevin/.dotfiles status)",
+      "command(git -C /opt/system-dotfiles status)"
     ]
   },
   "trustedWorkspaces": [
