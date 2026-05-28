@@ -2,7 +2,7 @@
   "allowNonWorkspaceAccess": true,
   "colorScheme": "tokyo night",
   "enableTelemetry": false,
-  "model": "Gemini 3.5 Flash (High)",
+  "model": "Gemini 3.1 Pro (High)",
   "permissions": {
     "allow": [
       "command(ls)",
@@ -17,10 +17,25 @@
       "command(npm -v)",
       "command(git log)",
       "command(git -C /home/kevin/.dotfiles status)",
-      "command(git -C /opt/system-dotfiles status)"
+      "command(git -C /opt/system-dotfiles status)",
+      "command(tailscale)",
+      "command(cat)",
+      "command(systemctl status)",
+      "command(grep)",
+      "command(tail)",
+      "command(resolvectl)",
+      "command(ping)",
+      "command(ip)",
+      "command(journalctl)",
+      "command(systemctl --user status valent.service)",
+      "command(ps)",
+      "command(systemctl --user status xdg-desktop-portal xdg-desktop-portal-hyprland xdg-desktop-portal-gtk)",
+      "command(systemctl --user status $(systemctl --user list-units | grep -i valent | awk '{print $1}'))",
+      "command(systemctl --user list-units)"
     ]
   },
   "trustedWorkspaces": [
-    "/home/kevin/.dotfiles"
+    "/home/kevin/.dotfiles",
+    "/opt/system-dotfiles"
   ]
 }
