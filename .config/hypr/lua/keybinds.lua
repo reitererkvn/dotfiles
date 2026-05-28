@@ -103,7 +103,6 @@ hl.bind(
     hl.dsp.exec_cmd("uwsm app -- " .. terminal .. " zsh -i -c '" .. filemanager .. "; exec zsh'")
 )
 hl.bind(mainMod .. " + CTRL + V", hl.dsp.exec_cmd("cliphist list | fuzzel --dmenu | cliphist decode | wl-copy"))
-hl.bind("CTRL + C", hl.dsp.exec_cmd("valent-clipboard-sync.sh"))
 hl.bind(mainMod .. " + SHIFT + W", hl.dsp.dpms({ action = "off" }))
 hl.bind(mainMod .. " + W", hl.dsp.dpms({ action = "on" }))
 hl.bind("PRINT", hl.dsp.exec_cmd("uwsm app -- grimblast -f copy area -n"))
