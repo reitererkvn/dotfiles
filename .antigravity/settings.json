@@ -33,7 +33,10 @@
       "command(systemctl --user status $(systemctl --user list-units | grep -i valent | awk '{print $1}'))",
       "command(systemctl --user list-units)",
       "command(systemctl --user daemon-reload)",
-      "command(systemctl --user status valent-clipboard.service)"
+      "command(systemctl --user status valent-clipboard.service)",
+      "command(top)",
+      "command(head)",
+      "command(free)"
     ]
   },
   "trustedWorkspaces": [
