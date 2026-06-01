@@ -16,7 +16,6 @@ require("windowrules")
 require("autostart")
 require("sun")
 require("layout")
-require("bar")
 
 
 -- 3. GLOBAL CONFIG

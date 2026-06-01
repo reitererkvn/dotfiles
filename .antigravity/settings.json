@@ -36,7 +36,8 @@
       "command(systemctl --user status valent-clipboard.service)",
       "command(top)",
       "command(head)",
-      "command(free)"
+      "command(free)",
+      "command(systemctl --user restart waybar.service)"
     ]
   },
   "trustedWorkspaces": [

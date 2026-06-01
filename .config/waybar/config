@@ -29,6 +29,7 @@
         "custom/g903-battery",
         "tray",
         "clock",
+        "custom/notification",
         "custom/power"
     ],
     // Modules configuration
