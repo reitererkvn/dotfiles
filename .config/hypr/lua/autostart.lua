@@ -5,7 +5,7 @@ local browser = os.getenv("BROWSER") or "google-chrome-stable"
 
 hl.on("hyprland.start", function()
     print("[Autostart] Launching core apps...")
-    hl.exec_cmd("uwsm app -- valent --gapplication-service")
+    hl.exec_cmd("uwsm app -- kdeconnect-indicator")
     
     -- Session Restore: Magic Workspace (Chat & Media)
     hl.exec_cmd("uwsm app -- vesktop")

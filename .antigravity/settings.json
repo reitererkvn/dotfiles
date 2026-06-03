@@ -37,7 +37,15 @@
       "command(top)",
       "command(head)",
       "command(free)",
-      "command(systemctl --user restart waybar.service)"
+      "command(systemctl --user restart waybar.service)",
+      "command(groups)",
+      "command(libinput)",
+      "command(valent)",
+      "command(systemctl --user stop valent-clipboard.service)",
+      "command(systemctl --user disable valent-clipboard.service)",
+      "command(cd)",
+      "command(systemctl --user enable --now hypr-kdeconnect-portal.service)",
+      "command(~/.local/bin/apply-theme.sh)"
     ]
   },
   "trustedWorkspaces": [

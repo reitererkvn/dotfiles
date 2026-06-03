@@ -93,6 +93,8 @@ envsubst < "$HOME/.config/hypr/assets/yazi-theme.xtemplate" > "$HOME/.config/yaz
 envsubst < "$HOME/.config/hypr/assets/gtk-settings.xtemplate.ini" > "$HOME/.config/gtk-3.0/settings.ini"
 envsubst < "$HOME/.config/hypr/assets/gtk-settings.xtemplate.ini" > "$HOME/.config/gtk-4.0/settings.ini"
 
+# Qt6 Engine (Hyprland SSOT Colors)
+envsubst < "$HOME/.config/hypr/assets/hyprqt6engine.xtemplate.conf" > "$HOME/.config/hypr/hyprqt6engine.conf"
 # 5. Signal-Reload
 killall -SIGUSR2 waybar
 hyprctl reload
