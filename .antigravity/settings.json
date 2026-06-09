@@ -45,7 +45,8 @@
       "command(systemctl --user disable valent-clipboard.service)",
       "command(cd)",
       "command(systemctl --user enable --now hypr-kdeconnect-portal.service)",
-      "command(~/.local/bin/apply-theme.sh)"
+      "command(~/.local/bin/apply-theme.sh)",
+      "command(systemctl list-units)"
     ]
   },
   "trustedWorkspaces": [
