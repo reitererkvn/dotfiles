@@ -6,7 +6,7 @@ export HYPRCURSOR_SIZE=24
 export XCURSOR_THEME="Bibata-Modern-Classic"
 export HYPRCURSOR_THEME="Bibata-Modern-Classic"
 export GTK_THEME="Adwaita:dark"
-export FONT="FiraCode Nerd Font"
+export FONT="FiraMono Nerd Font Propo"
 export GTK_ICON_THEME_NAME="Papirus-Dark"
 
 # Qt-Architektur (Deaktiviert CSD-Schatten für sauberes Hyprland-Rendering)
