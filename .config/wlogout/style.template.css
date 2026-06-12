@@ -9,40 +9,19 @@ window {
 
 button {
     color: $TEXTCOLOR1_6;
-    background-color: $BACKGROUND1_6;
+    background-color: rgba(0,0,0,0.4); /* Schwarz & Transparent */
     border-style: solid;
     border-width: 2px;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 25%;
     border-color: $BORDERINACTIVE_6;
-    border-radius: 20px;
-    margin: 10px;
-    transition: box-shadow 0.2s ease-in-out, background-color 0.2s ease-in-out;
+    border-radius: 30px;
+    margin: 20px;
+    font-size: 100px; /* Macht die Nerd Font Icons riesig */
+    transition: box-shadow 0.2s ease-in-out, background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
 }
 
 button:focus, button:active, button:hover {
-    background-color: $WORKSPACESBACKGROUND3_6;
+    background-color: rgba(0,0,0,0.4); /* Bleibt konstant, kein graues Highlighting */
     border-color: $BORDERACTIVE1_6;
+    color: $TEXTCOLOR2_6; /* Icon färbt sich leicht um beim Hover */
     outline-style: none;
-}
-
-#lock {
-    background-image: image(url("/usr/share/wlogout/icons/lock.png"));
-}
-
-#logout {
-    background-image: image(url("/usr/share/wlogout/icons/logout.png"));
-}
-
-#suspend {
-    background-image: image(url("/usr/share/wlogout/icons/suspend.png"));
-}
-
-#reboot {
-    background-image: image(url("/usr/share/wlogout/icons/reboot.png"));
-}
-
-#shutdown {
-    background-image: image(url("/usr/share/wlogout/icons/shutdown.png"));
 }
