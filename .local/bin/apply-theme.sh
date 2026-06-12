@@ -90,7 +90,7 @@ done < <(find "$HOME/.config/hypr/assets" -name "*.template*")
 envsubst < "$HOME/.config/hypr/assets/yazi-theme.xtemplate" > "$HOME/.config/yazi/theme.toml"
 
 # wlogout
-envsubst "$envsubst_list" < "$HOME/.config/wlogout/style.template.css" > "$HOME/.config/wlogout/style.css"
+envsubst "$envsubst_list" < "$HOME/.config/hypr/assets/wlogout-style.xtemplate.css" > "$HOME/.config/wlogout/style.css"
 
 # GTK-settings
 envsubst < "$HOME/.config/hypr/assets/gtk-settings.xtemplate.ini" > "$HOME/.config/gtk-3.0/settings.ini"
