@@ -46,7 +46,9 @@
       "command(cd)",
       "command(systemctl --user enable --now hypr-kdeconnect-portal.service)",
       "command(~/.local/bin/apply-theme.sh)",
-      "command(systemctl list-units)"
+      "command(systemctl list-units)",
+      "command(fc-list)",
+      "command(dotfiles-sync.sh)"
     ]
   },
   "trustedWorkspaces": [
