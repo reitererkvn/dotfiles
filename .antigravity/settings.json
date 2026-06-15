@@ -48,7 +48,9 @@
       "command(~/.local/bin/apply-theme.sh)",
       "command(systemctl list-units)",
       "command(fc-list)",
-      "command(dotfiles-sync.sh)"
+      "command(dotfiles-sync.sh)",
+      "command(sort)",
+      "command(tree)"
     ]
   },
   "trustedWorkspaces": [
