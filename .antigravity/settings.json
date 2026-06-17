@@ -50,7 +50,10 @@
       "command(fc-list)",
       "command(dotfiles-sync.sh)",
       "command(sort)",
-      "command(tree)"
+      "command(tree)",
+      "command(pgrep)",
+      "command(sunwait)",
+      "command(hyprctl)"
     ]
   },
   "trustedWorkspaces": [
