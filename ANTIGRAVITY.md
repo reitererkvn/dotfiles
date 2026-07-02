@@ -72,7 +72,7 @@
 *   **Rollback-Sicherung (Fail-Safe):** Erstelle vor Skriptänderungen Backups (`.bak`) oder verifiziere das Vorhandensein von Snapper-Snapshots, um im Fehlerfall ein direktes Rollback durchführen zu können.
 *   **LLM-Empfehlung bei Bedarf (Model Suggestions):** Falls du im Vorhinein abschätzen kannst, dass eine Aufgabe mit einem anderen verfügbaren LLM (z. B. Claude für tiefes Coding/Refactoring oder ChatGPT für breites Reasoning) zuverlässiger gelöst werden kann, schlage dem Nutzer explizit vor, das Modell vor der Bearbeitung zu wechseln.
 *   **Strikte Repo-Trennung & Aktualität:** Stelle sicher, dass die verschiedenen Repositories (User-Space, Desktop-System, NAS-System) bei Änderungen jeweils separat und zeitnah über Git eingecheckt/gepusht werden, ohne dass sich deren Inhalte (z.B. Desktop-Skripte im NAS-Repo) vermischen.
+*   **Einheitliche Git-Identität:** Verwende bei automatisierten Git-Commits stets die globale Identität `bot@homeserver` (Name: `Antigravity`), um die Historie sauber und nachvollziehbar zu halten.
 
 ---
 *Dieses Dokument ist die primäre Instruktion für Antigravity CLI Sessions in diesem Workspace.*
-
