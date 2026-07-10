@@ -1,3 +1,6 @@
+# Return early if not running interactively to prevent Ansible junk warnings
+[[ $- != *i* ]] && return
+
 # history
 # Wo soll die History gespeichert werden?
 HISTFILE=~/.zsh_history
