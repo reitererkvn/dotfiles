@@ -40,12 +40,13 @@
 ## 5. Offene Projekte
 - **Paperless-ngx:** Einrichtung geplant (Pfade: SSD für DB/Ingest, HDD für Media).
 - **Monitoring:** Grafana/Prometheus Stack auf NAS aktiv (Port 3001/9090 via Caddy).
-- **Secret Management (In Progress):**
-    *   ✅ Vaultwarden Instanz auf NAS (Port 8080 via HTTPS/Tailscale/Caddy).
-    *   ✅ Bitwarden CLI Integration auf Desktop & NAS via API-Keys.
-    *   ✅ Dynamische Secret-Injection für `nas_cloud_sync.sh` und `immich-sre.sh`.
+- **Secret Management & Sicherheit (In Progress):**
+    *   ✅ Vaultwarden Instanz auf NAS (aber aktuell öffentlich exponiert auf vault.rnet.at ohne Signup-Schutz!).
+    *   ⏳ Bitwarden CLI Integration auf Desktop & NAS (Skript `vault-unlock.sh` erzeugt Login-Fehler wegen User/Root Mismatch).
+    *   ⏳ Dynamische Secret-Injection für Ansible und Skripte (liegt noch im Klartext in `.env` Dateien).
     *   ⏳ Backup von SSH-Keys (Private Keys) in den Vault.
     *   ⏳ Migration der `rclone.conf` Tokens in den Vault.
+    *   ⏳ Absicherung der öffentlichen Endpunkte (HA, Immich, Vaultwarden) z.B. via WAF, Fail2Ban oder Authelia/Cloudflare.
 - **Ansible Playbooks:** Automatisierung des System-Setups (Pakete, Admin-Stack, Configs) für Desktop und NAS.
     *   *Status:* `admin_stack` Rolle verwaltet Docker-Services (Caddy, Prometheus, Grafana, Semaphore).
     *   *Backup:* Ansible stellt nur Infrastruktur/Pakete bereit; Skripte verbleiben in `/opt/system-dotfiles/`.
