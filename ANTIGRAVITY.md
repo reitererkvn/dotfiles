@@ -50,10 +50,10 @@
     *   *Status:* `admin_stack` Rolle verwaltet Docker-Services (Caddy, Prometheus, Grafana, Semaphore).
     *   *Backup:* Ansible stellt nur Infrastruktur/Pakete bereit; Skripte verbleiben in `/opt/system-dotfiles/`.
 - **DNS-Infrastruktur:** Lokaler DNS-Server (z.B. Pi-hole/AdGuard) für herstellerunabhängige Namensauflösung (ohne Tailscale-Zwang).
-- **Gemini Telegram Bot:**
-    - **Ziel:** Remote-Steuerung des Systems via Telegram.
-    - **Anforderung:** Vollständige Konversations-Unterstützung.
-    - **Workflow:** Session startet bei Nachricht, endet bei `/quit`. Integration als `systemd --user` Service.
+- **Openclaw Container (Gemini Telegram Bot):**
+    - **Ziel:** Einrichtung und Fertigstellung des Openclaw Docker Containers.
+    - **Anforderung:** Vollständige Konversations-Unterstützung zur Remote-Steuerung via Telegram.
+    - **Workflow:** Session startet bei Nachricht, endet bei `/quit`. Läuft als zentraler Docker-Dienst auf dem NAS.
 
 ## 6. Abgeschlossene Projekte
 *   ✅ Hyprland Lua Migration (Mai 2026)
