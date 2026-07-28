@@ -11,6 +11,9 @@ alias sysupdate='/usr/local/bin/system-update.sh'
 # btrfs snapshot for @ and @/home
 alias snapnow='sudo snapper -c root create --description "manuell erstellt" && sudo snapper -c home create --description "manuell erstellt" && echo -e "📸 \n\e[1;32mSnapshots erstellt am $(date +%H:%M:%S):\e[0m\n\e[1;34m@(root):\e[0m $(sudo snapper list | tail -n 1)\n\e[1;34m@home:\e[0m   $(sudo snapper -c home list | tail -n 1)"'
 #
+# NAS Wake-on-Lan
+alias wake-nas="wol 4c:cc:6a:05:b9:43"
+#
 # #############################################
 # symlinks/copies dotfiles to their directories
 # #############################################
