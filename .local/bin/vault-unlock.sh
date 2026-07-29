@@ -15,8 +15,9 @@ SESSION_FILE="$SESSION_DIR/bw_session"
 # Ensure the directory exists (requires sudo/root if it doesn't)
 if [ ! -d "$SESSION_DIR" ]; then
     sudo mkdir -p "$SESSION_DIR"
-    sudo chmod 755 "$SESSION_DIR"
 fi
+sudo chown -R $USER:$USER "$SESSION_DIR"
+sudo chmod 755 "$SESSION_DIR"
 
 echo "[Vault] Unlocking Bitwarden Vault..."
 
