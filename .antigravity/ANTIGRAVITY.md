@@ -40,20 +40,22 @@
 ## 5. Offene Projekte
 - **Paperless-ngx:** Einrichtung geplant (Pfade: SSD für DB/Ingest, HDD für Media).
 - **Monitoring:** Grafana/Prometheus Stack auf NAS aktiv (Port 3001/9090 via Caddy).
-- **Secret Management (In Progress):**
-    *   ✅ Vaultwarden Instanz auf NAS (Port 8080 via HTTPS/Tailscale/Caddy).
-    *   ✅ Bitwarden CLI Integration auf Desktop & NAS via API-Keys.
-    *   ✅ Dynamische Secret-Injection für `nas_cloud_sync.sh` und `immich-sre.sh`.
+- **Secret Management & Sicherheit (In Progress):**
+    *   ✅ Vaultwarden Instanz auf NAS (sicher über Cloudflare Tunnel auf `vault.rnet.at` exponiert, WAF aktiv & Signups via `SIGNUPS_ALLOWED=false` blockiert).
+    *   ⏳ Bitwarden CLI Integration auf Desktop & NAS (Skript `vault-unlock.sh` erzeugt Login-Fehler wegen User/Root Mismatch).
+    *   ⏳ Dynamische Secret-Injection für Ansible und Skripte (liegt noch im Klartext in `.env` Dateien).
     *   ⏳ Backup von SSH-Keys (Private Keys) in den Vault.
     *   ⏳ Migration der `rclone.conf` Tokens in den Vault.
+    *   ✅ Absicherung der öffentlichen Endpunkte: Vaultwarden läuft sicher über Cloudflare Tunnel (WAF).
+    *   ⏳ Weitere Endpunkte (HA, Immich) z.B. via Cloudflare Access (Zero Trust) absichern.
 - **Ansible Playbooks:** Automatisierung des System-Setups (Pakete, Admin-Stack, Configs) für Desktop und NAS.
     *   *Status:* `admin_stack` Rolle verwaltet Docker-Services (Caddy, Prometheus, Grafana, Semaphore).
     *   *Backup:* Ansible stellt nur Infrastruktur/Pakete bereit; Skripte verbleiben in `/opt/system-dotfiles/`.
 - **DNS-Infrastruktur:** Lokaler DNS-Server (z.B. Pi-hole/AdGuard) für herstellerunabhängige Namensauflösung (ohne Tailscale-Zwang).
-- **Gemini Telegram Bot:**
-    - **Ziel:** Remote-Steuerung des Systems via Telegram.
-    - **Anforderung:** Vollständige Konversations-Unterstützung.
-    - **Workflow:** Session startet bei Nachricht, endet bei `/quit`. Integration als `systemd --user` Service.
+- **Openclaw Container (Gemini Telegram Bot):**
+    - **Ziel:** Einrichtung und Fertigstellung des Openclaw Docker Containers.
+    - **Anforderung:** Vollständige Konversations-Unterstützung zur Remote-Steuerung via Telegram.
+    - **Workflow:** Session startet bei Nachricht, endet bei `/quit`. Läuft als zentraler Docker-Dienst auf dem NAS.
 
 ## 6. Abgeschlossene Projekte
 *   ✅ Hyprland Lua Migration (Mai 2026)
@@ -71,6 +73,8 @@
 *   **Validierung vor Dateierstellungen (Dry-Run / Lint):** Nutze verfügbare Validierungstools (z. B. `systemd-analyze verify`, `caddy validate`) vor dem Schreiben von Konfigurationen und arbeite mit minimalen Zeilen-Ersetzungen (diffs).
 *   **Rollback-Sicherung (Fail-Safe):** Erstelle vor Skriptänderungen Backups (`.bak`) oder verifiziere das Vorhandensein von Snapper-Snapshots, um im Fehlerfall ein direktes Rollback durchführen zu können.
 *   **LLM-Empfehlung bei Bedarf (Model Suggestions):** Falls du im Vorhinein abschätzen kannst, dass eine Aufgabe mit einem anderen verfügbaren LLM (z. B. Claude für tiefes Coding/Refactoring oder ChatGPT für breites Reasoning) zuverlässiger gelöst werden kann, schlage dem Nutzer explizit vor, das Modell vor der Bearbeitung zu wechseln.
+*   **Strikte Repo-Trennung & Aktualität:** Stelle sicher, dass die verschiedenen Repositories (User-Space, Desktop-System, NAS-System) bei Änderungen jeweils separat und zeitnah über Git eingecheckt/gepusht werden, ohne dass sich deren Inhalte (z.B. Desktop-Skripte im NAS-Repo) vermischen.
+*   **Einheitliche Git-Identität:** Verwende bei automatisierten Git-Commits stets die globale Identität `bot@homeserver` (Name: `Antigravity`), um die Historie sauber und nachvollziehbar zu halten.
 
 ---
 *Dieses Dokument ist die primäre Instruktion für Antigravity CLI Sessions in diesem Workspace.*
