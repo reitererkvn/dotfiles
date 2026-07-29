@@ -2,6 +2,12 @@
 # vault-unlock.sh
 # Unlocks the Bitwarden vault and stores the session in RAM for automated services.
 
+if [ "$EUID" -eq 0 ]; then
+  echo "[Fehler] Bitte das Skript NICHT mit 'sudo' ausführen!"
+  echo "Das Skript fordert die Sudo-Rechte für benötigte Schritte selbst an."
+  exit 1
+fi
+
 # Unified RAM-disk path for the session token
 SESSION_DIR="/run/vault"
 SESSION_FILE="$SESSION_DIR/bw_session"

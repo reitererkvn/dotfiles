@@ -9,7 +9,7 @@ RCLONE_CONF_FILE="/run/vault/rclone.conf"
 if [[ ! -s "$RCLONE_CONF_FILE" ]]; then
     echo "[System] Lade Rclone-Konfiguration aus dem Bitwarden-Tresor..."
     if [[ ! -f "/run/vault/bw_session" ]]; then
-        echo "[Fehler] Tresor ist gesperrt. Bitte 'sudo vault-unlock.sh' ausführen!"
+        echo "[Fehler] Tresor ist gesperrt. Bitte 'vault-unlock.sh' (ohne sudo!) ausführen!"
         exit 1
     fi
     sudo bash -c 'export BW_SESSION=$(cat /run/vault/bw_session); bw get notes "Rclone-Config" > /run/vault/rclone.conf; chown kevin:kevin /run/vault/rclone.conf; chmod 600 /run/vault/rclone.conf'
