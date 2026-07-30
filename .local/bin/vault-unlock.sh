@@ -22,7 +22,7 @@ sudo chmod 755 "$SESSION_DIR"
 echo "[Vault] Unlocking Bitwarden Vault..."
 
 # Get the raw session key
-BW_SESSION_TMP=$(bw unlock --raw)
+BW_SESSION_TMP=$(sudo HOME=/root /usr/bin/bw unlock --raw)
 
 if [ $? -eq 0 ] && [ -n "$BW_SESSION_TMP" ]; then
     # Write the session token WITHOUT newline (crucial for bw CLI)
