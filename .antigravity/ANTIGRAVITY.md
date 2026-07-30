@@ -42,7 +42,8 @@
 - **Monitoring:** Grafana/Prometheus Stack auf NAS aktiv (Port 3001/9090 via Caddy).
 - **Secret Management & Sicherheit (In Progress):**
     *   ✅ Vaultwarden Instanz auf NAS (sicher über Cloudflare Tunnel auf `vault.rnet.at` exponiert, WAF aktiv & Signups via `SIGNUPS_ALLOWED=false` blockiert).
-    *   ⏳ Bitwarden CLI Integration auf Desktop & NAS (Skript `vault-unlock.sh` erzeugt Login-Fehler wegen User/Root Mismatch).
+    *   ✅ Bitwarden CLI Integration auf Desktop (User/Root Mismatch in vault-unlock.sh behoben).
+    *   ⏳ NAS Auto-Unlock (Übergangslösung): Derzeit via lokaler Passwort-Datei (`/root/.bw_password`) gelöst. **Roadmap:** Migration auf robustere Methode via Bitwarden Secrets Manager (`bws`) / Machine Account, um Klartext-Passwörter auf der Festplatte zu vermeiden.
     *   ⏳ Dynamische Secret-Injection für Ansible und Skripte (liegt noch im Klartext in `.env` Dateien).
     *   ⏳ Backup von SSH-Keys (Private Keys) in den Vault.
     *   ⏳ Migration der `rclone.conf` Tokens in den Vault.
