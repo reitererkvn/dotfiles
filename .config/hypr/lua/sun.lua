@@ -5,7 +5,7 @@ local hl = hl
 -- Config
 local LAT, LON = "48.20N", "16.30E"
 local SYMLINK = os.getenv("HOME") .. "/.config/hypr/assets/images/WALLPAPER"
-local MONITOR = os.getenv("MONITOR1") or "DP-3"
+local MONITOR = os.getenv("MONITOR1") or "HDMI-A-1"
 
 -- Wallpapers from environment
 local wp = {

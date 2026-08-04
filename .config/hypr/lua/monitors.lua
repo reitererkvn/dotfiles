@@ -1,7 +1,7 @@
 -- 🚀 HyprCachyOS: Lua-Native Monitors (0.55+ API)
 local hl = hl
 
-local monitor1 = os.getenv("MONITOR1") or "DP-3"
+local monitor1 = os.getenv("MONITOR1") or "HDMI-A-1"
 local res1 = os.getenv("RES1") or "preferred"
 local rfr1 = os.getenv("RFR1") or "60"
 local mpos1 = os.getenv("MPOS1") or "0x0"

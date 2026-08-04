@@ -7,7 +7,7 @@
     // "width": 1280, // Waybar width
     "spacing": 0, // Gaps between modules (4px)
     //output
-    "output": ["DP-3"],
+    "output": ["HDMI-A-1"],
     // Choose the order of the modules
     "modules-left": [
         "hyprland/workspaces"
