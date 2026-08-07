@@ -1,4 +1,3 @@
-/opt/system-dotfiles/
 /home/kevin/.dotfiles/
 /home/kevin/Dokumente/
 /home/kevin/Musik/
