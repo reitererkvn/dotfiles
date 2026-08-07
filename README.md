@@ -19,9 +19,8 @@ This repository is part of a **multi-repo desktop and automation setup**. It foc
 
 | Layer | Repository | Responsibility |
 | :--- | :--- | :--- |
-| **User-Space** | `~/.dotfiles` (This) | Cognitive ergonomics, Hyprland Lua, userland prep. |
-| **System-Brain** | `/opt/system-dotfiles` | **Ansible Master**, hardware tweaks, systemd units. |
-| **Data-Custodian** | `nas-01:/opt/system-dotfiles` | Storage tiering, Semaphore UI, backup chain. |
+| **User-Space** | `~/.dotfiles` (This) | Cognitive ergonomics, Hyprland Lua, userland configs. |
+| **Infrastructure Monorepo** | `/opt/infrastructure` | **Ansible Master**, Hardware tweaks, systemd units, Docker stacks (NAS & Desktop). |
 
 ### Core User-Space Principles
 *   **Programmable Compositing:** Hyprland 0.55+ uses a **native Lua API**. This moves logic from static strings to a modular, event-driven architecture (Solar scheduling, dynamic layouts).
@@ -71,17 +70,12 @@ Ensure your base system has `Hyprland` (0.55+), `UWSM`, `sunwait`, and standard 
     ~/.dotfiles/.local/bin/dotfiles-sync.sh
     ```
 
-3.  **Synchronize System Documentation:**
-    ```bash
-    ~/.dotfiles/.local/bin/antigravity-sync-docs.sh
-    ```
-
-4.  **Activate Service Daemons:**
+3.  **Activate Service Daemons:**
     ```bash
     ~/.dotfiles/.local/bin/install-userservice.sh
     ```
 
-5.  **Launch Session:**
+4.  **Launch Session:**
     Start your session via **UWSM** (e.g., `uwsm start hyprland.desktop`) to utilize the SSOT environment loader and systemd integration.
 
 ## 📜 Key Configuration Scripts
@@ -90,7 +84,6 @@ Located in `.local/bin`, these scripts manage the system state:
 
 | Script Name | Purpose |
 | :--- | :--- |
-| `antigravity-sync-docs.sh` | **Document Sync:** Distributes the central `GEMINI.md` across all repositories (Desktop/NAS). |
 | `dotfiles-sync.sh` | The idempotent state synchronizer for symlinks. |
 | `hypr-lazy.sh` | The IPC socket listener for cognitive offloading and lazy-loading of heavy applications. |
 | `git-push.sh` | Automates Git state synchronization for the dotfiles repository. |
@@ -101,4 +94,4 @@ Located in `.local/bin`, these scripts manage the system state:
 | `sun.lua` (Config) | **Solar Scheduler:** Lua-native event handler for wallpaper and aesthetic transitions. |
 
 ---
-*Refer to GEMINI.md for architectural rules and system guidelines.*
+*Refer to ANTIGRAVITY.md for architectural rules and system guidelines.*

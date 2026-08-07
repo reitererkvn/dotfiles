@@ -24,9 +24,8 @@
 
 ## 3. Workflows & Repo-Exklusivität (Source of Truth)
 *   **STRIKTE TRENNUNG:**
-    *   **User-Space (`~/.dotfiles/`):** Enthält User-Konfigurationen (Zsh, Hyprland, etc.) und das Master-Ansible-Playbook für Infrastruktur-Vorbereitung.
-    *   **NAS-System (`nas-01:/opt/system-dotfiles/`):** Source of Truth für NAS-Dienste (Semaphore, Caddy, Backup-Skripte).
-    *   **Desktop-System (`/opt/system-dotfiles/`):** Source of Truth für Desktop-Systemd-Units und Hardware-Skripte.
+    *   **User-Space (`~/.dotfiles/`):** Enthält ausschließlich User-Konfigurationen (Zsh, Hyprland, Kitty, Neovim, etc.).
+    *   **Infrastructure Monorepo (`/opt/infrastructure/`):** Source of Truth für das gesamte System-Setup (Ansible Playbooks, NAS-Dienste, Desktop-Hardware-Skripte, Docker Stacks). Läuft sowohl auf Desktop als auch auf NAS.
 *   **Secret Management:**
     *   **RAM-Vault:** Einmaliges Entsperren via `sudo vault-unlock.sh` pro Boot. Token liegt in `/run/vault/bw_session`.
     *   **Zero-Leak:** Keine Klartext-Passwörter in Git. Docker nutzt `${VAR}` in Compose-Files, gespeist aus lokalen `.env` Dateien.
@@ -50,7 +49,7 @@
     *   ⏳ Weitere Endpunkte (HA, Immich) z.B. via Cloudflare Access (Zero Trust) absichern.
 - **Ansible Playbooks:** Automatisierung des System-Setups (Pakete, Admin-Stack, Configs) für Desktop und NAS.
     *   *Status:* `admin_stack` Rolle verwaltet Docker-Services (Caddy, Prometheus, Grafana, Semaphore).
-    *   *Backup:* Ansible stellt nur Infrastruktur/Pakete bereit; Skripte verbleiben in `/opt/system-dotfiles/`.
+    *   *Backup:* Ansible stellt die komplette Infrastruktur bereit; Skripte verbleiben im Monorepo `/opt/infrastructure/`.
 - **DNS-Infrastruktur:** Lokaler DNS-Server (z.B. Pi-hole/AdGuard) für herstellerunabhängige Namensauflösung (ohne Tailscale-Zwang).
 - **Openclaw Container (Gemini Telegram Bot):**
     - **Ziel:** Einrichtung und Fertigstellung des Openclaw Docker Containers.
@@ -61,7 +60,7 @@
 *   ✅ Hyprland Lua Migration (Mai 2026)
 *   ✅ Integration intelligenter Wallpaper-Scheduler in Lua
 *   ✅ Secret Management Foundation (Vaultwarden & CLI Automation)
-*   ✅ Zentralisierung der Dokumentations-Infrastruktur (`antigravity-sync-docs.sh`)
+*   ✅ Zentralisierung der Dokumentations-Infrastruktur (`ANTIGRAVITY.md` als SSOT)
 
 ---
 
@@ -73,7 +72,7 @@
 *   **Validierung vor Dateierstellungen (Dry-Run / Lint):** Nutze verfügbare Validierungstools (z. B. `systemd-analyze verify`, `caddy validate`) vor dem Schreiben von Konfigurationen und arbeite mit minimalen Zeilen-Ersetzungen (diffs).
 *   **Rollback-Sicherung (Fail-Safe):** Erstelle vor Skriptänderungen Backups (`.bak`) oder verifiziere das Vorhandensein von Snapper-Snapshots, um im Fehlerfall ein direktes Rollback durchführen zu können.
 *   **LLM-Empfehlung bei Bedarf (Model Suggestions):** Falls du im Vorhinein abschätzen kannst, dass eine Aufgabe mit einem anderen verfügbaren LLM (z. B. Claude für tiefes Coding/Refactoring oder ChatGPT für breites Reasoning) zuverlässiger gelöst werden kann, schlage dem Nutzer explizit vor, das Modell vor der Bearbeitung zu wechseln.
-*   **Strikte Repo-Trennung & Aktualität:** Stelle sicher, dass die verschiedenen Repositories (User-Space, Desktop-System, NAS-System) bei Änderungen jeweils separat und zeitnah über Git eingecheckt/gepusht werden, ohne dass sich deren Inhalte (z.B. Desktop-Skripte im NAS-Repo) vermischen.
+*   **Strikte Repo-Trennung & Aktualität:** Stelle sicher, dass die verschiedenen Repositories (User-Space `~/.dotfiles` und System-Space `/opt/infrastructure`) bei Änderungen jeweils separat und zeitnah über Git eingecheckt/gepusht werden, ohne dass sich deren Inhalte (z.B. Desktop-Skripte im User-Repo) vermischen.
 *   **Einheitliche Git-Identität:** Verwende bei automatisierten Git-Commits stets die globale Identität `bot@homeserver` (Name: `Antigravity`), um die Historie sauber und nachvollziehbar zu halten.
 
 ---
