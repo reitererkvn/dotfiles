@@ -18,23 +18,23 @@ alias wake-nas="wol 4c:cc:6a:05:b9:43"
 # symlinks/copies dotfiles to their directories
 # #############################################
 #
-# use dotsync for .dotfiles and sudodotsync for system-dotfiles
-# !!! sudodotsync overwrites the files in /root/ which are similar in name to those in /opt/system-dotfiles/ !!!
+# use dotsync for .dotfiles
 #
 alias dotsync='/home/kevin/.dotfiles/.local/bin/dotfiles-sync.sh'
-alias sudodotsync='sudo /opt/system-dotfiles/usr/local/bin/dotfiles-sync.sh'
+#
+# deploy infrastructure via Ansible
+alias infra-deploy='ansible-playbook /opt/infrastructure/site.yml -i /opt/infrastructure/inventory.ini --ask-vault-pass'
 #
 # sync dotfiles to git
-alias gitsync='/home/kevin/.dotfiles/.local/bin/git-push.sh' # -u only user, -s only system, -n nas only
+alias gitsync='/home/kevin/.dotfiles/.local/bin/git-push.sh' # -u only user, -i only infrastructure
 #
 # applies theme, writes color configs to ~/.config for apps who dont support envs
 alias apply-theme='uwsm app -- /home/kevin/.dotfiles/.local/bin/apply-theme.sh'
 #
 # sync dotfiles & apply theme & autocommit to git (no apply-theme for dotsyncs)
-alias fullsync='dotsync && apply-theme && sudodotsync && ssh kevin@nas-01 "sudo /opt/system-dotfiles/usr/local/bin/dotfiles-sync.sh" && gitsync' # home & user
+alias fullsync='dotsync && apply-theme && gitsync' # home & user & infra
 alias fullsyncu='dotsync && apply-theme && gitsync -u' # user only
-alias fullsyncs='sudodotsync && gitsync -s' # system (root) only
-alias fullsyncn='ssh kevin@nas-01 "sudo /opt/system-dotfiles/usr/local/bin/dotfiles-sync.sh" && gitsync -n'
+alias fullsynci='gitsync -i' # infrastructure only
 #
 # ################################################################
 # ################################################################
