@@ -16,12 +16,7 @@ hl.window_rule({ match = { class = "org.pulseaudio.pavucontrol" }, float = true 
 hl.window_rule({ match = { class = "steam" }, workspace = "special:magic", pseudo = true })
 hl.window_rule({ match = { class = "vesktop" }, workspace = "special:magic", opaque = true })
 hl.window_rule({ match = { class = "bolt-launcher" }, workspace = "special:magic", pseudo = true })
-hl.window_rule({
-    match = { class = "chrome-web.webex.com.*" },
-    workspace = "special:magic",
-    pseudo = true,
-    opaque = true,
-})
+
 hl.window_rule({ match = { class = "chrome-web.whatsapp.com.*" }, workspace = "special:magic", pseudo = true })
 hl.window_rule({ match = { class = "chrome-music.youtube.com.*" }, workspace = "special:magic", pseudo = true })
 hl.window_rule({

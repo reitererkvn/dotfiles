@@ -38,7 +38,7 @@
 **/.steam/steam.pipe
 **/.steampid
 **/.steampath
-**/.omnissa/viewctrl/**
+
 **/.local/share/akonadi/socket-*
 
 # ====================================================================

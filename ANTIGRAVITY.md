@@ -33,7 +33,7 @@
 
 ## 4. Bekannte Fallstricke & Fixes
 *   **Bitwarden Token:** Der Session-Token in `/run/vault/bw_session` darf keinen Zeilenumbruch enthalten (via `printf` schreiben).
-*   **Ownership:** Alle Verzeichnisse unter `/opt/containerd/` werden durch Ansible auf `root:root` vereinheitlicht, um Idempotenz-Konflikte zu vermeiden.
+*   **Ownership:** Alle Verzeichnisse unter `/opt/docker/` werden durch Ansible auf `root:root` vereinheitlicht, um Idempotenz-Konflikte zu vermeiden.
 *   **Semaphore Self-Restart:** Docker-Tasks in Semaphore nutzen den Tag `infrastructure_only`, um zu verhindern, dass Semaphore sich während des Laufs selbst absägt.
 
 ## 5. Offene Projekte
