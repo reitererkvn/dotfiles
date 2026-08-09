@@ -3,8 +3,8 @@
 **Fokus:** Modular, stabil & automatisiert
 
 ## 1. System-Topologie (Hardware & Netz)
-*   **Desktop (`homeserver`):** CachyOS Linux | i7-7700K | 16GB RAM | GTX 1070 Ti | 5K Display | IP: `192.168.178.22`
-*   **NAS (`nas-01`):** Debian 13 | i5-12400F | 16GB RAM | 256GB SSD + 1TB HDD (`/mnt/HDD-01`) | IP: `192.168.178.46`
+*   **Desktop (`homeserver`):** CachyOS Linux | GTX 1650 | 16GB RAM | IP: `192.168.178.22`
+*   **NAS (`nas-01`):** Debian 13 | 12th Gen i5-12400F | 16GB RAM | GTX 1070 Ti | 256GB SSD + 1TB HDD (`/mnt/HDD-01`) | IP: `192.168.178.46`
 *   **Connectivity:** SSH via Desktop-Agent-Forwarding; NAS -> Cloud via GDrive (API-Limit: 200 TPS, 16 Conn).
 
 ## 2. System-Architektur (HyprCachyOS & NAS-01)
