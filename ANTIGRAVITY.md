@@ -34,22 +34,23 @@
 ## 4. Bekannte Fallstricke & Fixes
 *   **Bitwarden Token:** Der Session-Token in `/run/vault/bw_session` darf keinen Zeilenumbruch enthalten (via `printf` schreiben).
 *   **Ownership:** Alle Verzeichnisse unter `/opt/docker/` werden durch Ansible auf `root:root` vereinheitlicht, um Idempotenz-Konflikte zu vermeiden.
-*   **Semaphore Self-Restart:** Docker-Tasks in Semaphore nutzen den Tag `infrastructure_only`, um zu verhindern, dass Semaphore sich während des Laufs selbst absägt.
+*   **Semaphore Self-Restart:** Docker-Tasks in Semaphore nutzen den Tag `infrastructure_only` (im Task `Restart Docker Compose Stacks`), um zu verhindern, dass Semaphore sich während des Laufs selbst absägt.
+*   **Semaphore Task-Auswahl:** Durch die Aufteilung der Playbooks in `nas.yml` und `desktop.yml` wird sichergestellt, dass Tasks (z. B. "NAS update") strikt nur ihre Zielsysteme ansprechen, ohne dass sich Hosts überlagern. In Semaphore müssen dafür die korrekten Playbooks in den Task Templates hinterlegt sein.
 
 ## 5. Offene Projekte
 - **Paperless-ngx:** Einrichtung geplant (Pfade: SSD für DB/Ingest, HDD für Media).
 - **Monitoring:** Grafana/Prometheus Stack auf NAS aktiv (Port 3001/9090 via Caddy).
-- **Secret Management & Sicherheit (In Progress):**
+- **Secret Management & Sicherheit:**
     *   ✅ Vaultwarden Instanz auf NAS (sicher über Cloudflare Tunnel auf `vault.rnet.at` exponiert, WAF aktiv & Signups via `SIGNUPS_ALLOWED=false` blockiert).
+    *   ✅ **Ansible Vault:** Sämtliche Container-Secrets und Environment-Variablen werden verschlüsselt über `ansible-vault` (in `group_vars/nas/secrets.yml`) verwaltet und zur Laufzeit dynamisch injiziert. Es existieren keine Klartext-Passwords im Repository.
     *   ⏳ Bitwarden CLI Integration auf Desktop & NAS (Skript `vault-unlock.sh` erzeugt Login-Fehler wegen User/Root Mismatch).
-    *   ⏳ Dynamische Secret-Injection für Ansible und Skripte (liegt noch im Klartext in `.env` Dateien).
     *   ⏳ Backup von SSH-Keys (Private Keys) in den Vault.
     *   ⏳ Migration der `rclone.conf` Tokens in den Vault.
     *   ✅ Absicherung der öffentlichen Endpunkte: Vaultwarden läuft sicher über Cloudflare Tunnel (WAF).
     *   ⏳ Weitere Endpunkte (HA, Immich) z.B. via Cloudflare Access (Zero Trust) absichern.
-- **Ansible Playbooks:** Automatisierung des System-Setups (Pakete, Admin-Stack, Configs) für Desktop und NAS.
-    *   *Status:* `admin_stack` Rolle verwaltet Docker-Services (Caddy, Prometheus, Grafana, Semaphore).
-    *   *Backup:* Ansible stellt die komplette Infrastruktur bereit; Skripte verbleiben im Monorepo `/opt/infrastructure/`.
+- **Ansible Playbooks:** Automatisierung des System-Setups für Desktop und NAS.
+    *   *Architektur:* Das Setup ist modularisiert. `site.yml` fungiert als Master-Include, während `nas.yml` und `desktop.yml` eine strikte, fehlerfreie Host-Trennung (für z. B. Semaphore) ermöglichen.
+    *   *Docker-Deployment:* Die Rolle `nas_docker` verwaltet alle Container. Sie verwendet eine zentrale, hochdynamische Master-Jinja2-Vorlage (`docker-compose.yml.j2`), um über Wenn-Dann-Schleifen alle isolierten `docker-compose.yml`-Dateien der verschiedenen Container (Grafana, Immich, Caddy etc.) im Loop zu generieren. Alle Web-Services kommunizieren sicher isoliert über das `proxy_net`-Docker-Netzwerk.
 - **DNS-Infrastruktur:** Lokaler DNS-Server (z.B. Pi-hole/AdGuard) für herstellerunabhängige Namensauflösung (ohne Tailscale-Zwang).
 - **Openclaw Container (Gemini Telegram Bot):**
     - **Ziel:** Einrichtung und Fertigstellung des Openclaw Docker Containers.
