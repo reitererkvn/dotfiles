@@ -28,7 +28,8 @@
     *   **Infrastructure Monorepo (`/opt/infrastructure/`):** Source of Truth für das gesamte System-Setup (Ansible Playbooks, NAS-Dienste, Desktop-Hardware-Skripte, Docker Stacks). Läuft sowohl auf Desktop als auch auf NAS.
 *   **Secret Management:**
     *   **RAM-Vault:** Einmaliges Entsperren via `sudo vault-unlock.sh` pro Boot. Token liegt in `/run/vault/bw_session`.
-    *   **Zero-Leak:** Keine Klartext-Passwörter in Git. Docker nutzt `${VAR}` in Compose-Files, gespeist aus lokalen `.env` Dateien.
+    *   **Zero-Leak:** Keine Klartext-Passwörter in Git.
+    *   **Docker Compose Secrets:** Es dürfen **keine separaten `.env`-Dateien** für Docker-Container auf dem NAS manuell erstellt oder über Ansible generiert werden. Alle Container-Secrets (z.B. für Grafana, Immich) müssen aus der verschlüsselten `group_vars/nas/secrets.yml` stammen und direkt als Jinja-Variablen (z.B. `{{ grafana_admin_pass }}`) in die jeweiligen `docker-compose.yml.j2` Templates injiziert werden, um volle Konsistenz zu gewährleisten.
 *   **Repo-First:** Änderungen MÜSSEN zuerst im jeweiligen Repository erfolgen. Deployment via `dotfiles-sync.sh` (User) oder manueller Kopie (System).
 
 ## 4. Bekannte Fallstricke & Fixes
@@ -36,6 +37,9 @@
 *   **Ownership:** Alle Verzeichnisse unter `/opt/docker/` werden durch Ansible auf `root:root` vereinheitlicht, um Idempotenz-Konflikte zu vermeiden.
 *   **Semaphore Self-Restart:** Docker-Tasks in Semaphore nutzen den Tag `infrastructure_only` (im Task `Restart Docker Compose Stacks`), um zu verhindern, dass Semaphore sich während des Laufs selbst absägt.
 *   **Semaphore Task-Auswahl:** Durch die Aufteilung der Playbooks in `nas.yml` und `desktop.yml` wird sichergestellt, dass Tasks (z. B. "NAS update") strikt nur ihre Zielsysteme ansprechen, ohne dass sich Hosts überlagern. In Semaphore müssen dafür die korrekten Playbooks in den Task Templates hinterlegt sein.
+*   **Home Assistant (Google Assistant):** Da die manuelle Google Assistant Integration (ohne Nabu Casa) genutzt wird, funktioniert die native HA-Oberfläche (Settings -> Voice assistants) NICHT für Google Home. Das Exponieren von Geräten MUSS ausschließlich über die `google_assistant_entities.yaml` (verwaltet durch das HACS Plugin *Google Home Exposure Manager*) erfolgen. Nach Änderungen muss Google über "Hey Google, synchronisiere meine Geräte" zum Pull gezwungen werden.
+*   **Immich Datenbank-Passwort:** Wenn das Postgres-Passwort für Immich geändert wird, reicht eine Anpassung im Vault nicht aus. Da Postgres das Passwort nur beim Initialstart setzt, muss das Passwort bei bereits laufenden Instanzen zwingend zusätzlich manuell im Container via `ALTER USER` geändert werden.
+*   **Antigravity Permissions & MCP:** Antigravity läuft lokal mit weitreichenden CLI-Rechten (Wildcards `command(*)`, `read_file(*)`). Es dürfen daher **keine** redundanten MCP-Server für native lokale Tools (wie Ansible, Docker, SSH, Home Assistant) eingerichtet werden, da der native CLI-Zugriff performanter und mächtiger ist. MCP-Server sind nur für externe APIs oder spezielle Aufgaben zulässig.
 
 ## 5. Offene Projekte
 - **Paperless-ngx:** Einrichtung geplant (Pfade: SSD für DB/Ingest, HDD für Media).
