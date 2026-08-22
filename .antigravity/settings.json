@@ -3,18 +3,19 @@
   "colorScheme": "tokyo night",
   "enableTelemetry": false,
   "mcpServers": {
-    "homeassistant": {
+    "git": {
       "command": "npx",
       "args": [
         "-y",
-        "@server/home-assistant"
+        "@modelcontextprotocol/server-git"
       ]
     },
-    "docker": {
+    "postgres": {
       "command": "npx",
       "args": [
         "-y",
-        "@server/docker"
+        "@modelcontextprotocol/server-postgres",
+        "postgresql://localhost/immich"
       ]
     }
   },
