@@ -82,3 +82,13 @@
 
 ---
 *Dieses Dokument ist die primäre Instruktion für Antigravity CLI Sessions in diesem Workspace.*
+
+
+# NAS Modifications (nas-01)
+When modifying system files, docker configurations, or any root-owned files on the `nas-01` server (which is locally mounted at `/mnt/nas-01`), **DO NOT** write to the local mount directly. The `rclone` SFTP mount causes caching delays and permission issues for the `kevin` user.
+
+Instead, you MUST use SSH to connect to the server and apply changes using `sudo`:
+1. SSH into the server: `ssh -i /home/kevin/.ssh/id_ed25519 -o StrictHostKeyChecking=no kevin@100.72.31.15`
+2. Run commands or modify files via `sudo` on the remote server.
+3. If deploying new config files, write them to a local `/tmp` file first, `scp` them to `/tmp` on the server, and then use SSH with `sudo cp` to move them into their final destination (e.g. `/opt/docker/...`) and fix ownership (`sudo chown root:root`).
+4. Restart corresponding docker containers directly via SSH (`sudo docker restart <container>`).
