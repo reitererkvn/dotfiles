@@ -87,7 +87,7 @@ while IFS= read -r template; do
 done < <(find "$HOME/.config/hypr/assets" -name "*.template*")
 
 # yazi cant source, so must recieve a direct copy to its directory
-envsubst < "$HOME/.config/hypr/assets/yazi-theme.xtemplate" > "$HOME/.config/yazi/theme.toml"
+export schema='$schema'; envsubst < "$HOME/.config/hypr/assets/yazi-theme.xtemplate" > "$HOME/.config/yazi/theme.toml"
 
 # wlogout
 envsubst "$envsubst_list" < "$HOME/.config/hypr/assets/wlogout-style.xtemplate.css" > "$HOME/.config/wlogout/style.css"
