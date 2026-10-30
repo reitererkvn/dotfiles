@@ -1,19 +1,22 @@
 # Home Server, Desktop & Dotfiles Configuration
-**Stand:** 30. Oktober 2026
+**Stand:** 31. Oktober 2026
 **Fokus:** Modular, stabil & automatisiert
 
 ## 1. System-Topologie (Hardware & Netz)
 *   **Desktop (`homeserver`):** CachyOS Linux | GTX 1650 | 16GB RAM | IP: `192.168.178.22`
-*   **NAS (`nas-01`):** Debian 13 | 12th Gen i5-12400F | 16GB RAM | GTX 1070 Ti | 256GB SSD + 1TB HDD (`/mnt/HDD-01`) | IP: `192.168.178.46`
+*   **NAS (`nas-01`):** Debian 13 | 12th Gen i5-12400F | 16GB RAM | GTX 1070 Ti | 512GB NVMe SSD (`LABEL=NAS-SSD`) + 3TB WD Red CMR HDD (`WDC WD30EFRX-68AX9N0`, `LABEL=HDD-01` unter `/mnt/HDD-01`) | IP: `192.168.178.46`
 *   **Connectivity:** SSH via Desktop-Agent-Forwarding; NAS -> Cloud via GDrive (API-Limit: 200 TPS, 16 Conn).
 
 ## 2. System-Architektur (HyprCachyOS & NAS-01)
-*   **Storage (NAS-01):** Hybrid-Modell (SSD für DB/Ingest, HDD für Archiv) via `MergerFS` unter `/lib/immich`.
-*   **Snapshot-Logik:** SSD-Subvolumes via Snapper. HDD-Snapshots nachts via Sync-Skript.
+*   **Storage (NAS-01):** Hybrid-Modell (SSD für OS/DB/Ingest, HDD für Archiv & Backups) via `MergerFS` unter `/lib/immich`. HDD-Subvolumes unter `/mnt/HDD-01`: `backups`, `immich`, `immich_snapshots`, `paperless`, `paperless_snapshots`.
+*   **Snapshot-Logik (5 Snapper-Configs in `/etc/default/snapper`):**
+    *   **SSD (`TIMELINE_CREATE="yes"`):** `root` (`/`), `home` (`/home`), `immich` (`/opt/docker/immich`).
+    *   **HDD (`TIMELINE_CREATE="no"`, `BACKGROUND_COMPARISON="no"` für ungestörten HDD-Standby):** `immich-hdd` (`/mnt/HDD-01/immich`), `paperless-hdd` (`/mnt/HDD-01/paperless`). Werden ausschließlich nachts um 02:00 Uhr via `nas_local_snapshot_sync.sh` mit `--cleanup-algorithm number` erstellt.
 *   **Trigger-Logik:** Event-basierte Trigger via SSD-Files (`/var/lib/nas-sync-triggers/`) zur HDD-Schonung.
 *   **Backup-Kette:**
-    *   Desktop -> NAS via `upload_snapshots.sh` (Trigger: `homeserver_sync.done`).
-    *   NAS Cloud Sync via Restic (`nas_cloud_sync.sh`) nach lokalem Sync (Trigger: `nas_local_sync.done`).
+    *   **Desktop -> NAS:** `upload_snapshots.sh` spiegelt `root` & `home` inkrementell (`btrfs send -p`) auf `/mnt/HDD-01/backups/homeserver/` und löscht dort abgelaufene Snapshots (1:1-Spiegelung zur SSD). Trigger: `homeserver_sync.done`.
+    *   **NAS Local Sync (02:00 Uhr):** `nas_local_snapshot_sync.sh` erzeugt vorab transaktionssichere DB-Dumps (`pg_dumpall | zstd` für `immich_postgres`, `paperless_db`, `semaphore-db` sowie `sqlite3 .backup` für `vaultwarden`, `grafana`, `homeassistant`), spiegelt die NAS-SSD-Snapshots (`root`, `home`, `immich`) 1:1 auf die HDD und erstellt die nächtlichen HDD-Snapshots (`immich-hdd`, `paperless-hdd`). Trigger: `nas_local_sync.done`.
+    *   **NAS Cloud Sync:** Restic (`nas_cloud_sync.sh`) sichert die jeweils neuesten Snapshots (`root`, `home`, `immich`, `immich-data`, `paperless-data`) dedupliziert nach Google Drive.
 
 ## 2. Hyprland Configuration (Lua-Native)
 *   **Version:** 0.55+ (Lua API).
@@ -41,11 +44,13 @@
 *   **Immich Datenbank-Passwort:** Wenn das Postgres-Passwort für Immich geändert wird, reicht eine Anpassung im Vault nicht aus. Da Postgres das Passwort nur beim Initialstart setzt, muss das Passwort bei bereits laufenden Instanzen zwingend zusätzlich manuell im Container via `ALTER USER` geändert werden.
 *   **NVIDIA GPU & Systemd cgroup v2 (`nas-01`):** Docker auf `nas-01` muss zwingend `nvidia` als `default-runtime` mit aktiviertem **CDI-Modus (`mode = "cdi"`)** in `/etc/nvidia-container-runtime/config.toml` und generierter `/etc/cdi/nvidia.yaml` nutzen. Ohne CDI entzieht jedes `systemctl daemon-reload` am Host laufenden Containern (`immich_machine_learning`, `ollama`, `paperless_webserver`) die cgroup-v2-Geräterechte auf `/dev/nvidia*` (`Failed to initialize NVML: Unknown Error`), sodass KI-Jobs auf die CPU zurückfallen.
 *   **GTX 1070 Ti (Pascal) & Ollama Version-Pinning (`0.2.8`):** Das Image in `ollama.yml.j2` ist bewusst auf `ollama/ollama:0.2.8` (CUDA 11/12) gepinnt und darf **nicht** auf `latest` aktualisiert werden. Neuere Ollama-Versionen (`0.40+`) erfordern CUDA 13 / Treiber `>= 570` (Wegfall von Pascal Compute 6.1) und schalten auf der GTX 1070 Ti (Debian-Treiber 550) auf CPU-Inferenz um, wodurch der nächtliche Paperless-KI-Index (`llm_index` mit `mxbai-embed-large`) nach 120s in ein `ReadTimeout` läuft.
+*   **Nativer HDD-Standby auf Debian 13 (`force_spindown_time`):** Die 3TB WD Red (`WD30EFRX`) unterstützt natives ATA-Standby, meldet aber kein `ID_ATA_FEATURE_SET_APM=1`. Da Debians `/usr/lib/pm-utils/power.d/95hdparm-apm` die normale Option `spindown_time` ohne APM-Flag ignoriert (Debian Bug #758988), MUSS in `/etc/hdparm.conf` zwingend `force_spindown_time = 240` (20 Min.) verwendet werden. Es dürfen **keine** eigenen `hdd-spindown`-Services oder manuellen `hdparm -y`-Aufrufe in Skripten genutzt werden.
+*   **Restic Retention (`--group-by host,tags`) & Excludes:** Da `nas_cloud_sync.sh` aus täglich wechselnden Btrfs-Snapshot-Pfaden (`.../4261`, `.../4262`) sichert, muss auch bei `restic forget` zwingend `--group-by host,tags` übergeben werden (ohne dieses Flag gruppiert `forget` nach `host,paths` und löscht niemals alte Snapshots). Zudem müssen `./root/.cache`, `./var/cache`, `./var/tmp`, `./var/lib/docker` und `./var/lib/containerd` per `--exclude` ausgeschlossen bleiben, damit Restic nicht seinen eigenen 30-GB-Cache und die Docker-Overlay-Layer rekursiv mitsichert.
 *   **Antigravity Permissions & MCP:** Antigravity läuft lokal mit weitreichenden CLI-Rechten (Wildcards `command(*)`, `read_file(*)`). Es dürfen daher **keine** redundanten MCP-Server für native lokale Tools (wie Ansible, Docker, SSH, Home Assistant) eingerichtet werden, da der native CLI-Zugriff performanter und mächtiger ist. MCP-Server sind nur für externe APIs oder spezielle Aufgaben zulässig.
 
 ## 5. Offene & Aktive Projekte
 - **Paperless-ngx & Lokale KI (`ollama`):**
-    *   ✅ Paperless-ngx (`docs.rnet.at`) inkl. OAuth (Google/Microsoft), Mail-Abruf und KI-Integration aktiv (DB/Data auf SSD, Media-Migration vorbereitet).
+    *   ✅ Paperless-ngx (`docs.rnet.at`) inkl. OAuth (Google/Microsoft), Mail-Abruf und KI-Integration aktiv (DB/Data auf SSD, Media auf eigenem HDD-Subvolume `/mnt/HDD-01/paperless` inkl. Snapper- & Restic-Backup).
     *   ✅ Lokales Embedding-Backend via `ollama` (`mxbai-embed-large` auf GTX 1070 Ti GPU) + Google Gemini API für LLM-Chat.
 - **Monitoring:** ✅ Grafana/Prometheus Stack auf NAS aktiv (Port 3001/9090 via Caddy mit reinem TLS).
 - **DNS-Infrastruktur:** ✅ AdGuard Home (`adguard`) läuft produktiv als lokaler DNS-Server auf `nas-01`.
@@ -73,6 +78,7 @@
 *   ✅ Zentralisierung der Dokumentations-Infrastruktur (`ANTIGRAVITY.md` als SSOT)
 *   ✅ Paperless-ngx, Ollama GPU-Embeddings, AdGuard Home & Matter-JS Server auf `nas-01` (Okt 2026)
 *   ✅ NVIDIA CDI Runtime Setup für persistente GPU-Beschleunigung über `systemctl daemon-reload` hinweg (Okt 2026)
+*   ✅ Migration auf 3TB WD Red CMR (`WD30EFRX`), nativer `hdparm`-Standby (`force_spindown_time`), 1:1 Btrfs-Snapshot-Retention & automatisierte Pre-Snapshot DB-Dumps (Okt 2026)
 
 ---
 
