@@ -1,5 +1,5 @@
 # Home Server, Desktop & Dotfiles Configuration
-**Stand:** 21. Mai 2026
+**Stand:** 30. Oktober 2026
 **Fokus:** Modular, stabil & automatisiert
 
 ## 1. System-Topologie (Hardware & Netz)
@@ -29,7 +29,7 @@
 *   **Secret Management:**
     *   **RAM-Vault:** Einmaliges Entsperren via `sudo vault-unlock.sh` pro Boot. Token liegt in `/run/vault/bw_session`.
     *   **Zero-Leak:** Keine Klartext-Passwörter in Git.
-    *   **Docker Compose Secrets:** Es dürfen **keine separaten `.env`-Dateien** für Docker-Container auf dem NAS manuell erstellt oder über Ansible generiert werden. Alle Container-Secrets (z.B. für Grafana, Immich) müssen aus der verschlüsselten `group_vars/nas/secrets.yml` stammen und direkt als Jinja-Variablen (z.B. `{{ grafana_admin_pass }}`) in die jeweiligen `docker-compose.yml.j2` Templates injiziert werden, um volle Konsistenz zu gewährleisten.
+    *   **Docker Compose Secrets:** Alle Container-Secrets (z.B. für Grafana, Immich, Paperless) stammen aus der verschlüsselten `group_vars/nas/secrets.yml` und werden über Ansible in die jeweiligen `.env.j2`- bzw. `compose/<service>.yml.j2`-Templates injiziert. Es dürfen keine unverwalteten `.env`-Dateien manuell auf dem NAS erstellt werden.
 *   **Repo-First:** Änderungen MÜSSEN zuerst im jeweiligen Repository erfolgen. Deployment via `dotfiles-sync.sh` (User) oder manueller Kopie (System).
 
 ## 4. Bekannte Fallstricke & Fixes
@@ -39,23 +39,28 @@
 *   **Semaphore Task-Auswahl:** Durch die Aufteilung der Playbooks in `nas.yml` und `desktop.yml` wird sichergestellt, dass Tasks (z. B. "NAS update") strikt nur ihre Zielsysteme ansprechen, ohne dass sich Hosts überlagern. In Semaphore müssen dafür die korrekten Playbooks in den Task Templates hinterlegt sein.
 *   **Home Assistant (Google Assistant):** Da die manuelle Google Assistant Integration (ohne Nabu Casa) genutzt wird, funktioniert die native HA-Oberfläche (Settings -> Voice assistants) NICHT für Google Home. Das Exponieren von Geräten MUSS ausschließlich über die `google_assistant_entities.yaml` (verwaltet durch das HACS Plugin *Google Home Exposure Manager*) erfolgen. Nach Änderungen muss Google über "Hey Google, synchronisiere meine Geräte" zum Pull gezwungen werden.
 *   **Immich Datenbank-Passwort:** Wenn das Postgres-Passwort für Immich geändert wird, reicht eine Anpassung im Vault nicht aus. Da Postgres das Passwort nur beim Initialstart setzt, muss das Passwort bei bereits laufenden Instanzen zwingend zusätzlich manuell im Container via `ALTER USER` geändert werden.
+*   **NVIDIA GPU & Systemd cgroup v2 (`nas-01`):** Docker auf `nas-01` muss zwingend `nvidia` als `default-runtime` mit aktiviertem **CDI-Modus (`mode = "cdi"`)** in `/etc/nvidia-container-runtime/config.toml` und generierter `/etc/cdi/nvidia.yaml` nutzen. Ohne CDI entzieht jedes `systemctl daemon-reload` am Host laufenden Containern (`immich_machine_learning`, `ollama`, `paperless_webserver`) die cgroup-v2-Geräterechte auf `/dev/nvidia*` (`Failed to initialize NVML: Unknown Error`), sodass KI-Jobs auf die CPU zurückfallen.
+*   **GTX 1070 Ti (Pascal) & Ollama Version-Pinning (`0.2.8`):** Das Image in `ollama.yml.j2` ist bewusst auf `ollama/ollama:0.2.8` (CUDA 11/12) gepinnt und darf **nicht** auf `latest` aktualisiert werden. Neuere Ollama-Versionen (`0.40+`) erfordern CUDA 13 / Treiber `>= 570` (Wegfall von Pascal Compute 6.1) und schalten auf der GTX 1070 Ti (Debian-Treiber 550) auf CPU-Inferenz um, wodurch der nächtliche Paperless-KI-Index (`llm_index` mit `mxbai-embed-large`) nach 120s in ein `ReadTimeout` läuft.
 *   **Antigravity Permissions & MCP:** Antigravity läuft lokal mit weitreichenden CLI-Rechten (Wildcards `command(*)`, `read_file(*)`). Es dürfen daher **keine** redundanten MCP-Server für native lokale Tools (wie Ansible, Docker, SSH, Home Assistant) eingerichtet werden, da der native CLI-Zugriff performanter und mächtiger ist. MCP-Server sind nur für externe APIs oder spezielle Aufgaben zulässig.
 
-## 5. Offene Projekte
-- **Paperless-ngx:** Einrichtung geplant (Pfade: SSD für DB/Ingest, HDD für Media).
-- **Monitoring:** Grafana/Prometheus Stack auf NAS aktiv (Port 3001/9090 via Caddy).
+## 5. Offene & Aktive Projekte
+- **Paperless-ngx & Lokale KI (`ollama`):**
+    *   ✅ Paperless-ngx (`docs.rnet.at`) inkl. OAuth (Google/Microsoft), Mail-Abruf und KI-Integration aktiv (DB/Data auf SSD, Media-Migration vorbereitet).
+    *   ✅ Lokales Embedding-Backend via `ollama` (`mxbai-embed-large` auf GTX 1070 Ti GPU) + Google Gemini API für LLM-Chat.
+- **Monitoring:** ✅ Grafana/Prometheus Stack auf NAS aktiv (Port 3001/9090 via Caddy mit reinem TLS).
+- **DNS-Infrastruktur:** ✅ AdGuard Home (`adguard`) läuft produktiv als lokaler DNS-Server auf `nas-01`.
+- **Smart Home & Matter:** ✅ Home Assistant + `matterjs-server` (exponiert über Caddy auf `:3003`) aktiv.
 - **Secret Management & Sicherheit:**
     *   ✅ Vaultwarden Instanz auf NAS (sicher über Cloudflare Tunnel auf `vault.rnet.at` exponiert, WAF aktiv & Signups via `SIGNUPS_ALLOWED=false` blockiert).
     *   ✅ **Ansible Vault:** Sämtliche Container-Secrets und Environment-Variablen werden verschlüsselt über `ansible-vault` (in `group_vars/nas/secrets.yml`) verwaltet und zur Laufzeit dynamisch injiziert. Es existieren keine Klartext-Passwords im Repository.
     *   ⏳ Bitwarden CLI Integration auf Desktop & NAS (Skript `vault-unlock.sh` erzeugt Login-Fehler wegen User/Root Mismatch).
     *   ⏳ Backup von SSH-Keys (Private Keys) in den Vault.
     *   ⏳ Migration der `rclone.conf` Tokens in den Vault.
-    *   ✅ Absicherung der öffentlichen Endpunkte: Vaultwarden läuft sicher über Cloudflare Tunnel (WAF).
+    *   ✅ Absicherung der öffentlichen Endpunkte: Vaultwarden & Paperless laufen sicher über Cloudflare Tunnel / OAuth.
     *   ⏳ Weitere Endpunkte (HA, Immich) z.B. via Cloudflare Access (Zero Trust) absichern.
 - **Ansible Playbooks:** Automatisierung des System-Setups für Desktop und NAS.
     *   *Architektur:* Das Setup ist modularisiert. `site.yml` fungiert als Master-Include, während `nas.yml` und `desktop.yml` eine strikte, fehlerfreie Host-Trennung (für z. B. Semaphore) ermöglichen.
-    *   *Docker-Deployment:* Die Rolle `nas_docker` verwaltet alle Container. Sie verwendet eine zentrale, hochdynamische Master-Jinja2-Vorlage (`docker-compose.yml.j2`), um über Wenn-Dann-Schleifen alle isolierten `docker-compose.yml`-Dateien der verschiedenen Container (Grafana, Immich, Caddy etc.) im Loop zu generieren. Alle Web-Services kommunizieren sicher isoliert über das `proxy_net`-Docker-Netzwerk.
-- **DNS-Infrastruktur:** Lokaler DNS-Server (z.B. Pi-hole/AdGuard) für herstellerunabhängige Namensauflösung (ohne Tailscale-Zwang).
+    *   *Docker-Deployment:* Die Rolle `nas_docker` verwaltet alle Container über dedizierte Service-Templates unter `roles/nas_docker/templates/compose/<service>.yml.j2` und `<service>.env.j2`. Alle Web-Services kommunizieren sicher isoliert über das `proxy_net`-Docker-Netzwerk.
 - **Openclaw Container (Gemini Telegram Bot):**
     - **Ziel:** Einrichtung und Fertigstellung des Openclaw Docker Containers.
     - **Anforderung:** Vollständige Konversations-Unterstützung zur Remote-Steuerung via Telegram.
@@ -66,6 +71,8 @@
 *   ✅ Integration intelligenter Wallpaper-Scheduler in Lua
 *   ✅ Secret Management Foundation (Vaultwarden & CLI Automation)
 *   ✅ Zentralisierung der Dokumentations-Infrastruktur (`ANTIGRAVITY.md` als SSOT)
+*   ✅ Paperless-ngx, Ollama GPU-Embeddings, AdGuard Home & Matter-JS Server auf `nas-01` (Okt 2026)
+*   ✅ NVIDIA CDI Runtime Setup für persistente GPU-Beschleunigung über `systemctl daemon-reload` hinweg (Okt 2026)
 
 ---
 
@@ -73,6 +80,7 @@
 *   **Niemals raten (Never guess):** Antworten müssen so deterministisch wie möglich sein. Falls Informationen fehlen, frage nach oder ermittle sie über System-Tools.
 *   **Fakten verifizieren (Verify facts):** Lösungen und Antworten müssen mit Live-Daten, dem Internet oder Dokumentationen abgeglichen werden, um Halluzinationen auszuschließen.
 *   **Live-Statusprüfung vor kritischen Aktionen (Live State Check):** Überprüfe vor jeder systemkritischen Aktion (z. B. Snapper-Snapshots, Service-Restarts) den tatsächlichen Ist-Zustand des Systems via CLI.
+*   **Vorsicht bei Ansible-Playbook-Runs (`nas.yml` / `site.yml`):** Prüfe vor dem Ausführen von Playbooks via `git log` / `git diff` (oder Rückfrage beim Nutzer), ob im Repository bereits Commits für noch anstehende Hardware-Umbauten (z. B. HDD-Wechsel / Subvolume-Migrationen) vorbereitet sind. Wenn ja, wende isolierte Fixes direkt per SSH an, statt das gesamte Playbook auszurollen.
 *   **Idempotenz-Nachweis bei Ansible & Skripten:** Führe geänderte Ansible-Playbooks oder Skripte ein zweites Mal aus, um sicherzustellen, dass sie idempotente Zustände erzeugen und keine unbeabsichtigten Nebenwirkungen oder wiederholte Änderungen auftreten.
 *   **Validierung vor Dateierstellungen (Dry-Run / Lint):** Nutze verfügbare Validierungstools (z. B. `systemd-analyze verify`, `caddy validate`) vor dem Schreiben von Konfigurationen und arbeite mit minimalen Zeilen-Ersetzungen (diffs).
 *   **Rollback-Sicherung (Fail-Safe):** Erstelle vor Skriptänderungen Backups (`.bak`) oder verifiziere das Vorhandensein von Snapper-Snapshots, um im Fehlerfall ein direktes Rollback durchführen zu können.
@@ -88,7 +96,7 @@
 When modifying system files, docker configurations, or any root-owned files on the `nas-01` server (which is locally mounted at `/mnt/nas-01`), **DO NOT** write to the local mount directly. The `rclone` SFTP mount causes caching delays and permission issues for the `kevin` user.
 
 Instead, you MUST use SSH to connect to the server and apply changes using `sudo`:
-1. SSH into the server: `ssh -i /home/kevin/.ssh/id_ed25519 -o StrictHostKeyChecking=no kevin@100.72.31.15`
+1. SSH into the server: `ssh -i /home/kevin/.ssh/id_ed25519 -o StrictHostKeyChecking=no kevin@192.168.178.46` (Fallback: `100.72.31.15`)
 2. Run commands or modify files via `sudo` on the remote server.
 3. If deploying new config files, write them to a local `/tmp` file first, `scp` them to `/tmp` on the server, and then use SSH with `sudo cp` to move them into their final destination (e.g. `/opt/docker/...`) and fix ownership (`sudo chown root:root`).
 4. Restart corresponding docker containers directly via SSH (`sudo docker restart <container>`).
